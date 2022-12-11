@@ -12,6 +12,11 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   String selected = 'manager';
+  bool visible = true;
+  var managername = TextEditingController();
+  var emailid = TextEditingController();
+  var password = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,8 +33,9 @@ class _LoginState extends State<Login> {
           child: Center(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                SizedBox(height: 50),
                 Text(
                   'Login Page',
                   style: TextStyle(
@@ -37,7 +43,7 @@ class _LoginState extends State<Login> {
                       fontSize: 30,
                       fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 30),
                 Container(
                   child: selected == 'manager'
                       ? Row(
@@ -100,43 +106,165 @@ class _LoginState extends State<Login> {
                         ),
                 ),
                 SizedBox(
-                  height: 20,
+                  height: 30,
                 ),
                 Container(
                     child: selected == 'manager'
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              GFTextFieldSquared(
-                                iconPrefix: Icon(Icons.text_format),
-                                keyboardType: TextInputType.name,
-                                backgroundcolor: Colors.white,
-                                editingbordercolor: Colors.white,
-                                idlebordercolor: Colors.white,
-                                borderwidth: 1,
-                                hintText: 'Enter ManagerName',
-                              ),
-                              GFTextFieldSquared(
-                                  iconPrefix: Icon(Icons.email),
-                                  backgroundcolor: Colors.white,
-                                  editingbordercolor: Colors.white,
-                                  idlebordercolor: Colors.white,
-                                  borderwidth: 1,
-                                  hintText: 'Enter EmailId'),
-                              GFTextFieldSquared(
-                                  obscureText: true,
-                                  obscuringCharacter: '*',
-                                  iconPrefix: Icon(
-                                    Icons.lock,
+                              SizedBox(
+                                width: 750,
+                                child: TextField(
+                                  decoration: InputDecoration(
+                                    fillColor: Colors.white,
+                                    filled: true,
+                                    hintText: '@AbcPqr12',
+                                    labelText: 'Enter ManagerName',
+                                    prefixIcon:
+                                        Icon(Icons.text_format_outlined),
+                                    prefixIconColor: Colors.deepPurple.shade500,
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.horizontal(),
+                                    ),
                                   ),
-                                  backgroundcolor: Colors.white,
-                                  editingbordercolor: Colors.white,
-                                  idlebordercolor: Colors.white,
-                                  borderwidth: 1,
-                                  hintText: 'Enter Password'),
+                                ),
+                              ),
+                              SizedBox(height: 20),
+                              SizedBox(
+                                width: 750,
+                                child: TextField(
+                                  decoration: InputDecoration(
+                                    fillColor: Colors.white,
+                                    filled: true,
+                                    hintText: 'something@gmail.com',
+                                    labelText: 'Enter Email Id',
+                                    prefixIcon: Icon(Icons.email_outlined),
+                                    prefixIconColor: Colors.deepPurple.shade500,
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.horizontal(),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 20),
+                              SizedBox(
+                                width: 750,
+                                child: TextField(
+                                  obscureText: visible,
+                                  obscuringCharacter: '*',
+                                  decoration: InputDecoration(
+                                    fillColor: Colors.white,
+                                    filled: true,
+                                    hintText: '@password',
+                                    labelText: 'Enter Password',
+                                    prefixIcon: Icon(Icons.lock_outlined),
+                                    prefixIconColor: Colors.deepPurple.shade500,
+                                    suffixIcon: IconButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            visible = !visible;
+                                          });
+                                        },
+                                        icon: Icon(visible
+                                            ? Icons.visibility
+                                            : Icons.visibility_off)),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.horizontal(),
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ],
                           )
-                        : GFTextField())
+                        : Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                                SizedBox(
+                                  width: 750,
+                                  child: TextField(
+                                    decoration: InputDecoration(
+                                      fillColor: Colors.white,
+                                      filled: true,
+                                      hintText: '@AbcPqr12',
+                                      labelText: 'Enter EmployeeName',
+                                      prefixIcon:
+                                          Icon(Icons.text_format_outlined),
+                                      prefixIconColor:
+                                          Colors.deepPurple.shade500,
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.horizontal(),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 20),
+                                SizedBox(
+                                  width: 750,
+                                  child: TextField(
+                                    obscureText: visible,
+                                    obscuringCharacter: '*',
+                                    decoration: InputDecoration(
+                                      fillColor: Colors.white,
+                                      filled: true,
+                                      hintText: '@password',
+                                      labelText: 'Enter Password',
+                                      prefixIcon: Icon(Icons.lock_outlined),
+                                      prefixIconColor:
+                                          Colors.deepPurple.shade500,
+                                      suffixIcon: IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              visible = !visible;
+                                            });
+                                          },
+                                          icon: Icon(visible
+                                              ? Icons.visibility
+                                              : Icons.visibility_off)),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.horizontal(),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ])),
+                SizedBox(height: 20),
+                Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      GFButton(
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.check,
+                          color: Colors.green,
+                        ),
+                        text: 'Yes, LogIn',
+                        textColor: Colors.white,
+                        color: Colors.deepPurple.shade700,
+                        hoverColor: Colors.deepPurple.shade500,
+                        shape: GFButtonShape.square,
+                        size: GFSize.LARGE,
+                      ),
+                      GFButton(
+                        onPressed: () {
+                          managername.clear();
+                          emailid.clear();
+                          password.clear();
+                        },
+                        icon: Icon(
+                          Icons.close,
+                          color: Colors.red,
+                        ),
+                        text: 'No, Clear',
+                        textColor: Colors.white,
+                        color: Colors.deepPurple.shade700,
+                        hoverColor: Colors.deepPurple.shade500,
+                        shape: GFButtonShape.square,
+                        size: GFSize.LARGE,
+                      )
+                    ]),
               ],
             ),
           ),
