@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, library_private_types_in_public_api
+// ignore_for_file: prefer_const_constructors, library_private_types_in_public_api, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
@@ -99,12 +99,44 @@ class _LoginState extends State<Login> {
                           ],
                         ),
                 ),
-                GFTextFieldSquared(
-                    backgroundcolor: Colors.white,
-                    editingbordercolor: Colors.white,
-                    idlebordercolor: Colors.white,
-                    borderwidth: 1,
-                    hintText: 'Enter ManagerName')
+                SizedBox(
+                  height: 20,
+                ),
+                Container(
+                    child: selected == 'manager'
+                        ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              GFTextFieldSquared(
+                                iconPrefix: Icon(Icons.text_format),
+                                keyboardType: TextInputType.name,
+                                backgroundcolor: Colors.white,
+                                editingbordercolor: Colors.white,
+                                idlebordercolor: Colors.white,
+                                borderwidth: 1,
+                                hintText: 'Enter ManagerName',
+                              ),
+                              GFTextFieldSquared(
+                                  iconPrefix: Icon(Icons.email),
+                                  backgroundcolor: Colors.white,
+                                  editingbordercolor: Colors.white,
+                                  idlebordercolor: Colors.white,
+                                  borderwidth: 1,
+                                  hintText: 'Enter EmailId'),
+                              GFTextFieldSquared(
+                                  obscureText: true,
+                                  obscuringCharacter: '*',
+                                  iconPrefix: Icon(
+                                    Icons.lock,
+                                  ),
+                                  backgroundcolor: Colors.white,
+                                  editingbordercolor: Colors.white,
+                                  idlebordercolor: Colors.white,
+                                  borderwidth: 1,
+                                  hintText: 'Enter Password'),
+                            ],
+                          )
+                        : GFTextField())
               ],
             ),
           ),
