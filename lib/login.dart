@@ -1,7 +1,9 @@
-// ignore_for_file: prefer_const_constructors, library_private_types_in_public_api, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, library_private_types_in_public_api, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:sadms/database/database.dart';
+import 'package:sadms/managerdashboard.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -15,7 +17,9 @@ class _LoginState extends State<Login> {
   bool visible = true;
   var managername = TextEditingController();
   var emailid = TextEditingController();
-  var password = TextEditingController();
+  var mpassword = TextEditingController();
+  var employeename = TextEditingController();
+  var epassword = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +39,7 @@ class _LoginState extends State<Login> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                //Title
                 SizedBox(height: 50),
                 Text(
                   'Login Page',
@@ -44,6 +49,7 @@ class _LoginState extends State<Login> {
                       fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 30),
+                //Type Selection Buttons
                 Container(
                   child: selected == 'manager'
                       ? Row(
@@ -111,12 +117,14 @@ class _LoginState extends State<Login> {
                 Container(
                     child: selected == 'manager'
                         ? Column(
+                            //Manager TextFields
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               SizedBox(
                                 width: 750,
                                 child: TextField(
+                                  controller: managername,
                                   decoration: InputDecoration(
                                     fillColor: Colors.white,
                                     filled: true,
@@ -135,6 +143,7 @@ class _LoginState extends State<Login> {
                               SizedBox(
                                 width: 750,
                                 child: TextField(
+                                  controller: emailid,
                                   decoration: InputDecoration(
                                     fillColor: Colors.white,
                                     filled: true,
@@ -152,6 +161,7 @@ class _LoginState extends State<Login> {
                               SizedBox(
                                 width: 750,
                                 child: TextField(
+                                  controller: mpassword,
                                   obscureText: visible,
                                   obscuringCharacter: '*',
                                   decoration: InputDecoration(
@@ -168,8 +178,8 @@ class _LoginState extends State<Login> {
                                           });
                                         },
                                         icon: Icon(visible
-                                            ? Icons.visibility
-                                            : Icons.visibility_off)),
+                                            ? Icons.visibility_off
+                                            : Icons.visibility)),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.horizontal(),
                                     ),
@@ -179,11 +189,13 @@ class _LoginState extends State<Login> {
                             ],
                           )
                         : Column(
+                            //Employee TextFields
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                                 SizedBox(
                                   width: 750,
                                   child: TextField(
+                                    controller: employeename,
                                     decoration: InputDecoration(
                                       fillColor: Colors.white,
                                       filled: true,
@@ -203,6 +215,7 @@ class _LoginState extends State<Login> {
                                 SizedBox(
                                   width: 750,
                                   child: TextField(
+                                    controller: epassword,
                                     obscureText: visible,
                                     obscuringCharacter: '*',
                                     decoration: InputDecoration(
@@ -220,8 +233,8 @@ class _LoginState extends State<Login> {
                                             });
                                           },
                                           icon: Icon(visible
-                                              ? Icons.visibility
-                                              : Icons.visibility_off)),
+                                              ? Icons.visibility_off
+                                              : Icons.visibility)),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.horizontal(),
                                       ),
@@ -230,12 +243,49 @@ class _LoginState extends State<Login> {
                                 ),
                               ])),
                 SizedBox(height: 20),
+                //Functioning Buttons
                 Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       GFButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          //manager button clicked
+                          if (selected == 'manager') {
+                            await DB.openCon('managerlogin');
+                            var value = await DB.collection.find({
+                              'ManagerName': managername.text,
+                              'EmailId': emailid.text,
+                              'Password': mpassword.text
+                            }).toList();
+                            await DB.closeCon();
+                            if (value.length == 0) {
+                              mpassword.clear();
+                            } else {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ManagerDashboard()));
+                            }
+                          } else {
+                            await DB.openCon('employeelogin');
+                            var value = await DB.collection.find({
+                              'EmployeeName': employeename.text,
+                              'Password': epassword.text
+                            }).toList();
+                            await DB.closeCon();
+                            if (value.length == 0) {
+                              epassword.clear();
+                            } else {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ManagerDashboard()));
+                            }
+                          }
+                        },
                         icon: Icon(
                           Icons.check,
                           color: Colors.green,
@@ -249,9 +299,14 @@ class _LoginState extends State<Login> {
                       ),
                       GFButton(
                         onPressed: () {
-                          managername.clear();
-                          emailid.clear();
-                          password.clear();
+                          if (selected == 'manager') {
+                            managername.clear();
+                            emailid.clear();
+                            mpassword.clear();
+                          } else {
+                            employeename.clear();
+                            epassword.clear();
+                          }
                         },
                         icon: Icon(
                           Icons.close,
