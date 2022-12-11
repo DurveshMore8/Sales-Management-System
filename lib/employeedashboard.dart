@@ -14,10 +14,13 @@ class EmployeeDashboardState extends State<EmployeeDashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.deepPurple[400],
       body: Center(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Employee Dashboard'),
+            const Text('Employee Dashboard'),
             GFButton(onPressed: () {
               Navigator.pop(context);
             })

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:sadms/database/database.dart';
 import 'package:sadms/managerdashboard.dart';
+import 'package:sadms/employeedashboard.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -129,7 +130,11 @@ class _LoginState extends State<Login> {
                                     fillColor: Colors.white,
                                     filled: true,
                                     hintText: '@AbcPqr12',
-                                    labelText: 'Enter ManagerName',
+                                    labelText: 'ManagerName',
+                                    labelStyle: TextStyle(
+                                        backgroundColor: Colors.white,
+                                        color: Colors.deepPurple.shade500,
+                                        fontWeight: FontWeight.bold),
                                     prefixIcon:
                                         Icon(Icons.text_format_outlined),
                                     prefixIconColor: Colors.deepPurple.shade500,
@@ -148,7 +153,11 @@ class _LoginState extends State<Login> {
                                     fillColor: Colors.white,
                                     filled: true,
                                     hintText: 'something@gmail.com',
-                                    labelText: 'Enter Email Id',
+                                    labelText: 'Email Id',
+                                    labelStyle: TextStyle(
+                                        backgroundColor: Colors.white,
+                                        color: Colors.deepPurple.shade500,
+                                        fontWeight: FontWeight.bold),
                                     prefixIcon: Icon(Icons.email_outlined),
                                     prefixIconColor: Colors.deepPurple.shade500,
                                     border: OutlineInputBorder(
@@ -168,7 +177,11 @@ class _LoginState extends State<Login> {
                                     fillColor: Colors.white,
                                     filled: true,
                                     hintText: '@password',
-                                    labelText: 'Enter Password',
+                                    labelText: 'Password',
+                                    labelStyle: TextStyle(
+                                        backgroundColor: Colors.white,
+                                        color: Colors.deepPurple.shade500,
+                                        fontWeight: FontWeight.bold),
                                     prefixIcon: Icon(Icons.lock_outlined),
                                     prefixIconColor: Colors.deepPurple.shade500,
                                     suffixIcon: IconButton(
@@ -180,6 +193,7 @@ class _LoginState extends State<Login> {
                                         icon: Icon(visible
                                             ? Icons.visibility_off
                                             : Icons.visibility)),
+                                    suffixIconColor: Colors.deepPurple.shade500,
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.horizontal(),
                                     ),
@@ -200,7 +214,11 @@ class _LoginState extends State<Login> {
                                       fillColor: Colors.white,
                                       filled: true,
                                       hintText: '@AbcPqr12',
-                                      labelText: 'Enter EmployeeName',
+                                      labelText: 'EmployeeName',
+                                      labelStyle: TextStyle(
+                                          backgroundColor: Colors.white,
+                                          color: Colors.deepPurple.shade500,
+                                          fontWeight: FontWeight.bold),
                                       prefixIcon:
                                           Icon(Icons.text_format_outlined),
                                       prefixIconColor:
@@ -222,7 +240,11 @@ class _LoginState extends State<Login> {
                                       fillColor: Colors.white,
                                       filled: true,
                                       hintText: '@password',
-                                      labelText: 'Enter Password',
+                                      labelText: 'Password',
+                                      labelStyle: TextStyle(
+                                          backgroundColor: Colors.white,
+                                          color: Colors.deepPurple.shade500,
+                                          fontWeight: FontWeight.bold),
                                       prefixIcon: Icon(Icons.lock_outlined),
                                       prefixIconColor:
                                           Colors.deepPurple.shade500,
@@ -235,6 +257,8 @@ class _LoginState extends State<Login> {
                                           icon: Icon(visible
                                               ? Icons.visibility_off
                                               : Icons.visibility)),
+                                      suffixIconColor:
+                                          Colors.deepPurple.shade500,
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.horizontal(),
                                       ),
@@ -282,7 +306,7 @@ class _LoginState extends State<Login> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          ManagerDashboard()));
+                                          EmployeeDashboard()));
                             }
                           }
                         },

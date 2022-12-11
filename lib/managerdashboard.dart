@@ -14,10 +14,13 @@ class ManagerDashboardState extends State<ManagerDashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.deepPurple[400],
       body: Center(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Manager Dashboard'),
+            const Text('Manager Dashboard'),
             GFButton(onPressed: () {
               Navigator.pop(context);
             })
