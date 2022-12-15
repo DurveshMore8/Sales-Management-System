@@ -2,9 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:sadms/database/database.dart';
-import 'package:sadms/dashboard/managerdashboard.dart';
-import 'package:sadms/dashboard/employeedashboard.dart';
+import 'package:sadms/Database/database.dart';
+import 'package:sadms/Dashboard/managerdashboard.dart';
+import 'package:sadms/Dashboard/employeedashboard.dart';
+import 'package:sadms/NavigationBar/managernavigationbar.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -289,8 +290,7 @@ class _LoginState extends State<Login> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          ManagerDashboard()));
+                                      builder: (context) => MyNavigationBar()));
                             }
                           } else {
                             await DB.openCon('employeelogin');
@@ -305,8 +305,7 @@ class _LoginState extends State<Login> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          EmployeeDashboard()));
+                                      builder: (context) => MyNavigationBar()));
                             }
                           }
                         },

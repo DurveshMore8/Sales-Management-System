@@ -2,14 +2,14 @@
 
 import 'package:flutter/material.dart';
 
-class ManagerDashboard extends StatefulWidget {
-  ManagerDashboard({Key? key}) : super(key: key);
+class Manager extends StatefulWidget {
+  Manager({Key? key}) : super(key: key);
 
   @override
-  _ManagerDashboardState createState() => _ManagerDashboardState();
+  _ManagerState createState() => _ManagerState();
 }
 
-class _ManagerDashboardState extends State<ManagerDashboard> {
+class _ManagerState extends State<Manager> {
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -21,7 +21,7 @@ class _ManagerDashboardState extends State<ManagerDashboard> {
             children: [
               SizedBox(height: 20),
               Text(
-                'Dashboard',
+                'Manager',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
