@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:sadms/database/database.dart';
-import 'package:sadms/managerdashboard.dart';
-import 'package:sadms/employeedashboard.dart';
+import 'package:sadms/dashboard/managerdashboard.dart';
+import 'package:sadms/dashboard/employeedashboard.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -311,7 +311,7 @@ class _LoginState extends State<Login> {
                           }
                         },
                         icon: Icon(
-                          Icons.check,
+                          Icons.login,
                           color: Colors.green,
                         ),
                         text: 'Yes, LogIn',
