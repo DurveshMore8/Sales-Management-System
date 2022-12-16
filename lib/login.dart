@@ -3,8 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:sadms/Database/database.dart';
-import 'package:sadms/Dashboard/managerdashboard.dart';
-import 'package:sadms/Dashboard/employeedashboard.dart';
 import 'package:sadms/NavigationBar/managernavigationbar.dart';
 
 class Login extends StatefulWidget {
@@ -26,7 +24,7 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.deepPurple[400],
+      backgroundColor: Colors.black,
       appBar: AppBar(
         title: Text('Tata Motors'),
         centerTitle: true,
