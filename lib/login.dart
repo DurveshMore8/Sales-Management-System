@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:sadms/Database/database.dart';
+import 'package:sadms/NavigationBar/employeenavigationbar.dart';
 import 'package:sadms/NavigationBar/managernavigationbar.dart';
 
 class Login extends StatefulWidget {
@@ -303,7 +304,8 @@ class _LoginState extends State<Login> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => MyNavigationBar()));
+                                      builder: (context) =>
+                                          EmployeeNavigationBar()));
                             }
                           }
                         },
