@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:sadms/DataAddition/addmanager.dart';
+import 'package:sadms/DataUpdation/updatemanager.dart';
 import 'package:sadms/Database/database.dart';
 
 class Manager extends StatefulWidget {
@@ -12,6 +14,7 @@ class Manager extends StatefulWidget {
 }
 
 class _ManagerState extends State<Manager> {
+  List<Map<String, dynamic>> data = [];
   var text = TextEditingController();
   int selectedvalue = 1;
   int selectedBox = -1;
@@ -68,7 +71,6 @@ class _ManagerState extends State<Manager> {
                       child: Text('ManagerName')),
                 ],
                 onChanged: (value) async {
-                  List<Map<String, dynamic>> data;
                   name.clear();
                   managername.clear();
                   gender.clear();
@@ -144,7 +146,34 @@ class _ManagerState extends State<Manager> {
                       borderRadius: BorderRadius.horizontal(),
                     ),
                   ),
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    setState(() {
+                      name.clear();
+                      managername.clear();
+                      gender.clear();
+                      dob.clear();
+                      age.clear();
+                      phone.clear();
+                      emailid.clear();
+                      for (int i = 0; i < data.length; i++) {
+                        if (value.length <= data[i]['Name'].length) {
+                          String namestring = '';
+                          for (int j = 0; j < value.length; j++) {
+                            namestring = namestring + data[i]['Name'][j];
+                          }
+                          if (value.toLowerCase() == namestring.toLowerCase()) {
+                            name.add(data[i]['Name']);
+                            managername.add(data[i]['ManagerName']);
+                            gender.add(data[i]['Gender']);
+                            dob.add(data[i]['DateofBirth'].toString());
+                            age.add(data[i]['Age']);
+                            phone.add(data[i]['Phone']);
+                            emailid.add(data[i]['EmailId']);
+                          }
+                        }
+                      }
+                    });
+                  },
                 ),
               )
             : selectedvalue == 3
@@ -177,7 +206,10 @@ class _ManagerState extends State<Manager> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             GFButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: ((context) => AddManager())));
+              },
               icon: Icon(
                 Icons.add,
                 color: Colors.green,
@@ -191,7 +223,10 @@ class _ManagerState extends State<Manager> {
             ),
             SizedBox(width: 75),
             GFButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: ((context) => UpdateManager())));
+              },
               icon: Icon(
                 Icons.update,
                 color: Colors.blue,
