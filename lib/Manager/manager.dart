@@ -29,29 +29,42 @@ class _ManagerState extends State<Manager> {
           ),
         ),
         SizedBox(height: 50),
-        DropdownButton(
-            dropdownColor: Colors.deepPurple[600],
-            style: TextStyle(color: Colors.white),
-            iconEnabledColor: Colors.white,
-            value: selectedvalue,
-            items: [
-              DropdownMenuItem(
-                value: 1,
-                alignment: Alignment.center,
-                child: Text('--Select Type--'),
-              ),
-              DropdownMenuItem(
-                  value: 2, alignment: Alignment.center, child: Text('Name')),
-              DropdownMenuItem(
-                  value: 3,
-                  alignment: Alignment.center,
-                  child: Text('ManagerName')),
-            ],
-            onChanged: (value) {
-              setState(() {
-                selectedvalue = value!;
-              });
-            }),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "Sort By:",
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(width: 30),
+            DropdownButton(
+                dropdownColor: Colors.deepPurple[600],
+                style: TextStyle(color: Colors.white),
+                iconEnabledColor: Colors.white,
+                value: selectedvalue,
+                items: [
+                  DropdownMenuItem(
+                    value: 1,
+                    alignment: Alignment.center,
+                    child: Text('--Select Type--'),
+                  ),
+                  DropdownMenuItem(
+                      value: 2,
+                      alignment: Alignment.center,
+                      child: Text('Name')),
+                  DropdownMenuItem(
+                      value: 3,
+                      alignment: Alignment.center,
+                      child: Text('ManagerName')),
+                ],
+                onChanged: (value) {
+                  setState(() {
+                    selectedvalue = value!;
+                  });
+                }),
+          ],
+        ),
         SizedBox(height: 50),
         selectedvalue == 2
             ? SizedBox(
@@ -103,7 +116,52 @@ class _ManagerState extends State<Manager> {
                   )
                 : SizedBox(),
         SizedBox(height: 50),
-        
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            GFButton(
+              onPressed: () {},
+              icon: Icon(
+                Icons.add,
+                color: Colors.green,
+              ),
+              text: 'Add',
+              textColor: Colors.white,
+              color: Colors.deepPurple.shade700,
+              hoverColor: Colors.deepPurple.shade500,
+              shape: GFButtonShape.square,
+              size: GFSize.LARGE,
+            ),
+            SizedBox(width: 75),
+            GFButton(
+              onPressed: () {},
+              icon: Icon(
+                Icons.update,
+                color: Colors.blue,
+              ),
+              text: 'Update',
+              textColor: Colors.white,
+              color: Colors.deepPurple.shade700,
+              hoverColor: Colors.deepPurple.shade500,
+              shape: GFButtonShape.square,
+              size: GFSize.LARGE,
+            ),
+            SizedBox(width: 75),
+            GFButton(
+              onPressed: () {},
+              icon: Icon(
+                Icons.delete,
+                color: Colors.red,
+              ),
+              text: 'Delete',
+              textColor: Colors.white,
+              color: Colors.deepPurple.shade700,
+              hoverColor: Colors.deepPurple.shade500,
+              shape: GFButtonShape.square,
+              size: GFSize.LARGE,
+            ),
+          ],
+        ),
       ],
     );
   }
