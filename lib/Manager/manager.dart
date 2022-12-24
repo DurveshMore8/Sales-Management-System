@@ -14,6 +14,7 @@ class Manager extends StatefulWidget {
 class _ManagerState extends State<Manager> {
   var text = TextEditingController();
   int selectedvalue = 1;
+  int selectedBox = -1;
   List<String> name = [];
   List<String> managername = [];
   List<String> gender = [];
@@ -75,6 +76,7 @@ class _ManagerState extends State<Manager> {
                   age.clear();
                   phone.clear();
                   emailid.clear();
+                  selectedBox = -1;
                   if (value == 2) {
                     await DB.openCon('managerinfo');
                     data = await DB.collection.find().toList();
@@ -221,12 +223,20 @@ class _ManagerState extends State<Manager> {
         selectedvalue == 2
             ? Expanded(
                 child: ListView.builder(
-                    itemCount: name.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
+                  itemCount: name.length,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedBox = index;
+                        });
+                      },
+                      child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
-                          color: Colors.deepPurple[700],
+                          color: selectedBox == index
+                              ? Colors.deepPurple[900]
+                              : Colors.deepPurple[700],
                           height: 100,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -274,63 +284,75 @@ class _ManagerState extends State<Manager> {
                             ],
                           ),
                         ),
-                      );
-                    }))
+                      ),
+                    );
+                  },
+                ),
+              )
             : selectedvalue == 3
                 ? Expanded(
                     child: ListView.builder(
                         itemCount: managername.length,
                         itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              color: Colors.deepPurple[700],
-                              height: 100,
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Text(
-                                        'ManagerName: ${managername[index]}',
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                      Text(
-                                        'Name: ${name[index]}',
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                      Text(
-                                        'Phone: ${phone[index]}',
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                      Text(
-                                        'EmailId: ${emailid[index]}',
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Text(
-                                        'DOB: ${dob[index]}',
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                      Text(
-                                        'Age: ${age[index]}',
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                      Text(
-                                        'Gender: ${gender[index]}',
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                          return GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                selectedBox = index;
+                              });
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                color: selectedBox == index
+                                    ? Colors.deepPurple[900]
+                                    : Colors.deepPurple[700],
+                                height: 100,
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Text(
+                                          'ManagerName: ${managername[index]}',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                        Text(
+                                          'Name: ${name[index]}',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                        Text(
+                                          'Phone: ${phone[index]}',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                        Text(
+                                          'EmailId: ${emailid[index]}',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Text(
+                                          'DOB: ${dob[index]}',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                        Text(
+                                          'Age: ${age[index]}',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                        Text(
+                                          'Gender: ${gender[index]}',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           );
