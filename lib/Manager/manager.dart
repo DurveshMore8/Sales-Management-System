@@ -68,7 +68,32 @@ class _ManagerState extends State<Manager> {
                 ],
                 onChanged: (value) async {
                   List<Map<String, dynamic>> data;
+                  name.clear();
+                  managername.clear();
+                  gender.clear();
+                  dob.clear();
+                  age.clear();
+                  phone.clear();
+                  emailid.clear();
                   if (value == 2) {
+                    await DB.openCon('managerinfo');
+                    data = await DB.collection.find().toList();
+                    await DB.closeCon();
+                    data.sort((a, b) => a["Name"].compareTo(b["Name"]));
+                    setState(() {
+                      selectedvalue = value!;
+                      name.clear();
+                      for (int i = 0; i < data.length; i++) {
+                        name.add(data[i]['Name']);
+                        managername.add(data[i]['ManagerName']);
+                        gender.add(data[i]['Gender']);
+                        dob.add(data[i]['DateofBirth'].toString());
+                        age.add(data[i]['Age']);
+                        phone.add(data[i]['Phone']);
+                        emailid.add(data[i]['EmailId']);
+                      }
+                    });
+                  } else if (value == 3) {
                     await DB.openCon('managerinfo');
                     data = await DB.collection.find().toList();
                     await DB.closeCon();
@@ -253,8 +278,63 @@ class _ManagerState extends State<Manager> {
                     }))
             : selectedvalue == 3
                 ? Expanded(
-                    child: Text('hello'),
-                  )
+                    child: ListView.builder(
+                        itemCount: managername.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              color: Colors.deepPurple[700],
+                              height: 100,
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Text(
+                                        'ManagerName: ${managername[index]}',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      Text(
+                                        'Name: ${name[index]}',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      Text(
+                                        'Phone: ${phone[index]}',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      Text(
+                                        'EmailId: ${emailid[index]}',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Text(
+                                        'DOB: ${dob[index]}',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      Text(
+                                        'Age: ${age[index]}',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      Text(
+                                        'Gender: ${gender[index]}',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        }))
                 : SizedBox(),
       ],
     );
