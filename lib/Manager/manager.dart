@@ -1,7 +1,8 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_const_constructors_in_immutables, library_private_types_in_public_api
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_const_constructors_in_immutables, library_private_types_in_public_api, prefer_typing_uninitialized_variables
 
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:sadms/Database/database.dart';
 
 class Manager extends StatefulWidget {
   Manager({Key? key}) : super(key: key);
@@ -11,8 +12,15 @@ class Manager extends StatefulWidget {
 }
 
 class _ManagerState extends State<Manager> {
-  var managername = TextEditingController();
+  var text = TextEditingController();
   int selectedvalue = 1;
+  List<String> name = [];
+  List<String> managername = [];
+  List<String> gender = [];
+  List<String> dob = [];
+  List<int> age = [];
+  List<String> phone = [];
+  List<String> emailid = [];
 
   @override
   Widget build(BuildContext context) {
@@ -58,10 +66,31 @@ class _ManagerState extends State<Manager> {
                       alignment: Alignment.center,
                       child: Text('ManagerName')),
                 ],
-                onChanged: (value) {
-                  setState(() {
-                    selectedvalue = value!;
-                  });
+                onChanged: (value) async {
+                  List<Map<String, dynamic>> data;
+                  if (value == 2) {
+                    await DB.openCon('managerinfo');
+                    data = await DB.collection.find().toList();
+                    await DB.closeCon();
+                    data.sort((a, b) => a["Name"].compareTo(b["Name"]));
+                    setState(() {
+                      selectedvalue = value!;
+                      name.clear();
+                      for (int i = 0; i < data.length; i++) {
+                        name.add(data[i]['Name']);
+                        managername.add(data[i]['ManagerName']);
+                        gender.add(data[i]['Gender']);
+                        dob.add(data[i]['DateofBirth'].toString());
+                        age.add(data[i]['Age']);
+                        phone.add(data[i]['Phone']);
+                        emailid.add(data[i]['EmailId']);
+                      }
+                    });
+                  } else {
+                    setState(() {
+                      selectedvalue = value!;
+                    });
+                  }
                 }),
           ],
         ),
@@ -70,7 +99,7 @@ class _ManagerState extends State<Manager> {
             ? SizedBox(
                 width: 750,
                 child: TextField(
-                  controller: managername,
+                  controller: text,
                   decoration: InputDecoration(
                     fillColor: Colors.white,
                     filled: true,
@@ -88,13 +117,14 @@ class _ManagerState extends State<Manager> {
                       borderRadius: BorderRadius.horizontal(),
                     ),
                   ),
+                  onChanged: (value) {},
                 ),
               )
             : selectedvalue == 3
                 ? SizedBox(
                     width: 750,
                     child: TextField(
-                      controller: managername,
+                      controller: text,
                       decoration: InputDecoration(
                         fillColor: Colors.white,
                         filled: true,
@@ -162,6 +192,70 @@ class _ManagerState extends State<Manager> {
             ),
           ],
         ),
+        SizedBox(height: 50),
+        selectedvalue == 2
+            ? Expanded(
+                child: ListView.builder(
+                    itemCount: name.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          color: Colors.deepPurple[700],
+                          height: 100,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text(
+                                    'Name: ${name[index]}',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  Text(
+                                    'ManagerName: ${managername[index]}',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  Text(
+                                    'Phone: ${phone[index]}',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  Text(
+                                    'EmailId: ${emailid[index]}',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text(
+                                    'DOB: ${dob[index]}',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  Text(
+                                    'Age: ${age[index]}',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  Text(
+                                    'Gender: ${gender[index]}',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }))
+            : selectedvalue == 3
+                ? Expanded(
+                    child: Text('hello'),
+                  )
+                : SizedBox(),
       ],
     );
   }
