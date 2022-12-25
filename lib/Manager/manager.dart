@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:sadms/DataAddition/addmanager.dart';
-import 'package:sadms/DataUpdation/updatemanager.dart';
+import 'package:sadms/Manager/Add/addmanager.dart';
+import 'package:sadms/Manager/Update/updatemanager.dart';
 import 'package:sadms/Database/database.dart';
 
 class Manager extends StatefulWidget {
