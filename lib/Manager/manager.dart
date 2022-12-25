@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_const_constructors_in_immutables, library_private_types_in_public_api, prefer_typing_uninitialized_variables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_const_constructors_in_immutables, library_private_types_in_public_api, prefer_typing_uninitialized_variables, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
@@ -19,7 +19,7 @@ class _ManagerState extends State<Manager> {
   int selectedvalue = 1;
   int selectedBox = -1;
   List<String> name = [];
-  List<String> managername = [];
+  List<String> username = [];
   List<String> gender = [];
   List<String> dob = [];
   List<int> age = [];
@@ -68,11 +68,11 @@ class _ManagerState extends State<Manager> {
                   DropdownMenuItem(
                       value: 3,
                       alignment: Alignment.center,
-                      child: Text('ManagerName')),
+                      child: Text('Username')),
                 ],
                 onChanged: (value) async {
                   name.clear();
-                  managername.clear();
+                  username.clear();
                   gender.clear();
                   dob.clear();
                   age.clear();
@@ -89,7 +89,7 @@ class _ManagerState extends State<Manager> {
                       name.clear();
                       for (int i = 0; i < data.length; i++) {
                         name.add(data[i]['Name']);
-                        managername.add(data[i]['ManagerName']);
+                        username.add(data[i]['Username']);
                         gender.add(data[i]['Gender']);
                         dob.add(data[i]['DateofBirth'].toString());
                         age.add(data[i]['Age']);
@@ -107,7 +107,7 @@ class _ManagerState extends State<Manager> {
                       name.clear();
                       for (int i = 0; i < data.length; i++) {
                         name.add(data[i]['Name']);
-                        managername.add(data[i]['ManagerName']);
+                        username.add(data[i]['Username']);
                         gender.add(data[i]['Gender']);
                         dob.add(data[i]['DateofBirth'].toString());
                         age.add(data[i]['Age']);
@@ -132,7 +132,7 @@ class _ManagerState extends State<Manager> {
                   decoration: InputDecoration(
                     fillColor: Colors.white,
                     filled: true,
-                    hintText: '@Managers Name',
+                    hintText: '@Durvesh More',
                     labelText: 'Name',
                     floatingLabelAlignment: FloatingLabelAlignment.center,
                     labelStyle: TextStyle(
@@ -149,7 +149,7 @@ class _ManagerState extends State<Manager> {
                   onChanged: (value) {
                     setState(() {
                       name.clear();
-                      managername.clear();
+                      username.clear();
                       gender.clear();
                       dob.clear();
                       age.clear();
@@ -163,7 +163,7 @@ class _ManagerState extends State<Manager> {
                           }
                           if (value.toLowerCase() == namestring.toLowerCase()) {
                             name.add(data[i]['Name']);
-                            managername.add(data[i]['ManagerName']);
+                            username.add(data[i]['Username']);
                             gender.add(data[i]['Gender']);
                             dob.add(data[i]['DateofBirth'].toString());
                             age.add(data[i]['Age']);
@@ -184,8 +184,8 @@ class _ManagerState extends State<Manager> {
                       decoration: InputDecoration(
                         fillColor: Colors.white,
                         filled: true,
-                        hintText: '@ThereYouCome',
-                        labelText: 'ManagerName',
+                        hintText: '@durvesh123',
+                        labelText: 'Username',
                         floatingLabelAlignment: FloatingLabelAlignment.center,
                         labelStyle: TextStyle(
                             backgroundColor: Colors.white,
@@ -201,23 +201,23 @@ class _ManagerState extends State<Manager> {
                       onChanged: (value) {
                         setState(() {
                           name.clear();
-                          managername.clear();
+                          username.clear();
                           gender.clear();
                           dob.clear();
                           age.clear();
                           phone.clear();
                           emailid.clear();
                           for (int i = 0; i < data.length; i++) {
-                            if (value.length <= data[i]['ManagerName'].length) {
+                            if (value.length <= data[i]['Username'].length) {
                               String namestring = '';
                               for (int j = 0; j < value.length; j++) {
                                 namestring =
-                                    namestring + data[i]['ManagerName'][j];
+                                    namestring + data[i]['Username'][j];
                               }
                               if (value.toLowerCase() ==
                                   namestring.toLowerCase()) {
                                 name.add(data[i]['Name']);
-                                managername.add(data[i]['ManagerName']);
+                                username.add(data[i]['Username']);
                                 gender.add(data[i]['Gender']);
                                 dob.add(data[i]['DateofBirth'].toString());
                                 age.add(data[i]['Age']);
@@ -270,7 +270,15 @@ class _ManagerState extends State<Manager> {
             ),
             SizedBox(width: 75),
             GFButton(
-              onPressed: () {},
+              onPressed: () async {
+                await DB.openCon('managerinfo');
+                await DB.collection
+                    .remove({'Username': data[selectedBox]['Username']});
+                await DB.closeCon();
+                setState(() {
+                  selectedvalue = 1;
+                });
+              },
               icon: Icon(
                 Icons.delete,
                 color: Colors.red,
@@ -318,7 +326,7 @@ class _ManagerState extends State<Manager> {
                                     ),
                                   ),
                                   Text(
-                                    'ManagerName: ${managername[index]}',
+                                    'Username: ${username[index]}',
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 17,
@@ -378,7 +386,7 @@ class _ManagerState extends State<Manager> {
             : selectedvalue == 3
                 ? Expanded(
                     child: ListView.builder(
-                        itemCount: managername.length,
+                        itemCount: username.length,
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () {
@@ -402,7 +410,7 @@ class _ManagerState extends State<Manager> {
                                           MainAxisAlignment.spaceEvenly,
                                       children: [
                                         Text(
-                                          'ManagerName: ${managername[index]}',
+                                          'Username: ${username[index]}',
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 17,
