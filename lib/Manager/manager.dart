@@ -198,6 +198,36 @@ class _ManagerState extends State<Manager> {
                           borderRadius: BorderRadius.horizontal(),
                         ),
                       ),
+                      onChanged: (value) {
+                        setState(() {
+                          name.clear();
+                          managername.clear();
+                          gender.clear();
+                          dob.clear();
+                          age.clear();
+                          phone.clear();
+                          emailid.clear();
+                          for (int i = 0; i < data.length; i++) {
+                            if (value.length <= data[i]['ManagerName'].length) {
+                              String namestring = '';
+                              for (int j = 0; j < value.length; j++) {
+                                namestring =
+                                    namestring + data[i]['ManagerName'][j];
+                              }
+                              if (value.toLowerCase() ==
+                                  namestring.toLowerCase()) {
+                                name.add(data[i]['Name']);
+                                managername.add(data[i]['ManagerName']);
+                                gender.add(data[i]['Gender']);
+                                dob.add(data[i]['DateofBirth'].toString());
+                                age.add(data[i]['Age']);
+                                phone.add(data[i]['Phone']);
+                                emailid.add(data[i]['EmailId']);
+                              }
+                            }
+                          }
+                        });
+                      },
                     ),
                   )
                 : SizedBox(),
@@ -282,19 +312,24 @@ class _ManagerState extends State<Manager> {
                                 children: [
                                   Text(
                                     'Name: ${name[index]}',
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 17,
+                                    ),
                                   ),
                                   Text(
                                     'ManagerName: ${managername[index]}',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  Text(
-                                    'Phone: ${phone[index]}',
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 17,
+                                    ),
                                   ),
                                   Text(
                                     'EmailId: ${emailid[index]}',
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 17,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -303,16 +338,32 @@ class _ManagerState extends State<Manager> {
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Text(
+                                    'Phone: ${phone[index]}',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 17,
+                                    ),
+                                  ),
+                                  Text(
                                     'DOB: ${dob[index]}',
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 17,
+                                    ),
                                   ),
                                   Text(
                                     'Age: ${age[index]}',
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 17,
+                                    ),
                                   ),
                                   Text(
                                     'Gender: ${gender[index]}',
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 17,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -352,19 +403,24 @@ class _ManagerState extends State<Manager> {
                                       children: [
                                         Text(
                                           'ManagerName: ${managername[index]}',
-                                          style: TextStyle(color: Colors.white),
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 17,
+                                          ),
                                         ),
                                         Text(
                                           'Name: ${name[index]}',
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                        Text(
-                                          'Phone: ${phone[index]}',
-                                          style: TextStyle(color: Colors.white),
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 17,
+                                          ),
                                         ),
                                         Text(
                                           'EmailId: ${emailid[index]}',
-                                          style: TextStyle(color: Colors.white),
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 17,
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -373,16 +429,32 @@ class _ManagerState extends State<Manager> {
                                           MainAxisAlignment.spaceEvenly,
                                       children: [
                                         Text(
+                                          'Phone: ${phone[index]}',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 17,
+                                          ),
+                                        ),
+                                        Text(
                                           'DOB: ${dob[index]}',
-                                          style: TextStyle(color: Colors.white),
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 17,
+                                          ),
                                         ),
                                         Text(
                                           'Age: ${age[index]}',
-                                          style: TextStyle(color: Colors.white),
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 17,
+                                          ),
                                         ),
                                         Text(
                                           'Gender: ${gender[index]}',
-                                          style: TextStyle(color: Colors.white),
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 17,
+                                          ),
                                         ),
                                       ],
                                     ),
