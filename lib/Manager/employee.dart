@@ -10,10 +10,10 @@ class Employee extends StatefulWidget {
   Employee({Key? key}) : super(key: key);
 
   @override
-  _EmployeeState createState() => _EmployeeState();
+  EmployeeState createState() => EmployeeState();
 }
 
-class _EmployeeState extends State<Employee> {
+class EmployeeState extends State<Employee> {
   List<Map<String, dynamic>> data = [];
   static Map<String, dynamic> updateEmployee = {};
   var text = TextEditingController();
