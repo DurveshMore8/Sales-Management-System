@@ -16,10 +16,10 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   String selected = 'manager';
   bool visible = true;
-  var managername = TextEditingController();
+  var musername = TextEditingController();
   var emailid = TextEditingController();
   var mpassword = TextEditingController();
-  var employeename = TextEditingController();
+  var eusername = TextEditingController();
   var epassword = TextEditingController();
 
   @override
@@ -125,12 +125,12 @@ class _LoginState extends State<Login> {
                               SizedBox(
                                 width: 750,
                                 child: TextField(
-                                  controller: managername,
+                                  controller: musername,
                                   decoration: InputDecoration(
                                     fillColor: Colors.white,
                                     filled: true,
                                     hintText: '@AbcPqr12',
-                                    labelText: 'ManagerName',
+                                    labelText: 'Username',
                                     labelStyle: TextStyle(
                                         backgroundColor: Colors.white,
                                         color: Colors.deepPurple.shade500,
@@ -209,12 +209,12 @@ class _LoginState extends State<Login> {
                                 SizedBox(
                                   width: 750,
                                   child: TextField(
-                                    controller: employeename,
+                                    controller: eusername,
                                     decoration: InputDecoration(
                                       fillColor: Colors.white,
                                       filled: true,
                                       hintText: '@AbcPqr12',
-                                      labelText: 'EmployeeName',
+                                      labelText: 'Username',
                                       labelStyle: TextStyle(
                                           backgroundColor: Colors.white,
                                           color: Colors.deepPurple.shade500,
@@ -278,7 +278,7 @@ class _LoginState extends State<Login> {
                           if (selected == 'manager') {
                             await DB.openCon('managerlogin');
                             var value = await DB.collection.find({
-                              'ManagerName': managername.text,
+                              'Username': musername.text,
                               'EmailId': emailid.text,
                               'Password': mpassword.text
                             }).toList();
@@ -294,7 +294,7 @@ class _LoginState extends State<Login> {
                           } else {
                             await DB.openCon('employeelogin');
                             var value = await DB.collection.find({
-                              'EmployeeName': employeename.text,
+                              'Username': eusername.text,
                               'Password': epassword.text
                             }).toList();
                             await DB.closeCon();
@@ -323,11 +323,11 @@ class _LoginState extends State<Login> {
                       GFButton(
                         onPressed: () {
                           if (selected == 'manager') {
-                            managername.clear();
+                            musername.clear();
                             emailid.clear();
                             mpassword.clear();
                           } else {
-                            employeename.clear();
+                            eusername.clear();
                             epassword.clear();
                           }
                         },
