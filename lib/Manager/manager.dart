@@ -10,11 +10,12 @@ class Manager extends StatefulWidget {
   Manager({Key? key}) : super(key: key);
 
   @override
-  _ManagerState createState() => _ManagerState();
+  ManagerState createState() => ManagerState();
 }
 
-class _ManagerState extends State<Manager> {
+class ManagerState extends State<Manager> {
   List<Map<String, dynamic>> data = [];
+  static Map<String, dynamic> updateManager = {};
   var text = TextEditingController();
   int selectedvalue = 1;
   int selectedBox = -1;
@@ -254,8 +255,13 @@ class _ManagerState extends State<Manager> {
             SizedBox(width: 75),
             GFButton(
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: ((context) => UpdateManager())));
+                if (selectedBox > -1) {
+                  updateManager = data[selectedBox];
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: ((context) => UpdateManager())));
+                }
               },
               icon: Icon(
                 Icons.update,
@@ -271,13 +277,15 @@ class _ManagerState extends State<Manager> {
             SizedBox(width: 75),
             GFButton(
               onPressed: () async {
-                await DB.openCon('managerinfo');
-                await DB.collection
-                    .remove({'Username': data[selectedBox]['Username']});
-                await DB.closeCon();
-                setState(() {
-                  selectedvalue = 1;
-                });
+                if (selectedBox > -1) {
+                  await DB.openCon('managerinfo');
+                  await DB.collection
+                      .remove({'Username': data[selectedBox]['Username']});
+                  await DB.closeCon();
+                  setState(() {
+                    selectedvalue = 1;
+                  });
+                }
               },
               icon: Icon(
                 Icons.delete,

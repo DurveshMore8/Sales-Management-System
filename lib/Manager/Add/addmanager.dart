@@ -63,7 +63,7 @@ class _AddManagerState extends State<AddManager> {
                     decoration: InputDecoration(
                       fillColor: Colors.white,
                       filled: true,
-                      hintText: '#Durvesh More',
+                      hintText: 'Durvesh More',
                       labelText: 'Name',
                       labelStyle: TextStyle(
                           backgroundColor: Colors.white,
@@ -244,7 +244,7 @@ class _AddManagerState extends State<AddManager> {
                             showDatePicker(
                               context: context,
                               initialDate: DateTime.now(),
-                              firstDate: DateTime(2000),
+                              firstDate: DateTime(1900),
                               lastDate: DateTime(2100),
                             ).then((selectedDate) {
                               age = AgeCalculator.age(selectedDate!).years;
@@ -294,10 +294,10 @@ class _AddManagerState extends State<AddManager> {
                     Navigator.pop(context);
                   },
                   icon: Icon(
-                    Icons.add,
+                    Icons.check,
                     color: Colors.green,
                   ),
-                  text: 'Yes, Add',
+                  text: 'Confirm',
                   textColor: Colors.white,
                   color: Colors.deepPurple.shade700,
                   hoverColor: Colors.deepPurple.shade500,
@@ -320,7 +320,7 @@ class _AddManagerState extends State<AddManager> {
                     Icons.close,
                     color: Colors.red,
                   ),
-                  text: 'No, Clear',
+                  text: 'Clear',
                   textColor: Colors.white,
                   color: Colors.deepPurple.shade700,
                   hoverColor: Colors.deepPurple.shade500,
