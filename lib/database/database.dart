@@ -15,6 +15,13 @@ class DB {
     collection = database.collection(col);
   }
 
+  //Function to Update
+  static updatedata(
+      String eqkey, String eqvalue, String setkey, var setvalue) async {
+    await DB.collection
+        .updateOne(where.eq(eqkey, eqvalue), modify.set(setkey, setvalue));
+  }
+
   //Function to Close Connection
   static closeCon() async {
     await database.close();
