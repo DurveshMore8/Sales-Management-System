@@ -1,7 +1,10 @@
-// ignore_for_file: prefer_const_constructors_in_immutables, library_private_types_in_public_api, prefer_const_literals_to_create_immutables, prefer_const_constructors
+// ignore_for_file: prefer_const_constructors_in_immutables, library_private_types_in_public_api, prefer_const_literals_to_create_immutables, prefer_const_constructors, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:sadms/Database/database.dart';
+import 'package:age_calculator/age_calculator.dart';
 
 class AddManager extends StatefulWidget {
   AddManager({Key? key}) : super(key: key);
@@ -16,6 +19,7 @@ class _AddManagerState extends State<AddManager> {
   var phone = TextEditingController();
   var emailid = TextEditingController();
   var dob = TextEditingController();
+  int age = -1;
   String gender = '';
 
   @override
@@ -102,6 +106,9 @@ class _AddManagerState extends State<AddManager> {
                   width: 600,
                   child: TextField(
                     controller: phone,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly,
+                    ], // Only numbers can be entered
                     decoration: InputDecoration(
                       fillColor: Colors.white,
                       filled: true,
@@ -170,7 +177,8 @@ class _AddManagerState extends State<AddManager> {
                             title: Text('Male',
                                 style: TextStyle(
                                     color: Colors.deepPurple[500],
-                                    fontWeight: FontWeight.bold)),
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w700)),
                             leading: GFRadio(
                               value: 'Male',
                               groupValue: gender,
@@ -192,7 +200,8 @@ class _AddManagerState extends State<AddManager> {
                             title: Text('Female',
                                 style: TextStyle(
                                     color: Colors.deepPurple[500],
-                                    fontWeight: FontWeight.bold)),
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w700)),
                             leading: GFRadio(
                               value: 'Female',
                               groupValue: gender,
@@ -238,8 +247,9 @@ class _AddManagerState extends State<AddManager> {
                               firstDate: DateTime(2000),
                               lastDate: DateTime(2100),
                             ).then((selectedDate) {
+                              age = AgeCalculator.age(selectedDate!).years;
                               List<String> date =
-                                  selectedDate!.toString().split('');
+                                  selectedDate.toString().split('');
                               dob.clear();
                               for (int i = 0; i < 10; i++) {
                                 dob.text += date[i];
@@ -260,7 +270,29 @@ class _AddManagerState extends State<AddManager> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 GFButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    Map<String, dynamic> query = {
+                      'Username': username.text,
+                      'EmailId': emailid.text,
+                      'Password': username.text
+                    };
+                    await DB.openCon('managerlogin');
+                    await DB.collection.insertOne(query);
+                    await DB.closeCon();
+                    query = {
+                      'Name': name.text,
+                      'Username': username.text,
+                      'Phone': phone.text,
+                      'EmailId': emailid.text,
+                      'Gender': gender,
+                      'DateofBirth': dob.text,
+                      'Age': age
+                    };
+                    await DB.openCon('managerinfo');
+                    await DB.collection.insertOne(query);
+                    await DB.closeCon();
+                    Navigator.pop(context);
+                  },
                   icon: Icon(
                     Icons.add,
                     color: Colors.green,
@@ -274,7 +306,16 @@ class _AddManagerState extends State<AddManager> {
                 ),
                 SizedBox(width: 200),
                 GFButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    setState(() {
+                      name.clear();
+                      username.clear();
+                      phone.clear();
+                      emailid.clear();
+                      gender = '';
+                      dob.clear();
+                    });
+                  },
                   icon: Icon(
                     Icons.close,
                     color: Colors.red,
