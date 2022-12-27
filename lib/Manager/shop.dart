@@ -10,10 +10,10 @@ class Shop extends StatefulWidget {
   Shop({Key? key}) : super(key: key);
 
   @override
-  _ShopState createState() => _ShopState();
+  ShopState createState() => ShopState();
 }
 
-class _ShopState extends State<Shop> {
+class ShopState extends State<Shop> {
   List<Map<String, dynamic>> data = [];
   static Map<String, dynamic> updateShop = {};
   var text = TextEditingController();

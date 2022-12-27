@@ -88,7 +88,7 @@ class _AddShopState extends State<AddShop> {
                           color: Colors.deepPurple.shade500,
                           fontSize: 18,
                           fontWeight: FontWeight.bold),
-                      prefixIcon: Icon(Icons.production_quantity_limits),
+                      prefixIcon: Icon(Icons.store),
                       prefixIconColor: Colors.deepPurple.shade500,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.horizontal(),
@@ -111,7 +111,7 @@ class _AddShopState extends State<AddShop> {
                           color: Colors.deepPurple.shade500,
                           fontSize: 18,
                           fontWeight: FontWeight.bold),
-                      prefixIcon: Icon(Icons.price_check),
+                      prefixIcon: Icon(Icons.location_searching),
                       prefixIconColor: Colors.deepPurple.shade500,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.horizontal(),
@@ -134,7 +134,7 @@ class _AddShopState extends State<AddShop> {
                           color: Colors.deepPurple.shade500,
                           fontSize: 18,
                           fontWeight: FontWeight.bold),
-                      prefixIcon: Icon(Icons.price_change),
+                      prefixIcon: Icon(Icons.location_city),
                       prefixIconColor: Colors.deepPurple.shade500,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.horizontal(),
@@ -157,7 +157,7 @@ class _AddShopState extends State<AddShop> {
                           color: Colors.deepPurple.shade500,
                           fontSize: 18,
                           fontWeight: FontWeight.bold),
-                      prefixIcon: Icon(Icons.countertops),
+                      prefixIcon: Icon(Icons.location_on),
                       prefixIconColor: Colors.deepPurple.shade500,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.horizontal(),
