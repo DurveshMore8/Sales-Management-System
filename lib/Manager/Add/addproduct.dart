@@ -40,7 +40,7 @@ class _AddProductState extends State<AddProduct> {
                       color: Colors.white,
                     )),
                 Text(
-                  'Add Employee',
+                  'Add Product',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
