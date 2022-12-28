@@ -39,6 +39,7 @@ dependencies:
   getwidget: ^3.0.1
   mongo_dart: ^0.8.2
   age_calculator: ^1.0.0
+  email_validator: ^2.1.17
 
 dev_dependencies:
   flutter_test:
