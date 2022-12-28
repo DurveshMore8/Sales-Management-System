@@ -17,7 +17,7 @@ class ManagerState extends State<Manager> {
   List<Map<String, dynamic>> data = [];
   static Map<String, dynamic> updateManager = {};
   var text = TextEditingController();
-  int selectedvalue = 1;
+  static int selectedvalue = 1;
   int selectedBox = -1;
   List<String> name = [];
   List<String> username = [];
@@ -119,6 +119,7 @@ class ManagerState extends State<Manager> {
                   } else {
                     setState(() {
                       selectedvalue = value!;
+                      selectedBox = -1;
                     });
                   }
                 }),
