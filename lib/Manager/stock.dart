@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:sadms/Database/database.dart';
+import 'package:sadms/Login/login.dart';
 import 'package:sadms/Manager/Add/addstock.dart';
 
 class Stock extends StatefulWidget {
@@ -15,6 +16,7 @@ class Stock extends StatefulWidget {
 class StockState extends State<Stock> {
   List<Map<String, dynamic>> maindata = [];
   List<Map<String, dynamic>> data = [];
+  List<Map<String, dynamic>> branch = [];
   static Map<String, dynamic> addStock = {};
   var text = TextEditingController();
   int selectedBox = -1;
@@ -22,6 +24,7 @@ class StockState extends State<Stock> {
   List<String> productname = [];
   List<String> branchname = [];
   List<int> quantity = [];
+  bool check = false;
 
   void getData() async {
     productid.clear();
@@ -29,6 +32,10 @@ class StockState extends State<Stock> {
     branchname.clear();
     quantity.clear();
     selectedBox = -1;
+    await DB.openCon('managerinfo');
+    branch =
+        await DB.collection.find({'Username': LoginState.manager}).toList();
+    await DB.closeCon();
     await DB.openCon('stock');
     maindata = await DB.collection.find().toList();
     data = await DB.collection.find().toList();
@@ -87,22 +94,44 @@ class StockState extends State<Stock> {
               ),
             ),
             onChanged: (value) {
-              print(maindata);
               setState(() {
-                data.clear();
-                if (value == '') {
-                  data.addAll(maindata);
-                } else {
-                  for (int i = 0; i < maindata.length; i++) {
-                    if (value.length <= maindata[i]['ProductName'].length) {
-                      String productnamestring = '';
-                      for (int j = 0; j < value.length; j++) {
-                        productnamestring =
-                            productnamestring + maindata[i]['ProductName'][j];
+                if (check) {
+                  data.clear();
+                  if (value == '') {
+                    data.addAll(maindata);
+                  } else {
+                    for (int i = 0; i < maindata.length; i++) {
+                      if (value.length <= maindata[i]['ProductName'].length) {
+                        String productnamestring = '';
+                        for (int j = 0; j < value.length; j++) {
+                          productnamestring =
+                              productnamestring + maindata[i]['ProductName'][j];
+                        }
+                        if (value.toLowerCase() ==
+                                productnamestring.toLowerCase() &&
+                            maindata[i]['BranchName'] ==
+                                branch[0]['BranchName']) {
+                          data.add(maindata[i]);
+                        }
                       }
-                      if (value.toLowerCase() ==
-                          productnamestring.toLowerCase()) {
-                        data.add(maindata[i]);
+                    }
+                  }
+                } else {
+                  data.clear();
+                  if (value == '') {
+                    data.addAll(maindata);
+                  } else {
+                    for (int i = 0; i < maindata.length; i++) {
+                      if (value.length <= maindata[i]['ProductName'].length) {
+                        String productnamestring = '';
+                        for (int j = 0; j < value.length; j++) {
+                          productnamestring =
+                              productnamestring + maindata[i]['ProductName'][j];
+                        }
+                        if (value.toLowerCase() ==
+                            productnamestring.toLowerCase()) {
+                          data.add(maindata[i]);
+                        }
                       }
                     }
                   }
@@ -137,15 +166,47 @@ class StockState extends State<Stock> {
           ],
         ),
         SizedBox(height: 50),
+        SizedBox(
+          child: ListTile(
+            title: Text('Display Stock of My Branch',
+                style: TextStyle(
+                  color: Colors.white,
+                )),
+            leading: GFCheckbox(
+              value: check,
+              size: 25,
+              activeBgColor: Colors.deepPurple.shade700,
+              onChanged: (value) {
+                setState(() {
+                  selectedBox = -1;
+                  check = value;
+                  data.clear();
+                  if (check) {
+                    for (int i = 0; i < maindata.length; i++) {
+                      if (maindata[i]['BranchName'] ==
+                          branch[0]['BranchName']) {
+                        data.add(maindata[i]);
+                      }
+                    }
+                  } else {
+                    data.addAll(maindata);
+                  }
+                });
+              },
+            ),
+          ),
+        ),
         Expanded(
           child: ListView.builder(
             itemCount: data.length,
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
-                  setState(() {
-                    selectedBox = index;
-                  });
+                  if (data[index]['BranchName'] == branch[0]['BranchName']) {
+                    setState(() {
+                      selectedBox = index;
+                    });
+                  }
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),

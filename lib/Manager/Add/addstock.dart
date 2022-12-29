@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:sadms/Database/database.dart';
-import 'package:sadms/Login/login.dart';
 import 'package:sadms/Manager/stock.dart';
 
 class AddStock extends StatefulWidget {
@@ -67,6 +66,7 @@ class AddStockState extends State<AddStock> {
                       width: 600,
                       child: TextField(
                         controller: controllers[0],
+                        readOnly: true,
                         decoration: InputDecoration(
                           fillColor: Colors.white,
                           filled: true,
@@ -90,6 +90,7 @@ class AddStockState extends State<AddStock> {
                       width: 600,
                       child: TextField(
                         controller: controllers[1],
+                        readOnly: true,
                         decoration: InputDecoration(
                           fillColor: Colors.white,
                           filled: true,
@@ -100,7 +101,7 @@ class AddStockState extends State<AddStock> {
                               color: Colors.deepPurple.shade500,
                               fontSize: 18,
                               fontWeight: FontWeight.bold),
-                          prefixIcon: Icon(Icons.production_quantity_limits),
+                          prefixIcon: Icon(Icons.car_repair),
                           prefixIconColor: Colors.deepPurple.shade500,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.horizontal(),
@@ -112,8 +113,8 @@ class AddStockState extends State<AddStock> {
                     SizedBox(
                       width: 600,
                       child: TextField(
-                        controller:
-                            controllers[2], // Only numbers can be entered
+                        controller: controllers[2],
+                        readOnly: true,
                         decoration: InputDecoration(
                           fillColor: Colors.white,
                           filled: true,
@@ -124,7 +125,7 @@ class AddStockState extends State<AddStock> {
                               color: Colors.deepPurple.shade500,
                               fontSize: 18,
                               fontWeight: FontWeight.bold),
-                          prefixIcon: Icon(Icons.price_check),
+                          prefixIcon: Icon(Icons.store),
                           prefixIconColor: Colors.deepPurple.shade500,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.horizontal(),
@@ -150,7 +151,7 @@ class AddStockState extends State<AddStock> {
                               color: Colors.deepPurple.shade500,
                               fontSize: 18,
                               fontWeight: FontWeight.bold),
-                          prefixIcon: Icon(Icons.price_change),
+                          prefixIcon: Icon(Icons.production_quantity_limits),
                           prefixIconColor: Colors.deepPurple.shade500,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.horizontal(),
@@ -165,16 +166,18 @@ class AddStockState extends State<AddStock> {
                         GFButton(
                           onPressed: () async {
                             await DB.openCon('stock');
-                            await DB.closeCon();
-                            Map<String, dynamic> query = {
+                            List<Map<String, dynamic>> data =
+                                await DB.collection.find({
                               'ProductId': controllers[0].text,
                               'ProductName': controllers[1].text,
                               'BranchName': controllers[2].text,
-                              'Quantity': int.parse(controllers[3].text),
-                              'ManagerUsername': LoginState.manager,
-                            };
+                            }).toList();
+                            await DB.closeCon();
                             await DB.openCon('stock');
-                            await DB.collection.insertOne(query);
+                            DB.updatestock(
+                                data,
+                                data[0]['Quantity'] +
+                                    int.parse(controllers[3].text));
                             await DB.closeCon();
                             Navigator.pop(context);
                           },
