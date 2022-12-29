@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, library_private_types_in_public_api, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:sadms/Database/database.dart';
@@ -16,11 +17,12 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   String selected = 'manager';
   bool visible = true;
-  var musername = TextEditingController();
-  var emailid = TextEditingController();
-  var mpassword = TextEditingController();
-  var eusername = TextEditingController();
-  var epassword = TextEditingController();
+  List<TextEditingController> controllers =
+      List.generate(5, (index) => TextEditingController());
+  List<String> error = List.generate(5, (index) => '');
+  bool valid = true;
+  static String manager = '';
+  static String employee = '';
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +35,7 @@ class _LoginState extends State<Login> {
       body: Center(
         child: Container(
           color: Colors.deepPurple[500],
-          height: 500,
+          height: 550,
           width: 800,
           child: Center(
             child: Column(
@@ -125,7 +127,7 @@ class _LoginState extends State<Login> {
                               SizedBox(
                                 width: 750,
                                 child: TextField(
-                                  controller: musername,
+                                  controller: controllers[0],
                                   decoration: InputDecoration(
                                     fillColor: Colors.white,
                                     filled: true,
@@ -135,6 +137,13 @@ class _LoginState extends State<Login> {
                                         backgroundColor: Colors.white,
                                         color: Colors.deepPurple.shade500,
                                         fontWeight: FontWeight.bold),
+                                    errorText: error[0] == 'empty'
+                                        ? 'Name Can\'t be empty'
+                                        : error[0] == 'minimum'
+                                            ? 'Minimum Limit is not Reached'
+                                            : error[0] == 'maximum'
+                                                ? 'Maximum Limit is Exceeded'
+                                                : null,
                                     prefixIcon:
                                         Icon(Icons.text_format_outlined),
                                     prefixIconColor: Colors.deepPurple.shade500,
@@ -142,13 +151,28 @@ class _LoginState extends State<Login> {
                                       borderRadius: BorderRadius.horizontal(),
                                     ),
                                   ),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      if (value.isNotEmpty) {
+                                        if (value.length < 8) {
+                                          error[0] = 'minimum';
+                                        } else if (value.length > 30) {
+                                          error[0] = 'maximum';
+                                        } else {
+                                          error[0] = '';
+                                        }
+                                      }
+                                    });
+                                  },
                                 ),
                               ),
-                              SizedBox(height: 20),
+                              error[0] == ''
+                                  ? SizedBox(height: 34)
+                                  : SizedBox(height: 10),
                               SizedBox(
                                 width: 750,
                                 child: TextField(
-                                  controller: emailid,
+                                  controller: controllers[1],
                                   decoration: InputDecoration(
                                     fillColor: Colors.white,
                                     filled: true,
@@ -158,19 +182,36 @@ class _LoginState extends State<Login> {
                                         backgroundColor: Colors.white,
                                         color: Colors.deepPurple.shade500,
                                         fontWeight: FontWeight.bold),
+                                    errorText: error[1] == 'empty'
+                                        ? 'Email Id Can\'t be empty'
+                                        : error[1] == 'invalid'
+                                            ? 'Invalid Email Id'
+                                            : null,
                                     prefixIcon: Icon(Icons.email_outlined),
                                     prefixIconColor: Colors.deepPurple.shade500,
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.horizontal(),
                                     ),
                                   ),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      if (EmailValidator.validate(
+                                          controllers[1].text)) {
+                                        error[1] = '';
+                                      } else {
+                                        error[1] = 'invalid';
+                                      }
+                                    });
+                                  },
                                 ),
                               ),
-                              SizedBox(height: 20),
+                              error[1] == ''
+                                  ? SizedBox(height: 34)
+                                  : SizedBox(height: 10),
                               SizedBox(
                                 width: 750,
                                 child: TextField(
-                                  controller: mpassword,
+                                  controller: controllers[2],
                                   obscureText: visible,
                                   obscuringCharacter: '*',
                                   decoration: InputDecoration(
@@ -182,6 +223,15 @@ class _LoginState extends State<Login> {
                                         backgroundColor: Colors.white,
                                         color: Colors.deepPurple.shade500,
                                         fontWeight: FontWeight.bold),
+                                    errorText: error[2] == 'empty'
+                                        ? 'Password Can\'t be empty'
+                                        : error[2] == 'minimum'
+                                            ? 'Minimum Limit is not Reached'
+                                            : error[2] == 'maximum'
+                                                ? 'Maximum Limit is Exceeded'
+                                                : error[2] == 'wrong'
+                                                    ? 'Wrong Credentials Entered'
+                                                    : null,
                                     prefixIcon: Icon(Icons.lock_outlined),
                                     prefixIconColor: Colors.deepPurple.shade500,
                                     suffixIcon: IconButton(
@@ -198,6 +248,19 @@ class _LoginState extends State<Login> {
                                       borderRadius: BorderRadius.horizontal(),
                                     ),
                                   ),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      if (value.isNotEmpty) {
+                                        if (value.length < 8) {
+                                          error[2] = 'minimum';
+                                        } else if (value.length > 40) {
+                                          error[2] = 'maximum';
+                                        } else {
+                                          error[2] = '';
+                                        }
+                                      }
+                                    });
+                                  },
                                 ),
                               ),
                             ],
@@ -209,7 +272,7 @@ class _LoginState extends State<Login> {
                                 SizedBox(
                                   width: 750,
                                   child: TextField(
-                                    controller: eusername,
+                                    controller: controllers[3],
                                     decoration: InputDecoration(
                                       fillColor: Colors.white,
                                       filled: true,
@@ -219,6 +282,13 @@ class _LoginState extends State<Login> {
                                           backgroundColor: Colors.white,
                                           color: Colors.deepPurple.shade500,
                                           fontWeight: FontWeight.bold),
+                                      errorText: error[3] == 'empty'
+                                          ? 'Username Can\'t be empty'
+                                          : error[3] == 'minimum'
+                                              ? 'Minimum Limit is not Reached'
+                                              : error[3] == 'maximum'
+                                                  ? 'Maximum Limit is Exceeded'
+                                                  : null,
                                       prefixIcon:
                                           Icon(Icons.text_format_outlined),
                                       prefixIconColor:
@@ -227,13 +297,28 @@ class _LoginState extends State<Login> {
                                         borderRadius: BorderRadius.horizontal(),
                                       ),
                                     ),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        if (value.isNotEmpty) {
+                                          if (value.length < 8) {
+                                            error[3] = 'minimum';
+                                          } else if (value.length > 30) {
+                                            error[3] = 'maximum';
+                                          } else {
+                                            error[3] = '';
+                                          }
+                                        }
+                                      });
+                                    },
                                   ),
                                 ),
-                                SizedBox(height: 20),
+                                error[3] == ''
+                                    ? SizedBox(height: 39)
+                                    : SizedBox(height: 15),
                                 SizedBox(
                                   width: 750,
                                   child: TextField(
-                                    controller: epassword,
+                                    controller: controllers[4],
                                     obscureText: visible,
                                     obscuringCharacter: '*',
                                     decoration: InputDecoration(
@@ -245,6 +330,13 @@ class _LoginState extends State<Login> {
                                           backgroundColor: Colors.white,
                                           color: Colors.deepPurple.shade500,
                                           fontWeight: FontWeight.bold),
+                                      errorText: error[4] == 'empty'
+                                          ? 'Password Can\'t be empty'
+                                          : error[4] == 'minimum'
+                                              ? 'Minimum Limit is not Reached'
+                                              : error[4] == 'maximum'
+                                                  ? 'Maximum Limit is Exceeded'
+                                                  : null,
                                       prefixIcon: Icon(Icons.lock_outlined),
                                       prefixIconColor:
                                           Colors.deepPurple.shade500,
@@ -263,10 +355,29 @@ class _LoginState extends State<Login> {
                                         borderRadius: BorderRadius.horizontal(),
                                       ),
                                     ),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        if (value.isNotEmpty) {
+                                          if (value.length < 8) {
+                                            error[4] = 'minimum';
+                                          } else if (value.length > 40) {
+                                            error[4] = 'maximum';
+                                          } else {
+                                            error[4] = '';
+                                          }
+                                        }
+                                      });
+                                    },
                                   ),
                                 ),
                               ])),
-                SizedBox(height: 20),
+                selected == 'manager'
+                    ? error[2] == ''
+                        ? SizedBox(height: 34)
+                        : SizedBox(height: 10)
+                    : error[4] == ''
+                        ? SizedBox(height: 44)
+                        : SizedBox(height: 20),
                 //Functioning Buttons
                 Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -275,37 +386,84 @@ class _LoginState extends State<Login> {
                       GFButton(
                         onPressed: () async {
                           //manager button clicked
-                          if (selected == 'manager') {
-                            await DB.openCon('managerlogin');
-                            var value = await DB.collection.find({
-                              'Username': musername.text,
-                              'EmailId': emailid.text,
-                              'Password': mpassword.text
-                            }).toList();
-                            await DB.closeCon();
-                            if (value.length == 0) {
-                              mpassword.clear();
-                            } else {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => MyNavigationBar()));
+                          valid = true;
+                          setState(() {
+                            for (int i = 0; i < 3; i++) {
+                              if (controllers[i].text == '') {
+                                error[i] = 'empty';
+                              }
+                            }
+                            for (int i = 0; i < 3; i++) {
+                              if (controllers[i].text == '') {
+                                valid = false;
+                              }
+                            }
+                          });
+                          if (valid) {
+                            if (selected == 'manager') {
+                              await DB.openCon('managerlogin');
+                              var value = await DB.collection.find({
+                                'Username': controllers[0].text,
+                                'EmailId': controllers[1].text,
+                                'Password': controllers[2].text
+                              }).toList();
+                              await DB.closeCon();
+                              if (value.length == 0) {
+                                controllers[2].clear();
+                                setState(() {
+                                  error[2] = 'wrong';
+                                });
+                              } else {
+                                manager = controllers[0].text;
+                                Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                MyNavigationBar()))
+                                    .whenComplete(() {
+                                  controllers[0].clear();
+                                  controllers[1].clear();
+                                  controllers[2].clear();
+                                });
+                              }
                             }
                           } else {
-                            await DB.openCon('employeelogin');
-                            var value = await DB.collection.find({
-                              'Username': eusername.text,
-                              'Password': epassword.text
-                            }).toList();
-                            await DB.closeCon();
-                            if (value.length == 0) {
-                              epassword.clear();
-                            } else {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          EmployeeNavigationBar()));
+                            valid = true;
+                            setState(() {
+                              for (int i = 3; i < 5; i++) {
+                                if (controllers[i].text == '') {
+                                  error[i] = 'empty';
+                                }
+                              }
+                              for (int i = 3; i < 5; i++) {
+                                if (controllers[i].text == '') {
+                                  valid = false;
+                                }
+                              }
+                            });
+                            if (valid) {
+                              await DB.openCon('employeelogin');
+                              var value = await DB.collection.find({
+                                'Username': controllers[3].text,
+                                'Password': controllers[4].text
+                              }).toList();
+                              await DB.closeCon();
+                              if (value.length == 0) {
+                                controllers[4].clear();
+                              } else {
+                                employee = controllers[3].text;
+                                Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                EmployeeNavigationBar()))
+                                    .whenComplete(
+                                  () {
+                                    controllers[3].clear();
+                                    controllers[4].clear();
+                                  },
+                                );
+                              }
                             }
                           }
                         },
@@ -323,12 +481,12 @@ class _LoginState extends State<Login> {
                       GFButton(
                         onPressed: () {
                           if (selected == 'manager') {
-                            musername.clear();
-                            emailid.clear();
-                            mpassword.clear();
+                            controllers[0].clear();
+                            controllers[1].clear();
+                            controllers[2].clear();
                           } else {
-                            eusername.clear();
-                            epassword.clear();
+                            controllers[3].clear();
+                            controllers[4].clear();
                           }
                         },
                         icon: Icon(
