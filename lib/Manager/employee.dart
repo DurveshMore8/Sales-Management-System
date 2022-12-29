@@ -17,7 +17,7 @@ class EmployeeState extends State<Employee> {
   List<Map<String, dynamic>> data = [];
   static Map<String, dynamic> updateEmployee = {};
   var text = TextEditingController();
-  static int selectedvalue = 1;
+  int selectedvalue = 1;
   int selectedBox = -1;
   List<String> name = [];
   List<String> username = [];

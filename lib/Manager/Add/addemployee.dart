@@ -6,16 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:sadms/Database/database.dart';
-import 'package:sadms/Manager/employee.dart';
 
 class AddEmployee extends StatefulWidget {
   AddEmployee({Key? key}) : super(key: key);
 
   @override
-  _AddEmployeeState createState() => _AddEmployeeState();
+  AddEmployeeState createState() => AddEmployeeState();
 }
 
-class _AddEmployeeState extends State<AddEmployee> {
+class AddEmployeeState extends State<AddEmployee> {
   //name, username, phone, emailid, dob, branchname
   List<TextEditingController> controllers =
       List.generate(6, (index) => TextEditingController());
@@ -415,7 +414,6 @@ class _AddEmployeeState extends State<AddEmployee> {
                     await DB.openCon('employeeinfo');
                     await DB.collection.insertOne(query);
                     await DB.closeCon();
-                    EmployeeState.selectedvalue = 1;
                     Navigator.pop(context);
                   },
                   icon: Icon(

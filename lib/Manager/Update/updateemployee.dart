@@ -12,10 +12,10 @@ class UpdateEmployee extends StatefulWidget {
   UpdateEmployee({Key? key}) : super(key: key);
 
   @override
-  _UpdateEmployeeState createState() => _UpdateEmployeeState();
+  UpdateEmployeeState createState() => UpdateEmployeeState();
 }
 
-class _UpdateEmployeeState extends State<UpdateEmployee> {
+class UpdateEmployeeState extends State<UpdateEmployee> {
   //name, username, phone, emailid, dob, branchname
   List<TextEditingController> controllers =
       List.generate(6, (index) => TextEditingController());
@@ -409,23 +409,42 @@ class _UpdateEmployeeState extends State<UpdateEmployee> {
               children: [
                 GFButton(
                   onPressed: () async {
-                    await DB.openCon('employeeinfo');
-                    await DB.updatedata('Username', controllers[1].text, 'Name',
-                        controllers[0].text);
-                    await DB.updatedata('Username', controllers[1].text,
-                        'Phone', controllers[2].text);
-                    await DB.updatedata('Username', controllers[1].text,
-                        'EmailId', controllers[3].text);
-                    await DB.updatedata(
-                        'Username', controllers[1].text, 'Gender', gender);
-                    await DB.updatedata('Username', controllers[1].text,
-                        'DateofBirth', controllers[4].text);
-                    await DB.updatedata(
-                        'Username', controllers[1].text, 'Age', age);
-                    await DB.updatedata('Username', controllers[1].text,
-                        'BranchName', controllers[5].text);
-                    await DB.closeCon();
-                    Navigator.pop(context);
+                    valid = true;
+                    setState(() {
+                      for (int i = 0; i < 6; i++) {
+                        if (controllers[i].text == '') {
+                          error[i] = 'empty';
+                        }
+                      }
+                      for (int i = 0; i < 6; i++) {
+                        if (controllers[i].text == '') {
+                          valid = false;
+                        }
+                      }
+                      if (gender == '' || gender == 'a') {
+                        valid = false;
+                        gender = '';
+                      }
+                    });
+                    if (valid) {
+                      await DB.openCon('employeeinfo');
+                      await DB.updatedata('Username', controllers[1].text,
+                          'Name', controllers[0].text);
+                      await DB.updatedata('Username', controllers[1].text,
+                          'Phone', controllers[2].text);
+                      await DB.updatedata('Username', controllers[1].text,
+                          'EmailId', controllers[3].text);
+                      await DB.updatedata(
+                          'Username', controllers[1].text, 'Gender', gender);
+                      await DB.updatedata('Username', controllers[1].text,
+                          'DateofBirth', controllers[4].text);
+                      await DB.updatedata(
+                          'Username', controllers[1].text, 'Age', age);
+                      await DB.updatedata('Username', controllers[1].text,
+                          'BranchName', controllers[5].text);
+                      await DB.closeCon();
+                      Navigator.pop(context, {'message': 'Updated'});
+                    }
                   },
                   icon: Icon(
                     Icons.check,
