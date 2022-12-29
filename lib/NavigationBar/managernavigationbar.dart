@@ -7,7 +7,7 @@ import 'package:sadms/Manager/employee.dart';
 import 'package:sadms/Manager/manager.dart';
 import 'package:sadms/Manager/product.dart';
 import 'package:sadms/Manager/sales.dart';
-import 'package:sadms/Manager/shop.dart';
+import 'package:sadms/Manager/branch.dart';
 import 'package:sadms/Manager/stock.dart';
 
 class MyNavigationBar extends StatefulWidget {
@@ -175,10 +175,10 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
                       SizedBox(
                           width: 260,
                           height: 50,
-                          child: currentState == 'Shop'
+                          child: currentState == 'Branch'
                               ? GFButton(
                                   icon: Icon(Icons.store, color: Colors.white),
-                                  text: 'Shop',
+                                  text: 'Branch',
                                   textStyle: TextStyle(fontSize: 20),
                                   color: Colors.deepPurple.shade700,
                                   shape: GFButtonShape.pills,
@@ -188,15 +188,15 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
                                 )
                               : GFButton(
                                   icon: Icon(Icons.store, color: Colors.white),
-                                  text: 'Shop',
+                                  text: 'Branch',
                                   textStyle: TextStyle(fontSize: 20),
                                   color: Colors.deepPurple.shade700,
                                   shape: GFButtonShape.square,
                                   size: GFSize.LARGE,
                                   onPressed: () {
                                     setState(() {
-                                      currentFunction = Shop();
-                                      currentState = 'Shop';
+                                      currentFunction = Branch();
+                                      currentState = 'Branch';
                                     });
                                   },
                                 )),
@@ -402,7 +402,7 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
                       SizedBox(
                           width: 60,
                           height: 50,
-                          child: currentState == 'Shop'
+                          child: currentState == 'Branch'
                               ? GFIconButton(
                                   icon: Icon(Icons.store, color: Colors.white),
                                   color: Colors.deepPurple.shade700,
@@ -414,8 +414,8 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
                                   color: Colors.deepPurple.shade700,
                                   onPressed: () {
                                     setState(() {
-                                      currentFunction = Shop();
-                                      currentState = 'Shop';
+                                      currentFunction = Branch();
+                                      currentState = 'Branch';
                                     });
                                   },
                                 )),

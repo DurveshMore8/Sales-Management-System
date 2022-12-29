@@ -3,24 +3,24 @@
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:sadms/Database/database.dart';
-import 'package:sadms/Manager/Add/addshop.dart';
-import 'package:sadms/Manager/Update/updateshop.dart';
+import 'package:sadms/Manager/Add/addbranch.dart';
+import 'package:sadms/Manager/Update/updatebranch.dart';
 
-class Shop extends StatefulWidget {
-  Shop({Key? key}) : super(key: key);
+class Branch extends StatefulWidget {
+  Branch({Key? key}) : super(key: key);
 
   @override
-  ShopState createState() => ShopState();
+  BranchState createState() => BranchState();
 }
 
-class ShopState extends State<Shop> {
+class BranchState extends State<Branch> {
   List<Map<String, dynamic>> data = [];
-  static Map<String, dynamic> updateShop = {};
+  static Map<String, dynamic> updateBranch = {};
   var text = TextEditingController();
   int selectedvalue = 1;
   int selectedBox = -1;
-  List<String> shopid = [];
-  List<String> shopname = [];
+  List<String> branchid = [];
+  List<String> branchname = [];
   List<String> location = [];
   List<String> city = [];
   List<String> state = [];
@@ -32,7 +32,7 @@ class ShopState extends State<Shop> {
       children: [
         SizedBox(height: 20),
         Text(
-          'Shop',
+          'Branch',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: Colors.white,
@@ -63,46 +63,47 @@ class ShopState extends State<Shop> {
                   DropdownMenuItem(
                       value: 2,
                       alignment: Alignment.center,
-                      child: Text('Shop Name')),
+                      child: Text('Branch Name')),
                   DropdownMenuItem(
                       value: 3,
                       alignment: Alignment.center,
-                      child: Text('Shop Id')),
+                      child: Text('Branch Id')),
                 ],
                 onChanged: (value) async {
-                  shopid.clear();
-                  shopname.clear();
+                  branchid.clear();
+                  branchname.clear();
                   location.clear();
                   city.clear();
                   state.clear();
                   selectedBox = -1;
                   if (value == 2) {
-                    await DB.openCon('shop');
+                    await DB.openCon('branch');
                     data = await DB.collection.find().toList();
                     await DB.closeCon();
-                    data.sort((a, b) => a["ShopName"].compareTo(b["ShopName"]));
+                    data.sort(
+                        (a, b) => a["BranchName"].compareTo(b["BranchName"]));
                     setState(() {
                       selectedvalue = value!;
-                      shopname.clear();
+                      branchname.clear();
                       for (int i = 0; i < data.length; i++) {
-                        shopid.add(data[i]['ShopId']);
-                        shopname.add(data[i]['ShopName']);
+                        branchid.add(data[i]['BranchId']);
+                        branchname.add(data[i]['BranchName']);
                         location.add(data[i]['Location']);
                         city.add(data[i]['City']);
                         state.add(data[i]['State']);
                       }
                     });
                   } else if (value == 3) {
-                    await DB.openCon('shop');
+                    await DB.openCon('branch');
                     data = await DB.collection.find().toList();
                     await DB.closeCon();
-                    data.sort((a, b) => a["ShopId"].compareTo(b["ShopId"]));
+                    data.sort((a, b) => a["BranchId"].compareTo(b["BranchId"]));
                     setState(() {
                       selectedvalue = value!;
-                      shopname.clear();
+                      branchname.clear();
                       for (int i = 0; i < data.length; i++) {
-                        shopid.add(data[i]['ShopId']);
-                        shopname.add(data[i]['ShopName']);
+                        branchid.add(data[i]['BranchId']);
+                        branchname.add(data[i]['BranchName']);
                         location.add(data[i]['Location']);
                         city.add(data[i]['City']);
                         state.add(data[i]['State']);
@@ -126,7 +127,7 @@ class ShopState extends State<Shop> {
                     fillColor: Colors.white,
                     filled: true,
                     hintText: 'Mahaveer Sales',
-                    labelText: 'Shop Name',
+                    labelText: 'Branch Name',
                     floatingLabelAlignment: FloatingLabelAlignment.center,
                     labelStyle: TextStyle(
                         backgroundColor: Colors.white,
@@ -141,22 +142,22 @@ class ShopState extends State<Shop> {
                   ),
                   onChanged: (value) {
                     setState(() {
-                      shopid.clear();
-                      shopname.clear();
+                      branchid.clear();
+                      branchname.clear();
                       location.clear();
                       city.clear();
                       state.clear();
                       for (int i = 0; i < data.length; i++) {
-                        if (value.length <= data[i]['ShopName'].length) {
-                          String shopnamestring = '';
+                        if (value.length <= data[i]['BranchName'].length) {
+                          String branchnamestring = '';
                           for (int j = 0; j < value.length; j++) {
-                            shopnamestring =
-                                shopnamestring + data[i]['ShopName'][j];
+                            branchnamestring =
+                                branchnamestring + data[i]['BranchName'][j];
                           }
                           if (value.toLowerCase() ==
-                              shopnamestring.toLowerCase()) {
-                            shopid.add(data[i]['ShopId']);
-                            shopname.add(data[i]['ShopName']);
+                              branchnamestring.toLowerCase()) {
+                            branchid.add(data[i]['BranchId']);
+                            branchname.add(data[i]['BranchName']);
                             location.add(data[i]['Location']);
                             city.add(data[i]['City']);
                             state.add(data[i]['State']);
@@ -176,7 +177,7 @@ class ShopState extends State<Shop> {
                         fillColor: Colors.white,
                         filled: true,
                         hintText: 'MahSales3429',
-                        labelText: 'Shop Id',
+                        labelText: 'Branch Id',
                         floatingLabelAlignment: FloatingLabelAlignment.center,
                         labelStyle: TextStyle(
                             backgroundColor: Colors.white,
@@ -191,22 +192,22 @@ class ShopState extends State<Shop> {
                       ),
                       onChanged: (value) {
                         setState(() {
-                          shopid.clear();
-                          shopname.clear();
+                          branchid.clear();
+                          branchname.clear();
                           location.clear();
                           city.clear();
                           state.clear();
                           for (int i = 0; i < data.length; i++) {
-                            if (value.length <= data[i]['ShopId'].length) {
-                              String shopidstring = '';
+                            if (value.length <= data[i]['BranchId'].length) {
+                              String branchidstring = '';
                               for (int j = 0; j < value.length; j++) {
-                                shopidstring =
-                                    shopidstring + data[i]['ShopId'][j];
+                                branchidstring =
+                                    branchidstring + data[i]['BranchId'][j];
                               }
                               if (value.toLowerCase() ==
-                                  shopidstring.toLowerCase()) {
-                                shopid.add(data[i]['ShopId']);
-                                shopname.add(data[i]['ShopName']);
+                                  branchidstring.toLowerCase()) {
+                                branchid.add(data[i]['BranchId']);
+                                branchname.add(data[i]['BranchName']);
                                 location.add(data[i]['Location']);
                                 city.add(data[i]['City']);
                                 state.add(data[i]['State']);
@@ -225,7 +226,7 @@ class ShopState extends State<Shop> {
             GFButton(
               onPressed: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: ((context) => AddShop())));
+                    MaterialPageRoute(builder: ((context) => AddBranch())));
               },
               icon: Icon(
                 Icons.add,
@@ -242,9 +243,11 @@ class ShopState extends State<Shop> {
             GFButton(
               onPressed: () {
                 if (selectedBox > -1) {
-                  updateShop = data[selectedBox];
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: ((context) => UpdateShop())));
+                  updateBranch = data[selectedBox];
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: ((context) => UpdateBranch())));
                 }
               },
               icon: Icon(
@@ -262,9 +265,9 @@ class ShopState extends State<Shop> {
             GFButton(
               onPressed: () async {
                 if (selectedBox > -1) {
-                  await DB.openCon('shop');
+                  await DB.openCon('branch');
                   await DB.collection
-                      .remove({'ShopId': data[selectedBox]['ShopId']});
+                      .remove({'BranchId': data[selectedBox]['BranchId']});
                   await DB.closeCon();
                   setState(() {
                     selectedvalue = 1;
@@ -288,7 +291,7 @@ class ShopState extends State<Shop> {
         selectedvalue == 2
             ? Expanded(
                 child: ListView.builder(
-                  itemCount: shopname.length,
+                  itemCount: branchname.length,
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
@@ -311,7 +314,7 @@ class ShopState extends State<Shop> {
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Text(
-                                    'Shop Name: ${shopname[index]}',
+                                    'Branch Name: ${branchname[index]}',
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 17,
@@ -331,7 +334,7 @@ class ShopState extends State<Shop> {
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Text(
-                                    'Shop Id: ${shopid[index]}',
+                                    'Branch Id: ${branchid[index]}',
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 17,
@@ -364,7 +367,7 @@ class ShopState extends State<Shop> {
             : selectedvalue == 3
                 ? Expanded(
                     child: ListView.builder(
-                        itemCount: shopid.length,
+                        itemCount: branchid.length,
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () {
@@ -388,7 +391,7 @@ class ShopState extends State<Shop> {
                                           MainAxisAlignment.spaceEvenly,
                                       children: [
                                         Text(
-                                          'Shop Id: ${shopid[index]}',
+                                          'Branch Id: ${branchid[index]}',
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 17,
@@ -408,7 +411,7 @@ class ShopState extends State<Shop> {
                                           MainAxisAlignment.spaceEvenly,
                                       children: [
                                         Text(
-                                          'Shop Name: ${shopname[index]}',
+                                          'Branch Name: ${branchname[index]}',
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 17,
