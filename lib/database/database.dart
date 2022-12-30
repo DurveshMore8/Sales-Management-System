@@ -22,6 +22,16 @@ class DB {
         .updateOne(where.eq(eqkey, eqvalue), modify.set(setkey, setvalue));
   }
 
+  //Function to update stock
+  static updatestock(List data, int value) async {
+    await DB.collection.updateOne(
+        where
+            .eq('ProductId', data[0]['ProductId'])
+            .eq('ProductName', data[0]['ProductName'])
+            .eq('BranchName', data[0]['BranchName']),
+        modify.set('Quantity', value));
+  }
+
   //Function to Close Connection
   static closeCon() async {
     await database.close();

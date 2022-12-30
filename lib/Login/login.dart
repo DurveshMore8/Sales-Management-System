@@ -11,10 +11,10 @@ class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
 
   @override
-  _LoginState createState() => _LoginState();
+  LoginState createState() => LoginState();
 }
 
-class _LoginState extends State<Login> {
+class LoginState extends State<Login> {
   String selected = 'manager';
   bool visible = true;
   List<TextEditingController> controllers =
