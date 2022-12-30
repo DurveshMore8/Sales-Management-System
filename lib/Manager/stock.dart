@@ -145,11 +145,14 @@ class StockState extends State<Stock> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             GFButton(
-              onPressed: () {
+              onPressed: () async {
                 if (selectedBox > -1) {
                   addStock = data[selectedBox];
                   Navigator.push(context,
-                      MaterialPageRoute(builder: ((context) => AddStock())));
+                          MaterialPageRoute(builder: ((context) => AddStock())))
+                      .whenComplete(() {
+                    getData();
+                  });
                 }
               },
               icon: Icon(
