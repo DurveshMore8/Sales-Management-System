@@ -17,8 +17,8 @@ class AddStockState extends State<AddStock> {
   //productid, productname, branchname, quantity
   List<TextEditingController> controllers =
       List.generate(4, (index) => TextEditingController());
-  List<String> error = ['', '', '', ''];
   bool valid = true;
+  String error = '';
 
   @override
   void initState() {
@@ -151,12 +151,26 @@ class AddStockState extends State<AddStock> {
                               color: Colors.deepPurple.shade500,
                               fontSize: 18,
                               fontWeight: FontWeight.bold),
+                          errorText: error == 'empty'
+                              ? 'Quantity can\'t be empty'
+                              : error == 'outofbound'
+                                  ? 'Maximum limit exceeded'
+                                  : null,
                           prefixIcon: Icon(Icons.production_quantity_limits),
                           prefixIconColor: Colors.deepPurple.shade500,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.horizontal(),
                           ),
                         ),
+                        onChanged: (value) {
+                          setState(() {
+                            if (value.length > 2) {
+                              error = 'outofbound';
+                            } else {
+                              error = '';
+                            }
+                          });
+                        },
                       ),
                     ),
                     SizedBox(height: 70),
@@ -165,21 +179,30 @@ class AddStockState extends State<AddStock> {
                       children: [
                         GFButton(
                           onPressed: () async {
-                            await DB.openCon('stock');
-                            List<Map<String, dynamic>> data =
-                                await DB.collection.find({
-                              'ProductId': controllers[0].text,
-                              'ProductName': controllers[1].text,
-                              'BranchName': controllers[2].text,
-                            }).toList();
-                            await DB.closeCon();
-                            await DB.openCon('stock');
-                            DB.updatestock(
-                                data,
-                                data[0]['Quantity'] +
-                                    int.parse(controllers[3].text));
-                            await DB.closeCon();
-                            Navigator.pop(context);
+                            valid = true;
+                            if (controllers[3].text == '') {
+                              setState(() {
+                                error = 'empty';
+                                valid = false;
+                              });
+                            }
+                            if (valid) {
+                              await DB.openCon('stock');
+                              List<Map<String, dynamic>> data =
+                                  await DB.collection.find({
+                                'ProductId': controllers[0].text,
+                                'ProductName': controllers[1].text,
+                                'BranchName': controllers[2].text,
+                              }).toList();
+                              await DB.closeCon();
+                              await DB.openCon('stock');
+                              DB.updatestock(
+                                  data,
+                                  data[0]['Quantity'] +
+                                      int.parse(controllers[3].text));
+                              await DB.closeCon();
+                              Navigator.pop(context);
+                            }
                           },
                           icon: Icon(
                             Icons.check,
