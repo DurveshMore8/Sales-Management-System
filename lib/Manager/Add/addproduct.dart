@@ -13,11 +13,11 @@ class AddProduct extends StatefulWidget {
 }
 
 class _AddProductState extends State<AddProduct> {
-  var productid = TextEditingController();
-  var productname = TextEditingController();
-  var costprice = TextEditingController();
-  var sellingprice = TextEditingController();
-  var description = TextEditingController();
+  //productid, productname, costprice, sellingprice, description
+  List<TextEditingController> controllers =
+      List.generate(5, (index) => TextEditingController());
+  List<String> error = ['', '', '', '', ''];
+  bool valid = true;
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +55,7 @@ class _AddProductState extends State<AddProduct> {
                 SizedBox(
                   width: 600,
                   child: TextField(
-                    controller: productid,
+                    controller: controllers[0],
                     decoration: InputDecoration(
                       fillColor: Colors.white,
                       filled: true,
@@ -66,19 +66,39 @@ class _AddProductState extends State<AddProduct> {
                           color: Colors.deepPurple.shade500,
                           fontSize: 18,
                           fontWeight: FontWeight.bold),
+                      errorText: error[0] == 'empty'
+                          ? 'Product Id Can\'t be empty'
+                          : error[0] == 'minimum'
+                              ? 'Minimum Limit is not Reached'
+                              : error[0] == 'maximum'
+                                  ? 'Maximum Limit is Exceeded'
+                                  : null,
                       prefixIcon: Icon(Icons.numbers),
                       prefixIconColor: Colors.deepPurple.shade500,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.horizontal(),
                       ),
                     ),
+                    onChanged: (value) {
+                      setState(() {
+                        if (value.isNotEmpty) {
+                          if (value.length < 4) {
+                            error[0] = 'minimum';
+                          } else if (value.length > 10) {
+                            error[0] = 'maximum';
+                          } else {
+                            error[0] = '';
+                          }
+                        }
+                      });
+                    },
                   ),
                 ),
-                SizedBox(height: 30),
+                error[0] == '' ? SizedBox(height: 39) : SizedBox(height: 15),
                 SizedBox(
                   width: 600,
                   child: TextField(
-                    controller: productname,
+                    controller: controllers[1],
                     decoration: InputDecoration(
                       fillColor: Colors.white,
                       filled: true,
@@ -89,19 +109,39 @@ class _AddProductState extends State<AddProduct> {
                           color: Colors.deepPurple.shade500,
                           fontSize: 18,
                           fontWeight: FontWeight.bold),
+                      errorText: error[1] == 'empty'
+                          ? 'Product Name Can\'t be empty'
+                          : error[1] == 'minimum'
+                              ? 'Minimum Limit is not Reached'
+                              : error[1] == 'maximum'
+                                  ? 'Maximum Limit is Exceeded'
+                                  : null,
                       prefixIcon: Icon(Icons.production_quantity_limits),
                       prefixIconColor: Colors.deepPurple.shade500,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.horizontal(),
                       ),
                     ),
+                    onChanged: (value) {
+                      setState(() {
+                        if (value.isNotEmpty) {
+                          if (value.length < 4) {
+                            error[1] = 'minimum';
+                          } else if (value.length > 20) {
+                            error[1] = 'maximum';
+                          } else {
+                            error[1] = '';
+                          }
+                        }
+                      });
+                    },
                   ),
                 ),
-                SizedBox(height: 30),
+                error[1] == '' ? SizedBox(height: 39) : SizedBox(height: 15),
                 SizedBox(
                   width: 600,
                   child: TextField(
-                    controller: costprice,
+                    controller: controllers[2],
                     inputFormatters: <TextInputFormatter>[
                       FilteringTextInputFormatter.digitsOnly,
                     ], // Only numbers can be entered
@@ -115,19 +155,39 @@ class _AddProductState extends State<AddProduct> {
                           color: Colors.deepPurple.shade500,
                           fontSize: 18,
                           fontWeight: FontWeight.bold),
+                      errorText: error[2] == 'empty'
+                          ? 'Cost Price Can\'t be empty'
+                          : error[2] == 'minimum'
+                              ? 'Minimum Limit is not Reached'
+                              : error[2] == 'maximum'
+                                  ? 'Maximum Limit is Exceeded'
+                                  : null,
                       prefixIcon: Icon(Icons.price_check),
                       prefixIconColor: Colors.deepPurple.shade500,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.horizontal(),
                       ),
                     ),
+                    onChanged: (value) {
+                      setState(() {
+                        if (value.isNotEmpty) {
+                          if (value.length < 5) {
+                            error[2] = 'minimum';
+                          } else if (value.length > 8) {
+                            error[2] = 'maximum';
+                          } else {
+                            error[2] = '';
+                          }
+                        }
+                      });
+                    },
                   ),
                 ),
-                SizedBox(height: 30),
+                error[2] == '' ? SizedBox(height: 39) : SizedBox(height: 15),
                 SizedBox(
                   width: 600,
                   child: TextField(
-                    controller: sellingprice,
+                    controller: controllers[3],
                     inputFormatters: <TextInputFormatter>[
                       FilteringTextInputFormatter.digitsOnly,
                     ], // Only numbers can be entered
@@ -141,19 +201,39 @@ class _AddProductState extends State<AddProduct> {
                           color: Colors.deepPurple.shade500,
                           fontSize: 18,
                           fontWeight: FontWeight.bold),
+                      errorText: error[3] == 'empty'
+                          ? 'Selling Price Can\'t be empty'
+                          : error[3] == 'minimum'
+                              ? 'Minimum Limit is not Reached'
+                              : error[3] == 'maximum'
+                                  ? 'Maximum Limit is Exceeded'
+                                  : null,
                       prefixIcon: Icon(Icons.price_change),
                       prefixIconColor: Colors.deepPurple.shade500,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.horizontal(),
                       ),
                     ),
+                    onChanged: (value) {
+                      setState(() {
+                        if (value.isNotEmpty) {
+                          if (value.length < 5) {
+                            error[3] = 'minimum';
+                          } else if (value.length > 8) {
+                            error[3] = 'maximum';
+                          } else {
+                            error[3] = '';
+                          }
+                        }
+                      });
+                    },
                   ),
                 ),
-                SizedBox(height: 30),
+                error[3] == '' ? SizedBox(height: 39) : SizedBox(height: 15),
                 SizedBox(
                   width: 600,
                   child: TextField(
-                    controller: description,
+                    controller: controllers[4],
                     decoration: InputDecoration(
                       fillColor: Colors.white,
                       filled: true,
@@ -164,31 +244,66 @@ class _AddProductState extends State<AddProduct> {
                           color: Colors.deepPurple.shade500,
                           fontSize: 18,
                           fontWeight: FontWeight.bold),
+                      errorText: error[4] == 'empty'
+                          ? 'Descrption Can\'t be empty'
+                          : error[4] == 'minimum'
+                              ? 'Minimum Limit is not Reached'
+                              : error[4] == 'maximum'
+                                  ? 'Maximum Limit is Exceeded'
+                                  : null,
                       prefixIcon: Icon(Icons.description),
                       prefixIconColor: Colors.deepPurple.shade500,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.horizontal(),
                       ),
                     ),
+                    onChanged: (value) {
+                      setState(() {
+                        if (value.isNotEmpty) {
+                          if (value.length < 10) {
+                            error[4] = 'minimum';
+                          } else if (value.length > 40) {
+                            error[4] = 'maximum';
+                          } else {
+                            error[4] = '';
+                          }
+                        }
+                      });
+                    },
                   ),
                 ),
-                SizedBox(height: 70),
+                error[4] == '' ? SizedBox(height: 50) : SizedBox(height: 26),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     GFButton(
                       onPressed: () async {
-                        Map<String, dynamic> query = {
-                          'ProductId': productid.text,
-                          'ProductName': productname.text,
-                          'CostPrice': int.parse(costprice.text),
-                          'SellingPrice': int.parse(sellingprice.text),
-                          'Description': description.text,
-                        };
-                        await DB.openCon('product');
-                        await DB.collection.insertOne(query);
-                        await DB.closeCon();
-                        Navigator.pop(context);
+                        valid = true;
+                        setState(() {
+                          for (int i = 0; i < 5; i++) {
+                            if (controllers[i].text == '') {
+                              error[i] = 'empty';
+                            }
+                          }
+                          for (int i = 0; i < 5; i++) {
+                            if (controllers[i].text == '') {
+                              valid = false;
+                            }
+                          }
+                        });
+                        if (valid) {
+                          Map<String, dynamic> query = {
+                            'ProductId': controllers[0].text,
+                            'ProductName': controllers[1].text,
+                            'CostPrice': int.parse(controllers[2].text),
+                            'SellingPrice': int.parse(controllers[3].text),
+                            'Description': controllers[4].text,
+                          };
+                          await DB.openCon('product');
+                          await DB.collection.insertOne(query);
+                          await DB.closeCon();
+                          Navigator.pop(context);
+                        }
                       },
                       icon: Icon(
                         Icons.check,
@@ -205,11 +320,11 @@ class _AddProductState extends State<AddProduct> {
                     GFButton(
                       onPressed: () {
                         setState(() {
-                          productid.clear();
-                          productname.clear();
-                          costprice.clear();
-                          sellingprice.clear();
-                          description.clear();
+                          controllers[0].clear();
+                          controllers[1].clear();
+                          controllers[2].clear();
+                          controllers[3].clear();
+                          controllers[4].clear();
                         });
                       },
                       icon: Icon(
