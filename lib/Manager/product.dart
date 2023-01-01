@@ -270,6 +270,10 @@ class ProductState extends State<Product> {
                   await DB.collection
                       .remove({'ProductId': data[selectedBox]['ProductId']});
                   await DB.closeCon();
+                  await DB.openCon('stock');
+                  await DB.collection
+                      .remove({'ProductId': data[selectedBox]['ProductId']});
+                  await DB.closeCon();
                   setState(() {
                     selectedvalue = 1;
                   });
