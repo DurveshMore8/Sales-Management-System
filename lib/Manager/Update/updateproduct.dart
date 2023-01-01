@@ -66,6 +66,7 @@ class _UpdateProductState extends State<UpdateProduct> {
                   width: 600,
                   child: TextField(
                     controller: controllers[0],
+                    readOnly: true,
                     decoration: InputDecoration(
                       fillColor: Colors.white,
                       filled: true,
@@ -109,6 +110,7 @@ class _UpdateProductState extends State<UpdateProduct> {
                   width: 600,
                   child: TextField(
                     controller: controllers[1],
+                    readOnly: true,
                     decoration: InputDecoration(
                       fillColor: Colors.white,
                       filled: true,

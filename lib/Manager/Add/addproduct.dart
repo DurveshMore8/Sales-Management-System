@@ -18,6 +18,8 @@ class _AddProductState extends State<AddProduct> {
       List.generate(5, (index) => TextEditingController());
   List<String> error = ['', '', '', '', ''];
   bool valid = true;
+  List<String> branchname = [];
+  List<Map<String, dynamic>> branch = [];
 
   @override
   Widget build(BuildContext context) {
@@ -301,6 +303,24 @@ class _AddProductState extends State<AddProduct> {
                           };
                           await DB.openCon('product');
                           await DB.collection.insertOne(query);
+                          await DB.closeCon();
+                          await DB.openCon('branch');
+                          branch = await DB.collection.find().toList();
+                          for (int i = 0; i < branch.length; i++) {
+                            branchname.add(branch[i]['BranchName']);
+                          }
+                          await DB.closeCon();
+                          await DB.openCon('stock');
+                          for (int i = 0; i < branchname.length; i++) {
+                            query = {
+                              'ProductId': controllers[0].text,
+                              'ProductName': controllers[1].text,
+                              'BranchName': branchname[i],
+                              'Quantity': 0
+                            };
+                            await DB.collection.insertOne(query);
+                          }
+                          print(branchname);
                           await DB.closeCon();
                           Navigator.pop(context);
                         }
