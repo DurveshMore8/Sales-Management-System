@@ -65,6 +65,7 @@ class _UpdateBranchState extends State<UpdateBranch> {
                   width: 600,
                   child: TextField(
                     controller: controllers[0],
+                    readOnly: true,
                     decoration: InputDecoration(
                       fillColor: Colors.white,
                       filled: true,
@@ -108,6 +109,7 @@ class _UpdateBranchState extends State<UpdateBranch> {
                   width: 600,
                   child: TextField(
                     controller: controllers[1],
+                    readOnly: true,
                     decoration: InputDecoration(
                       fillColor: Colors.white,
                       filled: true,

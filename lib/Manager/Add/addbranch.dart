@@ -295,6 +295,27 @@ class _AddBranchState extends State<AddBranch> {
                           await DB.openCon('branch');
                           await DB.collection.insertOne(query);
                           await DB.closeCon();
+                          await DB.openCon('product');
+                          List<Map<String, dynamic>> product =
+                              await DB.collection.find().toList();
+                          List<String> productid = [];
+                          List<String> productname = [];
+                          for (int i = 0; i < product.length; i++) {
+                            productid.add(product[i]['ProductId']);
+                            productname.add(product[i]['ProductName']);
+                          }
+                          await DB.closeCon();
+                          await DB.openCon('stock');
+                          for (int i = 0; i < productid.length; i++) {
+                            query = {
+                              'ProductId': productid[i],
+                              'ProductName': productname[i],
+                              'BranchName': controllers[1].text,
+                              'Quantity': 0
+                            };
+                            await DB.collection.insertOne(query);
+                          }
+                          await DB.closeCon();
                           Navigator.pop(context);
                         }
                       },

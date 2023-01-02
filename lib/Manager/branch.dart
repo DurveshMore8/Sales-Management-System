@@ -269,6 +269,10 @@ class BranchState extends State<Branch> {
                   await DB.collection
                       .remove({'BranchId': data[selectedBox]['BranchId']});
                   await DB.closeCon();
+                  await DB.openCon('stock');
+                  await DB.collection
+                      .remove({'BranchName': data[selectedBox]['BranchName']});
+                  await DB.closeCon();
                   setState(() {
                     selectedvalue = 1;
                   });
