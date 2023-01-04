@@ -320,7 +320,6 @@ class _AddProductState extends State<AddProduct> {
                             };
                             await DB.collection.insertOne(query);
                           }
-                          print(branchname);
                           await DB.closeCon();
                           Navigator.pop(context);
                         }
