@@ -6,7 +6,6 @@ import 'package:getwidget/getwidget.dart';
 import 'package:sadms/Database/database.dart';
 import 'package:age_calculator/age_calculator.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:sadms/Manager/manager.dart';
 
 class AddManager extends StatefulWidget {
   AddManager({Key? key}) : super(key: key);
@@ -434,7 +433,6 @@ class _AddManagerState extends State<AddManager> {
                       await DB.openCon('managerinfo');
                       await DB.collection.insertOne(query);
                       await DB.closeCon();
-                      ManagerState.selectedvalue = 1;
                       Navigator.pop(context);
                     }
                   },

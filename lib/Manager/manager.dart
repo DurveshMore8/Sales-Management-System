@@ -14,10 +14,11 @@ class Manager extends StatefulWidget {
 }
 
 class ManagerState extends State<Manager> {
+  List<Map<String, dynamic>> maindata = [];
   List<Map<String, dynamic>> data = [];
+  List<Map<String, dynamic>> manager = [];
   static Map<String, dynamic> updateManager = {};
   var text = TextEditingController();
-  static int selectedvalue = 1;
   int selectedBox = -1;
   List<String> name = [];
   List<String> username = [];
@@ -26,6 +27,39 @@ class ManagerState extends State<Manager> {
   List<int> age = [];
   List<String> phone = [];
   List<String> emailid = [];
+
+  void getData() async {
+    name.clear();
+    username.clear();
+    gender.clear();
+    dob.clear();
+    age.clear();
+    phone.clear();
+    emailid.clear();
+    await DB.openCon('managerinfo');
+    maindata = await DB.collection.find().toList();
+    data = await DB.collection.find().toList();
+    await DB.closeCon();
+    maindata.sort((a, b) => a['Name'].compareTo(b['Name']));
+    data.sort((a, b) => a['Name'].compareTo(b['Name']));
+    setState(() {
+      for (int i = 0; i < maindata.length; i++) {
+        name.add(maindata[i]['Name']);
+        username.add(maindata[i]['Username']);
+        gender.add(maindata[i]['Gender']);
+        dob.add(maindata[i]['DateofBirth']);
+        age.add(maindata[i]['Age']);
+        emailid.add(maindata[i]['EmailId']);
+        phone.add(maindata[i]['Phone']);
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,197 +76,50 @@ class ManagerState extends State<Manager> {
           ),
         ),
         SizedBox(height: 50),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Sort By:",
-              style:
-                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(width: 30),
-            DropdownButton(
-                dropdownColor: Colors.deepPurple[600],
-                style: TextStyle(color: Colors.white),
-                iconEnabledColor: Colors.white,
-                value: selectedvalue,
-                items: [
-                  DropdownMenuItem(
-                    value: 1,
-                    alignment: Alignment.center,
-                    child: Text('--Select Type--'),
-                  ),
-                  DropdownMenuItem(
-                      value: 2,
-                      alignment: Alignment.center,
-                      child: Text('Name')),
-                  DropdownMenuItem(
-                      value: 3,
-                      alignment: Alignment.center,
-                      child: Text('Username')),
-                ],
-                onChanged: (value) async {
-                  name.clear();
-                  username.clear();
-                  gender.clear();
-                  dob.clear();
-                  age.clear();
-                  phone.clear();
-                  emailid.clear();
-                  selectedBox = -1;
-                  if (value == 2) {
-                    await DB.openCon('managerinfo');
-                    data = await DB.collection.find().toList();
-                    await DB.closeCon();
-                    data.sort((a, b) => a["Name"].compareTo(b["Name"]));
-                    setState(() {
-                      selectedvalue = value!;
-                      name.clear();
-                      for (int i = 0; i < data.length; i++) {
-                        name.add(data[i]['Name']);
-                        username.add(data[i]['Username']);
-                        gender.add(data[i]['Gender']);
-                        dob.add(data[i]['DateofBirth'].toString());
-                        age.add(data[i]['Age']);
-                        phone.add(data[i]['Phone']);
-                        emailid.add(data[i]['EmailId']);
-                      }
-                    });
-                  } else if (value == 3) {
-                    await DB.openCon('managerinfo');
-                    data = await DB.collection.find().toList();
-                    await DB.closeCon();
-                    data.sort((a, b) => a["Name"].compareTo(b["Name"]));
-                    setState(() {
-                      selectedvalue = value!;
-                      name.clear();
-                      for (int i = 0; i < data.length; i++) {
-                        name.add(data[i]['Name']);
-                        username.add(data[i]['Username']);
-                        gender.add(data[i]['Gender']);
-                        dob.add(data[i]['DateofBirth'].toString());
-                        age.add(data[i]['Age']);
-                        phone.add(data[i]['Phone']);
-                        emailid.add(data[i]['EmailId']);
-                      }
-                    });
+        SizedBox(
+          width: 750,
+          child: TextField(
+              controller: text,
+              decoration: InputDecoration(
+                fillColor: Colors.white,
+                filled: true,
+                hintText: 'Durvesh More',
+                labelText: 'Name',
+                floatingLabelAlignment: FloatingLabelAlignment.center,
+                labelStyle: TextStyle(
+                    backgroundColor: Colors.white,
+                    color: Colors.deepPurple.shade500,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold),
+                prefixIcon: Icon(Icons.text_format_outlined,
+                    color: Colors.deepPurple.shade500),
+                prefixIconColor: Colors.deepPurple.shade500,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.horizontal(),
+                ),
+              ),
+              onChanged: (value) {
+                setState(() {
+                  data.clear();
+                  if (value == '') {
+                    data.addAll(maindata);
                   } else {
-                    setState(() {
-                      selectedvalue = value!;
-                      selectedBox = -1;
-                    });
-                  }
-                }),
-          ],
-        ),
-        SizedBox(height: 50),
-        selectedvalue == 2
-            ? SizedBox(
-                width: 750,
-                child: TextField(
-                  controller: text,
-                  decoration: InputDecoration(
-                    fillColor: Colors.white,
-                    filled: true,
-                    hintText: '@Durvesh More',
-                    labelText: 'Name',
-                    floatingLabelAlignment: FloatingLabelAlignment.center,
-                    labelStyle: TextStyle(
-                        backgroundColor: Colors.white,
-                        color: Colors.deepPurple.shade500,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold),
-                    prefixIcon: Icon(Icons.text_format_outlined),
-                    prefixIconColor: Colors.deepPurple.shade500,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.horizontal(),
-                    ),
-                  ),
-                  onChanged: (value) {
-                    setState(() {
-                      name.clear();
-                      username.clear();
-                      gender.clear();
-                      dob.clear();
-                      age.clear();
-                      phone.clear();
-                      emailid.clear();
-                      for (int i = 0; i < data.length; i++) {
-                        if (value.length <= data[i]['Name'].length) {
-                          String namestring = '';
-                          for (int j = 0; j < value.length; j++) {
-                            namestring = namestring + data[i]['Name'][j];
-                          }
-                          if (value.toLowerCase() == namestring.toLowerCase()) {
-                            name.add(data[i]['Name']);
-                            username.add(data[i]['Username']);
-                            gender.add(data[i]['Gender']);
-                            dob.add(data[i]['DateofBirth'].toString());
-                            age.add(data[i]['Age']);
-                            phone.add(data[i]['Phone']);
-                            emailid.add(data[i]['EmailId']);
-                          }
+                    for (int i = 0; i < maindata.length; i++) {
+                      if (value.length <= maindata[i]['Name'].length) {
+                        String namestring = '';
+                        for (int j = 0; j < value.length; j++) {
+                          namestring = namestring + maindata[i]['Name'][j];
+                        }
+                        if (value.toLowerCase() == namestring.toLowerCase()) {
+                          data.add(maindata[i]);
                         }
                       }
-                    });
-                  },
-                ),
-              )
-            : selectedvalue == 3
-                ? SizedBox(
-                    width: 750,
-                    child: TextField(
-                      controller: text,
-                      decoration: InputDecoration(
-                        fillColor: Colors.white,
-                        filled: true,
-                        hintText: '@durvesh123',
-                        labelText: 'Username',
-                        floatingLabelAlignment: FloatingLabelAlignment.center,
-                        labelStyle: TextStyle(
-                            backgroundColor: Colors.white,
-                            color: Colors.deepPurple.shade500,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold),
-                        prefixIcon: Icon(Icons.text_format_outlined),
-                        prefixIconColor: Colors.deepPurple.shade500,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.horizontal(),
-                        ),
-                      ),
-                      onChanged: (value) {
-                        setState(() {
-                          name.clear();
-                          username.clear();
-                          gender.clear();
-                          dob.clear();
-                          age.clear();
-                          phone.clear();
-                          emailid.clear();
-                          for (int i = 0; i < data.length; i++) {
-                            if (value.length <= data[i]['Username'].length) {
-                              String namestring = '';
-                              for (int j = 0; j < value.length; j++) {
-                                namestring =
-                                    namestring + data[i]['Username'][j];
-                              }
-                              if (value.toLowerCase() ==
-                                  namestring.toLowerCase()) {
-                                name.add(data[i]['Name']);
-                                username.add(data[i]['Username']);
-                                gender.add(data[i]['Gender']);
-                                dob.add(data[i]['DateofBirth'].toString());
-                                age.add(data[i]['Age']);
-                                phone.add(data[i]['Phone']);
-                                emailid.add(data[i]['EmailId']);
-                              }
-                            }
-                          }
-                        });
-                      },
-                    ),
-                  )
-                : SizedBox(),
+                    }
+                  }
+                  selectedBox = -1;
+                });
+              }),
+        ),
         SizedBox(height: 50),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -240,7 +127,12 @@ class ManagerState extends State<Manager> {
             GFButton(
               onPressed: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: ((context) => AddManager())));
+                        MaterialPageRoute(builder: ((context) => AddManager())))
+                    .whenComplete(() {
+                  getData();
+                  text.clear();
+                  selectedBox = -1;
+                });
               },
               icon: Icon(
                 Icons.add,
@@ -259,9 +151,14 @@ class ManagerState extends State<Manager> {
                 if (selectedBox > -1) {
                   updateManager = data[selectedBox];
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: ((context) => UpdateManager())));
+                          context,
+                          MaterialPageRoute(
+                              builder: ((context) => UpdateManager())))
+                      .whenComplete(() {
+                    getData();
+                    text.clear();
+                    selectedBox = -1;
+                  });
                 }
               },
               icon: Icon(
@@ -283,9 +180,10 @@ class ManagerState extends State<Manager> {
                   await DB.collection
                       .remove({'Username': data[selectedBox]['Username']});
                   await DB.closeCon();
-                  setState(() {
-                    selectedvalue = 1;
-                  });
+                  await DB.openCon('managerlogin');
+                  await DB.collection
+                      .remove({'Username': data[selectedBox]['Username']});
+                  await DB.closeCon();
                 }
               },
               icon: Icon(
@@ -302,186 +200,93 @@ class ManagerState extends State<Manager> {
           ],
         ),
         SizedBox(height: 50),
-        selectedvalue == 2
-            ? Expanded(
-                child: ListView.builder(
-                  itemCount: name.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          selectedBox = index;
-                        });
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          color: selectedBox == index
-                              ? Colors.deepPurple[900]
-                              : Colors.deepPurple[700],
-                          height: 100,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Text(
-                                    'Name: ${name[index]}',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 17,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Username: ${username[index]}',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 17,
-                                    ),
-                                  ),
-                                  Text(
-                                    'EmailId: ${emailid[index]}',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 17,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Text(
-                                    'Phone: ${phone[index]}',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 17,
-                                    ),
-                                  ),
-                                  Text(
-                                    'DOB: ${dob[index]}',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 17,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Age: ${age[index]}',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 17,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Gender: ${gender[index]}',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 17,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              )
-            : selectedvalue == 3
-                ? Expanded(
-                    child: ListView.builder(
-                        itemCount: username.length,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                selectedBox = index;
-                              });
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Container(
-                                color: selectedBox == index
-                                    ? Colors.deepPurple[900]
-                                    : Colors.deepPurple[700],
-                                height: 100,
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Text(
-                                          'Username: ${username[index]}',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 17,
-                                          ),
-                                        ),
-                                        Text(
-                                          'Name: ${name[index]}',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 17,
-                                          ),
-                                        ),
-                                        Text(
-                                          'EmailId: ${emailid[index]}',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 17,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Text(
-                                          'Phone: ${phone[index]}',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 17,
-                                          ),
-                                        ),
-                                        Text(
-                                          'DOB: ${dob[index]}',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 17,
-                                          ),
-                                        ),
-                                        Text(
-                                          'Age: ${age[index]}',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 17,
-                                          ),
-                                        ),
-                                        Text(
-                                          'Gender: ${gender[index]}',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 17,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: data.length,
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                onTap: () {
+                  setState(() {
+                    selectedBox = index;
+                  });
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    color: selectedBox == index
+                        ? Colors.deepPurple[900]
+                        : Colors.deepPurple[700],
+                    height: 100,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text(
+                              'Name: ${data[index]['Name']}',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 17,
                               ),
                             ),
-                          );
-                        }))
-                : SizedBox(),
+                            Text(
+                              'Username: ${data[index]['Username']}',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 17,
+                              ),
+                            ),
+                            Text(
+                              'EmailId: ${data[index]['EmailId']}',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 17,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text(
+                              'Phone: ${data[index]['Phone']}',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 17,
+                              ),
+                            ),
+                            Text(
+                              'DOB: ${data[index]['DateofBirth']}',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 17,
+                              ),
+                            ),
+                            Text(
+                              'Age: ${data[index]['Age']}',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 17,
+                              ),
+                            ),
+                            Text(
+                              'Gender: ${data[index]['Gender']}',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 17,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        )
       ],
     );
   }
