@@ -6,6 +6,7 @@ import 'package:getwidget/getwidget.dart';
 import 'package:sadms/Database/database.dart';
 import 'package:age_calculator/age_calculator.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:sadms/Login/login.dart';
 
 class AddManager extends StatefulWidget {
   AddManager({Key? key}) : super(key: key);
@@ -78,7 +79,8 @@ class _AddManagerState extends State<AddManager> {
                               : error[0] == 'maximum'
                                   ? 'Maximum Limit is Exceeded'
                                   : null,
-                      prefixIcon: Icon(Icons.text_format_outlined),
+                      prefixIcon: Icon(Icons.text_format_outlined,
+                          color: Colors.deepPurple.shade500),
                       prefixIconColor: Colors.deepPurple.shade500,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.horizontal(),
@@ -121,7 +123,8 @@ class _AddManagerState extends State<AddManager> {
                               : error[1] == 'maximum'
                                   ? 'Maximum Limit is Exceeded'
                                   : null,
-                      prefixIcon: Icon(Icons.supervised_user_circle),
+                      prefixIcon: Icon(Icons.supervised_user_circle,
+                          color: Colors.deepPurple.shade500),
                       prefixIconColor: Colors.deepPurple.shade500,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.horizontal(),
@@ -165,7 +168,8 @@ class _AddManagerState extends State<AddManager> {
                           : error[2] == 'invalid'
                               ? 'Enter a 10 digit Mobile Number'
                               : null,
-                      prefixIcon: Icon(Icons.phone),
+                      prefixIcon:
+                          Icon(Icons.phone, color: Colors.deepPurple.shade500),
                       prefixIconColor: Colors.deepPurple.shade500,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.horizontal(),
@@ -202,7 +206,8 @@ class _AddManagerState extends State<AddManager> {
                           : error[3] == 'invalid'
                               ? 'Invalid Email Id'
                               : null,
-                      prefixIcon: Icon(Icons.email),
+                      prefixIcon:
+                          Icon(Icons.email, color: Colors.deepPurple.shade500),
                       prefixIconColor: Colors.deepPurple.shade500,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.horizontal(),
@@ -319,10 +324,12 @@ class _AddManagerState extends State<AddManager> {
                           fontWeight: FontWeight.bold),
                       errorText:
                           error[4] == 'empty' ? 'Date Can\'t be empty' : null,
-                      prefixIcon: Icon(Icons.date_range),
+                      prefixIcon: Icon(Icons.date_range,
+                          color: Colors.deepPurple.shade500),
                       prefixIconColor: Colors.deepPurple.shade500,
                       suffixIcon: IconButton(
-                          icon: Icon(Icons.edit_calendar),
+                          icon: Icon(Icons.edit_calendar,
+                              color: Colors.deepPurple.shade500),
                           onPressed: () {
                             showDatePicker(
                               context: context,
@@ -369,7 +376,8 @@ class _AddManagerState extends State<AddManager> {
                           : error[5] == 'invalid'
                               ? 'Invalid Branch Name'
                               : null,
-                      prefixIcon: Icon(Icons.store),
+                      prefixIcon:
+                          Icon(Icons.store, color: Colors.deepPurple.shade500),
                       prefixIconColor: Colors.deepPurple.shade500,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.horizontal(),
@@ -402,7 +410,7 @@ class _AddManagerState extends State<AddManager> {
                         }
                       }
                       for (int i = 0; i < 6; i++) {
-                        if (controllers[i].text == '') {
+                        if (controllers[i].text == '' || error[i] != '') {
                           valid = false;
                         }
                       }
@@ -428,7 +436,8 @@ class _AddManagerState extends State<AddManager> {
                         'Gender': gender,
                         'DateofBirth': controllers[4].text,
                         'Age': age,
-                        'BranchName': controllers[5].text
+                        'BranchName': controllers[5].text,
+                        'Added By': LoginState.manager
                       };
                       await DB.openCon('managerinfo');
                       await DB.collection.insertOne(query);
