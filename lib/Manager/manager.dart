@@ -212,7 +212,7 @@ class ManagerState extends State<Manager> {
                 onTap: () {
                   setState(() {
                     if (data[index]['Username'] == LoginState.manager ||
-                        data[index]['Role'] == 'superadmin') {
+                        data[index]['BranchName'] == '') {
                       selectedBox = -1;
                     } else {
                       selectedBox = index;

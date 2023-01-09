@@ -20,9 +20,31 @@ class _AddManagerState extends State<AddManager> {
   List<TextEditingController> controllers =
       List.generate(6, (index) => TextEditingController());
   List<String> error = ['', '', '', '', '', ''];
+  List<String> branches = [
+    'Select Branch                                                                                   '
+  ];
   int age = -1;
   String gender = 'a';
   bool valid = true;
+
+  void getData() async {
+    await DB.openCon('branch');
+    List<Map<String, dynamic>> data = await DB.collection.find().toList();
+    await DB.closeCon();
+    setState(() {
+      for (int i = 0; i < data.length; i++) {
+        branches.add(data[i]['BranchName']);
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    controllers[5].text =
+        'Select Branch                                                                                   ';
+    getData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +155,7 @@ class _AddManagerState extends State<AddManager> {
                     onChanged: (value) {
                       setState(() {
                         if (value.isNotEmpty) {
-                          if (value.length < 5) {
+                          if (value.length < 8) {
                             error[1] = 'minimum';
                           } else if (value.length > 20) {
                             error[1] = 'maximum';
@@ -232,11 +254,11 @@ class _AddManagerState extends State<AddManager> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        SizedBox(width: 10),
+                        SizedBox(width: 9),
                         SizedBox(
                             child: Icon(Icons.person,
                                 color: Colors.deepPurple[500])),
-                        SizedBox(width: 10),
+                        SizedBox(width: 7),
                         SizedBox(
                           width: 100,
                           child: Text('Gender',
@@ -357,46 +379,63 @@ class _AddManagerState extends State<AddManager> {
                   ),
                 ),
                 error[4] == '' ? SizedBox(height: 34) : SizedBox(height: 10),
-                SizedBox(
+                Container(
+                  color: Colors.white,
                   width: 600,
-                  child: TextField(
-                    controller: controllers[5],
-                    decoration: InputDecoration(
-                      fillColor: Colors.white,
-                      filled: true,
-                      hintText: 'Naupada Branch',
-                      labelText: 'Branch Name',
-                      labelStyle: TextStyle(
-                          backgroundColor: Colors.white,
-                          color: Colors.deepPurple.shade500,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold),
-                      errorText: error[5] == 'empty'
-                          ? 'Branch Name Can\'t be empty'
-                          : error[5] == 'invalid'
-                              ? 'Invalid Branch Name'
-                              : null,
-                      prefixIcon:
-                          Icon(Icons.store, color: Colors.deepPurple.shade500),
-                      prefixIconColor: Colors.deepPurple.shade500,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.horizontal(),
+                  child: Row(
+                    children: [
+                      SizedBox(width: 9),
+                      SizedBox(
+                          child:
+                              Icon(Icons.store, color: Colors.deepPurple[500])),
+                      SizedBox(width: 7),
+                      DropdownButton<String>(
+                        dropdownColor: Colors.white,
+                        value: controllers[5].text,
+                        iconEnabledColor: Colors.deepPurple.shade500,
+                        style: TextStyle(
+                            color: Colors.deepPurple.shade500,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold),
+                        items: branches
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(
+                              value,
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            controllers[5].text = newValue!;
+                            if (controllers[5].text ==
+                                'Select Branch                                                                                   ') {
+                              error[5] = 'Branch not selected';
+                            } else {
+                              error[5] = '';
+                            }
+                          });
+                        },
                       ),
-                    ),
-                    onChanged: (value) {
-                      setState(() {
-                        if (value.length < 8 || value.length > 20) {
-                          error[5] = 'invalid';
-                        } else {
-                          error[5] = '';
-                        }
-                      });
-                    },
+                    ],
                   ),
                 ),
+                error[5] == 'Branch not selected'
+                    ? Container(
+                        width: 575,
+                        height: 34,
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Branch Selection is Mandatory',
+                          style:
+                              TextStyle(color: Colors.red[700], fontSize: 12),
+                          textAlign: TextAlign.start,
+                        ))
+                    : SizedBox(height: 34),
               ],
             ),
-            error[5] == '' ? SizedBox(height: 30) : SizedBox(height: 6),
+            // error[5] == '' ? SizedBox(height: 30) : SizedBox(height: 6),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -413,6 +452,11 @@ class _AddManagerState extends State<AddManager> {
                         if (controllers[i].text == '' || error[i] != '') {
                           valid = false;
                         }
+                      }
+                      if (controllers[5].text ==
+                          'Select Branch                                                                                   ') {
+                        valid = false;
+                        error[5] = 'Branch not selected';
                       }
                       if (gender == '' || gender == 'a') {
                         valid = false;
