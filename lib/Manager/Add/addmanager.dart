@@ -21,7 +21,7 @@ class _AddManagerState extends State<AddManager> {
       List.generate(6, (index) => TextEditingController());
   List<String> error = ['', '', '', '', '', ''];
   List<String> branches = [
-    'Select Branch                                                                                   '
+    ' Select Branch                                                                                  '
   ];
   int age = -1;
   String gender = 'a';
@@ -35,6 +35,7 @@ class _AddManagerState extends State<AddManager> {
       for (int i = 0; i < data.length; i++) {
         branches.add(data[i]['BranchName']);
       }
+      branches.sort((a, b) => a.compareTo(b));
     });
   }
 
@@ -42,7 +43,7 @@ class _AddManagerState extends State<AddManager> {
   void initState() {
     super.initState();
     controllers[5].text =
-        'Select Branch                                                                                   ';
+        ' Select Branch                                                                                  ';
     getData();
   }
 
@@ -410,7 +411,7 @@ class _AddManagerState extends State<AddManager> {
                           setState(() {
                             controllers[5].text = newValue!;
                             if (controllers[5].text ==
-                                'Select Branch                                                                                   ') {
+                                ' Select Branch                                                                                  ') {
                               error[5] = 'Branch not selected';
                             } else {
                               error[5] = '';
@@ -435,7 +436,6 @@ class _AddManagerState extends State<AddManager> {
                     : SizedBox(height: 34),
               ],
             ),
-            // error[5] == '' ? SizedBox(height: 30) : SizedBox(height: 6),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -454,7 +454,7 @@ class _AddManagerState extends State<AddManager> {
                         }
                       }
                       if (controllers[5].text ==
-                          'Select Branch                                                                                   ') {
+                          ' Select Branch                                                                                  ') {
                         valid = false;
                         error[5] = 'Branch not selected';
                       }
@@ -510,7 +510,8 @@ class _AddManagerState extends State<AddManager> {
                       controllers[3].clear();
                       gender = '';
                       controllers[4].clear();
-                      controllers[5].clear();
+                      controllers[5].text =
+                          ' Select Branch                                                                                  ';
                     });
                   },
                   icon: Icon(

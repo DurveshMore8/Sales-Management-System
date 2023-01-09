@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors_in_immutables, library_private_types_in_public_api, prefer_const_constructors, use_build_context_synchronously, non_constant_identifier_names
 
+import 'dart:io';
+
 import 'package:age_calculator/age_calculator.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
@@ -21,13 +23,34 @@ class _UpdateManagerState extends State<UpdateManager> {
   List<TextEditingController> controllers =
       List.generate(6, (index) => TextEditingController());
   List<String> error = ['', '', '', '', '', ''];
+  List<String> branches = [
+    ' Select Branch                                                                                  ',
+    ManagerState.updateManager['BranchName']
+  ];
   int age = -1;
   String gender = 'a';
   bool valid = true;
 
+  void getData() async {
+    await DB.openCon('branch');
+    List<Map<String, dynamic>> data = await DB.collection.find().toList();
+    await DB.closeCon();
+    setState(() {
+      for (int i = 0; i < data.length; i++) {
+        if (data[i]['BranchName'] != ManagerState.updateManager['BranchName']) {
+          branches.add(data[i]['BranchName']);
+        }
+      }
+      branches.sort((a, b) => a.compareTo(b));
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+    controllers[5].text =
+        ' Select Branch                                                                                  ';
+    getData();
     controllers[0].text = ManagerState.updateManager['Name'];
     controllers[1].text = ManagerState.updateManager['Username'];
     controllers[2].text = ManagerState.updateManager['Phone'];
@@ -343,7 +366,8 @@ class _UpdateManagerState extends State<UpdateManager> {
                           color: Colors.deepPurple.shade500),
                       prefixIconColor: Colors.deepPurple.shade500,
                       suffixIcon: IconButton(
-                          icon: Icon(Icons.edit_calendar),
+                          icon: Icon(Icons.edit_calendar,
+                              color: Colors.deepPurple.shade500),
                           onPressed: () {
                             showDatePicker(
                               context: context,
@@ -371,46 +395,62 @@ class _UpdateManagerState extends State<UpdateManager> {
                   ),
                 ),
                 error[4] == '' ? SizedBox(height: 34) : SizedBox(height: 10),
-                SizedBox(
+                Container(
+                  color: Colors.white,
                   width: 600,
-                  child: TextField(
-                    controller: controllers[5],
-                    decoration: InputDecoration(
-                      fillColor: Colors.white,
-                      filled: true,
-                      hintText: 'Naupada Branch',
-                      labelText: 'Branch Name',
-                      labelStyle: TextStyle(
-                          backgroundColor: Colors.white,
-                          color: Colors.deepPurple.shade500,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold),
-                      errorText: error[5] == 'empty'
-                          ? 'Branch Name Can\'t be empty'
-                          : error[5] == 'invalid'
-                              ? 'Invalid Branch Name'
-                              : null,
-                      prefixIcon:
-                          Icon(Icons.store, color: Colors.deepPurple.shade500),
-                      prefixIconColor: Colors.deepPurple.shade500,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.horizontal(),
+                  child: Row(
+                    children: [
+                      SizedBox(width: 9),
+                      SizedBox(
+                          child:
+                              Icon(Icons.store, color: Colors.deepPurple[500])),
+                      SizedBox(width: 7),
+                      DropdownButton<String>(
+                        dropdownColor: Colors.white,
+                        value: controllers[5].text,
+                        iconEnabledColor: Colors.deepPurple.shade500,
+                        style: TextStyle(
+                            color: Colors.deepPurple.shade500,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold),
+                        items: branches
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(
+                              value,
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            controllers[5].text = newValue!;
+                            if (controllers[5].text ==
+                                ' Select Branch                                                                                  ') {
+                              error[5] = 'Branch not selected';
+                            } else {
+                              error[5] = '';
+                            }
+                          });
+                        },
                       ),
-                    ),
-                    onChanged: (value) {
-                      setState(() {
-                        if (value.length < 8 || value.length > 20) {
-                          error[5] = 'invalid';
-                        } else {
-                          error[5] = '';
-                        }
-                      });
-                    },
+                    ],
                   ),
                 ),
+                error[5] == 'Branch not selected'
+                    ? Container(
+                        width: 575,
+                        height: 34,
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Branch Selection is Mandatory',
+                          style:
+                              TextStyle(color: Colors.red[700], fontSize: 12),
+                          textAlign: TextAlign.start,
+                        ))
+                    : SizedBox(height: 34),
               ],
             ),
-            error[5] == '' ? SizedBox(height: 30) : SizedBox(height: 6),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -427,6 +467,11 @@ class _UpdateManagerState extends State<UpdateManager> {
                         if (controllers[i].text == '' || error[i] != '') {
                           valid = false;
                         }
+                      }
+                      if (controllers[5].text ==
+                          ' Select Branch                                                                                  ') {
+                        valid = false;
+                        error[5] = 'Branch not selected';
                       }
                       if (gender == '' || gender == 'a') {
                         valid = false;
@@ -454,7 +499,7 @@ class _UpdateManagerState extends State<UpdateManager> {
                       await DB.updatedata('Username', controllers[1].text,
                           'BranchName', controllers[5].text);
                       await DB.updatedata('Username', controllers[1].text,
-                          'UpdatedBy', LoginState());
+                          'UpdatedBy', LoginState.manager);
                       await DB.closeCon();
                       Navigator.pop(context);
                     }
@@ -480,7 +525,8 @@ class _UpdateManagerState extends State<UpdateManager> {
                       controllers[3].clear();
                       gender = '';
                       controllers[4].clear();
-                      controllers[5].clear();
+                      controllers[5].text =
+                          ' Select Branch                                                                                  ';
                     });
                   },
                   icon: Icon(
