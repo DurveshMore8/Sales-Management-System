@@ -14,7 +14,7 @@ class Product extends StatefulWidget {
 }
 
 class ProductState extends State<Product> {
-  List<Map<String, dynamic>> maindata = [];
+  static List<Map<String, dynamic>> maindata = [];
   List<Map<String, dynamic>> data = [];
   static Map<String, dynamic> updateProduct = {};
   var text = TextEditingController();

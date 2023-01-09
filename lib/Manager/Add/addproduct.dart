@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:sadms/Database/database.dart';
 import 'package:sadms/Login/login.dart';
+import 'package:sadms/Manager/product.dart';
 
 class AddProduct extends StatefulWidget {
   AddProduct({Key? key}) : super(key: key);
@@ -75,7 +76,9 @@ class _AddProductState extends State<AddProduct> {
                               ? 'Minimum Limit is not Reached'
                               : error[0] == 'maximum'
                                   ? 'Maximum Limit is Exceeded'
-                                  : null,
+                                  : error[0] == 'already exist'
+                                      ? 'Product Id Already Exist'
+                                      : null,
                       prefixIcon: Icon(Icons.numbers,
                           color: Colors.deepPurple.shade500),
                       prefixIconColor: Colors.deepPurple.shade500,
@@ -299,6 +302,14 @@ class _AddProductState extends State<AddProduct> {
                             }
                           }
                         });
+                        for (int i = 0; i < ProductState.maindata.length; i++) {
+                          if (controllers[0].text ==
+                              ProductState.maindata[i]['ProductId']) {
+                            error[0] = 'already exist';
+                            valid = false;
+                            break;
+                          }
+                        }
                         if (valid) {
                           Map<String, dynamic> query = {
                             'ProductId': controllers[0].text,
