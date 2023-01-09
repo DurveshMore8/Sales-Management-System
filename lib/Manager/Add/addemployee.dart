@@ -7,7 +7,6 @@ import 'package:flutter/services.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:sadms/Database/database.dart';
 import 'package:sadms/Login/login.dart';
-import 'package:sadms/Manager/manager.dart';
 
 class AddEmployee extends StatefulWidget {
   AddEmployee({Key? key}) : super(key: key);
