@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:sadms/Database/database.dart';
+import 'package:sadms/Login/login.dart';
 import 'package:sadms/Manager/product.dart';
 
 class UpdateProduct extends StatefulWidget {
@@ -16,7 +17,7 @@ class UpdateProduct extends StatefulWidget {
 class _UpdateProductState extends State<UpdateProduct> {
   List<TextEditingController> controllers =
       List.generate(5, (index) => TextEditingController());
-  List<String> error = ['', '', '', '', ''];
+  List<String> error = ['', '', ''];
   bool valid = true;
 
   @override
@@ -77,35 +78,16 @@ class _UpdateProductState extends State<UpdateProduct> {
                           color: Colors.deepPurple.shade500,
                           fontSize: 18,
                           fontWeight: FontWeight.bold),
-                      errorText: error[0] == 'empty'
-                          ? 'Product Id Can\'t be empty'
-                          : error[0] == 'minimum'
-                              ? 'Minimum Limit is not Reached'
-                              : error[0] == 'maximum'
-                                  ? 'Maximum Limit is Exceeded'
-                                  : null,
-                      prefixIcon: Icon(Icons.numbers),
+                      prefixIcon: Icon(Icons.numbers,
+                          color: Colors.deepPurple.shade500),
                       prefixIconColor: Colors.deepPurple.shade500,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.horizontal(),
                       ),
                     ),
-                    onChanged: (value) {
-                      setState(() {
-                        if (value.isNotEmpty) {
-                          if (value.length < 4) {
-                            error[0] = 'minimum';
-                          } else if (value.length > 10) {
-                            error[0] = 'maximum';
-                          } else {
-                            error[0] = '';
-                          }
-                        }
-                      });
-                    },
                   ),
                 ),
-                error[0] == '' ? SizedBox(height: 39) : SizedBox(height: 15),
+                SizedBox(height: 39),
                 SizedBox(
                   width: 600,
                   child: TextField(
@@ -121,35 +103,16 @@ class _UpdateProductState extends State<UpdateProduct> {
                           color: Colors.deepPurple.shade500,
                           fontSize: 18,
                           fontWeight: FontWeight.bold),
-                      errorText: error[1] == 'empty'
-                          ? 'Product Name Can\'t be empty'
-                          : error[1] == 'minimum'
-                              ? 'Minimum Limit is not Reached'
-                              : error[1] == 'maximum'
-                                  ? 'Maximum Limit is Exceeded'
-                                  : null,
-                      prefixIcon: Icon(Icons.production_quantity_limits),
+                      prefixIcon: Icon(Icons.production_quantity_limits,
+                          color: Colors.deepPurple.shade500),
                       prefixIconColor: Colors.deepPurple.shade500,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.horizontal(),
                       ),
                     ),
-                    onChanged: (value) {
-                      setState(() {
-                        if (value.isNotEmpty) {
-                          if (value.length < 4) {
-                            error[1] = 'minimum';
-                          } else if (value.length > 20) {
-                            error[1] = 'maximum';
-                          } else {
-                            error[1] = '';
-                          }
-                        }
-                      });
-                    },
                   ),
                 ),
-                error[1] == '' ? SizedBox(height: 39) : SizedBox(height: 15),
+                SizedBox(height: 39),
                 SizedBox(
                   width: 600,
                   child: TextField(
@@ -167,14 +130,15 @@ class _UpdateProductState extends State<UpdateProduct> {
                           color: Colors.deepPurple.shade500,
                           fontSize: 18,
                           fontWeight: FontWeight.bold),
-                      errorText: error[2] == 'empty'
+                      errorText: error[0] == 'empty'
                           ? 'Cost Price Can\'t be empty'
-                          : error[2] == 'minimum'
+                          : error[0] == 'minimum'
                               ? 'Minimum Limit is not Reached'
-                              : error[2] == 'maximum'
+                              : error[0] == 'maximum'
                                   ? 'Maximum Limit is Exceeded'
                                   : null,
-                      prefixIcon: Icon(Icons.price_check),
+                      prefixIcon: Icon(Icons.price_check,
+                          color: Colors.deepPurple.shade500),
                       prefixIconColor: Colors.deepPurple.shade500,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.horizontal(),
@@ -184,18 +148,20 @@ class _UpdateProductState extends State<UpdateProduct> {
                       setState(() {
                         if (value.isNotEmpty) {
                           if (value.length < 5) {
-                            error[2] = 'minimum';
+                            error[0] = 'minimum';
                           } else if (value.length > 8) {
-                            error[2] = 'maximum';
+                            error[0] = 'maximum';
                           } else {
-                            error[2] = '';
+                            error[0] = '';
                           }
+                        } else {
+                          error[1] == 'empty';
                         }
                       });
                     },
                   ),
                 ),
-                error[2] == '' ? SizedBox(height: 39) : SizedBox(height: 15),
+                error[0] == '' ? SizedBox(height: 39) : SizedBox(height: 15),
                 SizedBox(
                   width: 600,
                   child: TextField(
@@ -213,14 +179,15 @@ class _UpdateProductState extends State<UpdateProduct> {
                           color: Colors.deepPurple.shade500,
                           fontSize: 18,
                           fontWeight: FontWeight.bold),
-                      errorText: error[3] == 'empty'
+                      errorText: error[1] == 'empty'
                           ? 'Selling Price Can\'t be empty'
-                          : error[3] == 'minimum'
+                          : error[1] == 'minimum'
                               ? 'Minimum Limit is not Reached'
-                              : error[3] == 'maximum'
+                              : error[1] == 'maximum'
                                   ? 'Maximum Limit is Exceeded'
                                   : null,
-                      prefixIcon: Icon(Icons.price_change),
+                      prefixIcon: Icon(Icons.price_change,
+                          color: Colors.deepPurple.shade500),
                       prefixIconColor: Colors.deepPurple.shade500,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.horizontal(),
@@ -230,18 +197,20 @@ class _UpdateProductState extends State<UpdateProduct> {
                       setState(() {
                         if (value.isNotEmpty) {
                           if (value.length < 5) {
-                            error[3] = 'minimum';
+                            error[1] = 'minimum';
                           } else if (value.length > 8) {
-                            error[3] = 'maximum';
+                            error[1] = 'maximum';
                           } else {
-                            error[3] = '';
+                            error[1] = '';
                           }
+                        } else {
+                          error[1] = 'empty';
                         }
                       });
                     },
                   ),
                 ),
-                error[3] == '' ? SizedBox(height: 39) : SizedBox(height: 15),
+                error[1] == '' ? SizedBox(height: 39) : SizedBox(height: 15),
                 SizedBox(
                   width: 600,
                   child: TextField(
@@ -256,14 +225,15 @@ class _UpdateProductState extends State<UpdateProduct> {
                           color: Colors.deepPurple.shade500,
                           fontSize: 18,
                           fontWeight: FontWeight.bold),
-                      errorText: error[4] == 'empty'
+                      errorText: error[2] == 'empty'
                           ? 'Descrption Can\'t be empty'
-                          : error[4] == 'minimum'
+                          : error[2] == 'minimum'
                               ? 'Minimum Limit is not Reached'
-                              : error[4] == 'maximum'
+                              : error[2] == 'maximum'
                                   ? 'Maximum Limit is Exceeded'
                                   : null,
-                      prefixIcon: Icon(Icons.description),
+                      prefixIcon: Icon(Icons.description,
+                          color: Colors.deepPurple.shade500),
                       prefixIconColor: Colors.deepPurple.shade500,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.horizontal(),
@@ -273,18 +243,18 @@ class _UpdateProductState extends State<UpdateProduct> {
                       setState(() {
                         if (value.isNotEmpty) {
                           if (value.length < 10) {
-                            error[4] = 'minimum';
+                            error[2] = 'minimum';
                           } else if (value.length > 40) {
-                            error[4] = 'maximum';
+                            error[2] = 'maximum';
                           } else {
-                            error[4] = '';
+                            error[2] = '';
                           }
                         }
                       });
                     },
                   ),
                 ),
-                error[4] == '' ? SizedBox(height: 50) : SizedBox(height: 26),
+                error[2] == '' ? SizedBox(height: 50) : SizedBox(height: 26),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -292,13 +262,14 @@ class _UpdateProductState extends State<UpdateProduct> {
                       onPressed: () async {
                         valid = true;
                         setState(() {
-                          for (int i = 0; i < 5; i++) {
+                          for (int i = 2; i < 5; i++) {
                             if (controllers[i].text == '') {
-                              error[i] = 'empty';
+                              error[i - 2] = 'empty';
                             }
                           }
-                          for (int i = 0; i < 5; i++) {
-                            if (controllers[i].text == '') {
+                          for (int i = 2; i < 5; i++) {
+                            if (controllers[i].text == '' ||
+                                error[i - 2] != '') {
                               valid = false;
                             }
                           }
@@ -313,6 +284,8 @@ class _UpdateProductState extends State<UpdateProduct> {
                               'SellingPrice', int.parse(controllers[3].text));
                           await DB.updatedata('ProductId', controllers[0].text,
                               'Description', controllers[4].text);
+                          await DB.updatedata('ProductId', controllers[0].text,
+                              'UpdatedBy', LoginState.manager);
                           await DB.closeCon();
                           Navigator.pop(context);
                         }
@@ -332,8 +305,6 @@ class _UpdateProductState extends State<UpdateProduct> {
                     GFButton(
                       onPressed: () {
                         setState(() {
-                          controllers[0].clear();
-                          controllers[1].clear();
                           controllers[2].clear();
                           controllers[3].clear();
                           controllers[4].clear();
