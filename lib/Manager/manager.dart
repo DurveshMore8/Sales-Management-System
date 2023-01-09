@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:sadms/Login/login.dart';
 import 'package:sadms/Manager/Add/addmanager.dart';
 import 'package:sadms/Manager/Update/updatemanager.dart';
 import 'package:sadms/Database/database.dart';
@@ -36,10 +37,11 @@ class ManagerState extends State<Manager> {
     age.clear();
     phone.clear();
     emailid.clear();
+    data.clear();
     await DB.openCon('managerinfo');
     maindata = await DB.collection.find().toList();
-    data = await DB.collection.find().toList();
     await DB.closeCon();
+    data.addAll(maindata);
     maindata.sort((a, b) => a['Name'].compareTo(b['Name']));
     data.sort((a, b) => a['Name'].compareTo(b['Name']));
     setState(() {
@@ -184,6 +186,8 @@ class ManagerState extends State<Manager> {
                   await DB.collection
                       .remove({'Username': data[selectedBox]['Username']});
                   await DB.closeCon();
+                  getData();
+                  selectedBox = -1;
                 }
               },
               icon: Icon(
@@ -207,7 +211,12 @@ class ManagerState extends State<Manager> {
               return GestureDetector(
                 onTap: () {
                   setState(() {
-                    selectedBox = index;
+                    if (data[index]['Username'] == LoginState.manager ||
+                        data[index]['BranchName'] == '') {
+                      selectedBox = -1;
+                    } else {
+                      selectedBox = index;
+                    }
                   });
                 },
                 child: Padding(
