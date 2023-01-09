@@ -90,7 +90,10 @@ class EmployeeState extends State<Employee> {
                     color: Colors.deepPurple.shade500,
                     fontSize: 18,
                     fontWeight: FontWeight.bold),
-                prefixIcon: Icon(Icons.text_format_outlined),
+                prefixIcon: Icon(
+                  Icons.text_format_outlined,
+                  color: Colors.deepPurple.shade500,
+                ),
                 prefixIconColor: Colors.deepPurple.shade500,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.horizontal(),
@@ -124,8 +127,15 @@ class EmployeeState extends State<Employee> {
           children: [
             GFButton(
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: ((context) => AddEmployee())));
+                Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: ((context) => AddEmployee())))
+                    .whenComplete(() {
+                  getData();
+                  text.clear();
+                  selectedBox = -1;
+                });
               },
               icon: Icon(
                 Icons.add,
@@ -144,9 +154,14 @@ class EmployeeState extends State<Employee> {
                 if (selectedBox > -1) {
                   updateEmployee = data[selectedBox];
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: ((context) => UpdateEmployee())));
+                          context,
+                          MaterialPageRoute(
+                              builder: ((context) => UpdateEmployee())))
+                      .whenComplete(() {
+                    getData();
+                    text.clear();
+                    selectedBox = -1;
+                  });
                 }
               },
               icon: Icon(
@@ -172,6 +187,8 @@ class EmployeeState extends State<Employee> {
                   await DB.collection
                       .remove({'Username': data[selectedBox]['Username']});
                   await DB.closeCon();
+                  getData();
+                  selectedBox = -1;
                 }
               },
               icon: Icon(
