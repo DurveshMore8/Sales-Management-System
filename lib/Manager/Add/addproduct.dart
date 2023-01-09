@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:sadms/Database/database.dart';
+import 'package:sadms/Login/login.dart';
 
 class AddProduct extends StatefulWidget {
   AddProduct({Key? key}) : super(key: key);
@@ -75,7 +76,8 @@ class _AddProductState extends State<AddProduct> {
                               : error[0] == 'maximum'
                                   ? 'Maximum Limit is Exceeded'
                                   : null,
-                      prefixIcon: Icon(Icons.numbers),
+                      prefixIcon: Icon(Icons.numbers,
+                          color: Colors.deepPurple.shade500),
                       prefixIconColor: Colors.deepPurple.shade500,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.horizontal(),
@@ -118,7 +120,8 @@ class _AddProductState extends State<AddProduct> {
                               : error[1] == 'maximum'
                                   ? 'Maximum Limit is Exceeded'
                                   : null,
-                      prefixIcon: Icon(Icons.production_quantity_limits),
+                      prefixIcon: Icon(Icons.production_quantity_limits,
+                          color: Colors.deepPurple.shade500),
                       prefixIconColor: Colors.deepPurple.shade500,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.horizontal(),
@@ -164,7 +167,8 @@ class _AddProductState extends State<AddProduct> {
                               : error[2] == 'maximum'
                                   ? 'Maximum Limit is Exceeded'
                                   : null,
-                      prefixIcon: Icon(Icons.price_check),
+                      prefixIcon: Icon(Icons.price_check,
+                          color: Colors.deepPurple.shade500),
                       prefixIconColor: Colors.deepPurple.shade500,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.horizontal(),
@@ -210,7 +214,8 @@ class _AddProductState extends State<AddProduct> {
                               : error[3] == 'maximum'
                                   ? 'Maximum Limit is Exceeded'
                                   : null,
-                      prefixIcon: Icon(Icons.price_change),
+                      prefixIcon: Icon(Icons.price_change,
+                          color: Colors.deepPurple.shade500),
                       prefixIconColor: Colors.deepPurple.shade500,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.horizontal(),
@@ -253,7 +258,8 @@ class _AddProductState extends State<AddProduct> {
                               : error[4] == 'maximum'
                                   ? 'Maximum Limit is Exceeded'
                                   : null,
-                      prefixIcon: Icon(Icons.description),
+                      prefixIcon: Icon(Icons.description,
+                          color: Colors.deepPurple.shade500),
                       prefixIconColor: Colors.deepPurple.shade500,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.horizontal(),
@@ -288,7 +294,7 @@ class _AddProductState extends State<AddProduct> {
                             }
                           }
                           for (int i = 0; i < 5; i++) {
-                            if (controllers[i].text == '') {
+                            if (controllers[i].text == '' || error[i] != '') {
                               valid = false;
                             }
                           }
@@ -300,6 +306,7 @@ class _AddProductState extends State<AddProduct> {
                             'CostPrice': int.parse(controllers[2].text),
                             'SellingPrice': int.parse(controllers[3].text),
                             'Description': controllers[4].text,
+                            'AddedBy': LoginState.manager
                           };
                           await DB.openCon('product');
                           await DB.collection.insertOne(query);
