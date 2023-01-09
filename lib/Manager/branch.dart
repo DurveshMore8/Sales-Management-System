@@ -14,16 +14,29 @@ class Branch extends StatefulWidget {
 }
 
 class BranchState extends State<Branch> {
+  static List<Map<String, dynamic>> maindata = [];
   List<Map<String, dynamic>> data = [];
   static Map<String, dynamic> updateBranch = {};
   var text = TextEditingController();
-  int selectedvalue = 1;
   int selectedBox = -1;
-  List<String> branchid = [];
-  List<String> branchname = [];
-  List<String> location = [];
-  List<String> city = [];
-  List<String> state = [];
+
+  void getData() async {
+    data.clear();
+    await DB.openCon('branch');
+    maindata = await DB.collection.find().toList();
+    await DB.closeCon();
+    setState(() {
+      data.addAll(maindata);
+      maindata.sort((a, b) => a['BranchName'].compareTo(b['BranchName']));
+      data.sort((a, b) => a['BranchName'].compareTo(b['BranchName']));
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,185 +53,55 @@ class BranchState extends State<Branch> {
           ),
         ),
         SizedBox(height: 50),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Sort By:",
-              style:
-                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        SizedBox(
+          width: 750,
+          child: TextField(
+            controller: text,
+            decoration: InputDecoration(
+              fillColor: Colors.white,
+              filled: true,
+              hintText: 'Mahaveer Sales',
+              labelText: 'Branch Name',
+              floatingLabelAlignment: FloatingLabelAlignment.center,
+              labelStyle: TextStyle(
+                  backgroundColor: Colors.white,
+                  color: Colors.deepPurple.shade500,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold),
+              prefixIcon: Icon(
+                Icons.text_format_outlined,
+                color: Colors.deepPurple.shade500,
+              ),
+              prefixIconColor: Colors.deepPurple.shade500,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.horizontal(),
+              ),
             ),
-            SizedBox(width: 30),
-            DropdownButton(
-                dropdownColor: Colors.deepPurple[600],
-                style: TextStyle(color: Colors.white),
-                iconEnabledColor: Colors.white,
-                value: selectedvalue,
-                items: [
-                  DropdownMenuItem(
-                    value: 1,
-                    alignment: Alignment.center,
-                    child: Text('--Select Type--'),
-                  ),
-                  DropdownMenuItem(
-                      value: 2,
-                      alignment: Alignment.center,
-                      child: Text('Branch Name')),
-                  DropdownMenuItem(
-                      value: 3,
-                      alignment: Alignment.center,
-                      child: Text('Branch Id')),
-                ],
-                onChanged: (value) async {
-                  branchid.clear();
-                  branchname.clear();
-                  location.clear();
-                  city.clear();
-                  state.clear();
-                  selectedBox = -1;
-                  if (value == 2) {
-                    await DB.openCon('branch');
-                    data = await DB.collection.find().toList();
-                    await DB.closeCon();
-                    data.sort(
-                        (a, b) => a["BranchName"].compareTo(b["BranchName"]));
-                    setState(() {
-                      selectedvalue = value!;
-                      branchname.clear();
-                      for (int i = 0; i < data.length; i++) {
-                        branchid.add(data[i]['BranchId']);
-                        branchname.add(data[i]['BranchName']);
-                        location.add(data[i]['Location']);
-                        city.add(data[i]['City']);
-                        state.add(data[i]['State']);
+            onChanged: (value) {
+              setState(() {
+                data.clear();
+                if (value == '') {
+                  data.addAll(maindata);
+                } else {
+                  for (int i = 0; i < maindata.length; i++) {
+                    if (value.length <= maindata[i]['BranchName'].length) {
+                      String branchnamestring = '';
+                      for (int j = 0; j < value.length; j++) {
+                        branchnamestring =
+                            branchnamestring + maindata[i]['BranchName'][j];
                       }
-                    });
-                  } else if (value == 3) {
-                    await DB.openCon('branch');
-                    data = await DB.collection.find().toList();
-                    await DB.closeCon();
-                    data.sort((a, b) => a["BranchId"].compareTo(b["BranchId"]));
-                    setState(() {
-                      selectedvalue = value!;
-                      branchname.clear();
-                      for (int i = 0; i < data.length; i++) {
-                        branchid.add(data[i]['BranchId']);
-                        branchname.add(data[i]['BranchName']);
-                        location.add(data[i]['Location']);
-                        city.add(data[i]['City']);
-                        state.add(data[i]['State']);
+                      if (value.toLowerCase() ==
+                          branchnamestring.toLowerCase()) {
+                        data.add(maindata[i]);
                       }
-                    });
-                  } else {
-                    setState(() {
-                      selectedvalue = value!;
-                    });
+                    }
                   }
-                }),
-          ],
+                }
+                selectedBox = -1;
+              });
+            },
+          ),
         ),
-        SizedBox(height: 50),
-        selectedvalue == 2
-            ? SizedBox(
-                width: 750,
-                child: TextField(
-                  controller: text,
-                  decoration: InputDecoration(
-                    fillColor: Colors.white,
-                    filled: true,
-                    hintText: 'Mahaveer Sales',
-                    labelText: 'Branch Name',
-                    floatingLabelAlignment: FloatingLabelAlignment.center,
-                    labelStyle: TextStyle(
-                        backgroundColor: Colors.white,
-                        color: Colors.deepPurple.shade500,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold),
-                    prefixIcon: Icon(Icons.text_format_outlined),
-                    prefixIconColor: Colors.deepPurple.shade500,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.horizontal(),
-                    ),
-                  ),
-                  onChanged: (value) {
-                    setState(() {
-                      branchid.clear();
-                      branchname.clear();
-                      location.clear();
-                      city.clear();
-                      state.clear();
-                      for (int i = 0; i < data.length; i++) {
-                        if (value.length <= data[i]['BranchName'].length) {
-                          String branchnamestring = '';
-                          for (int j = 0; j < value.length; j++) {
-                            branchnamestring =
-                                branchnamestring + data[i]['BranchName'][j];
-                          }
-                          if (value.toLowerCase() ==
-                              branchnamestring.toLowerCase()) {
-                            branchid.add(data[i]['BranchId']);
-                            branchname.add(data[i]['BranchName']);
-                            location.add(data[i]['Location']);
-                            city.add(data[i]['City']);
-                            state.add(data[i]['State']);
-                          }
-                        }
-                      }
-                    });
-                  },
-                ),
-              )
-            : selectedvalue == 3
-                ? SizedBox(
-                    width: 750,
-                    child: TextField(
-                      controller: text,
-                      decoration: InputDecoration(
-                        fillColor: Colors.white,
-                        filled: true,
-                        hintText: 'MahSales3429',
-                        labelText: 'Branch Id',
-                        floatingLabelAlignment: FloatingLabelAlignment.center,
-                        labelStyle: TextStyle(
-                            backgroundColor: Colors.white,
-                            color: Colors.deepPurple.shade500,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold),
-                        prefixIcon: Icon(Icons.text_format_outlined),
-                        prefixIconColor: Colors.deepPurple.shade500,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.horizontal(),
-                        ),
-                      ),
-                      onChanged: (value) {
-                        setState(() {
-                          branchid.clear();
-                          branchname.clear();
-                          location.clear();
-                          city.clear();
-                          state.clear();
-                          for (int i = 0; i < data.length; i++) {
-                            if (value.length <= data[i]['BranchId'].length) {
-                              String branchidstring = '';
-                              for (int j = 0; j < value.length; j++) {
-                                branchidstring =
-                                    branchidstring + data[i]['BranchId'][j];
-                              }
-                              if (value.toLowerCase() ==
-                                  branchidstring.toLowerCase()) {
-                                branchid.add(data[i]['BranchId']);
-                                branchname.add(data[i]['BranchName']);
-                                location.add(data[i]['Location']);
-                                city.add(data[i]['City']);
-                                state.add(data[i]['State']);
-                              }
-                            }
-                          }
-                        });
-                      },
-                    ),
-                  )
-                : SizedBox(),
         SizedBox(height: 50),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -226,7 +109,12 @@ class BranchState extends State<Branch> {
             GFButton(
               onPressed: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: ((context) => AddBranch())));
+                        MaterialPageRoute(builder: ((context) => AddBranch())))
+                    .whenComplete(() {
+                  getData();
+                  text.clear();
+                  selectedBox = -1;
+                });
               },
               icon: Icon(
                 Icons.add,
@@ -245,9 +133,14 @@ class BranchState extends State<Branch> {
                 if (selectedBox > -1) {
                   updateBranch = data[selectedBox];
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: ((context) => UpdateBranch())));
+                          context,
+                          MaterialPageRoute(
+                              builder: ((context) => UpdateBranch())))
+                      .whenComplete(() {
+                    getData();
+                    text.clear();
+                    selectedBox = -1;
+                  });
                 }
               },
               icon: Icon(
@@ -273,9 +166,8 @@ class BranchState extends State<Branch> {
                   await DB.collection
                       .remove({'BranchName': data[selectedBox]['BranchName']});
                   await DB.closeCon();
-                  setState(() {
-                    selectedvalue = 1;
-                  });
+                  getData();
+                  selectedBox = -1;
                 }
               },
               icon: Icon(
@@ -292,158 +184,79 @@ class BranchState extends State<Branch> {
           ],
         ),
         SizedBox(height: 50),
-        selectedvalue == 2
-            ? Expanded(
-                child: ListView.builder(
-                  itemCount: branchname.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          selectedBox = index;
-                        });
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          color: selectedBox == index
-                              ? Colors.deepPurple[900]
-                              : Colors.deepPurple[700],
-                          height: 100,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Text(
-                                    'Branch Name: ${branchname[index]}',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 17,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Location: ${location[index]}',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 17,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Text(
-                                    'Branch Id: ${branchid[index]}',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 17,
-                                    ),
-                                  ),
-                                  Text(
-                                    'City: ${city[index]}',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 17,
-                                    ),
-                                  ),
-                                  Text(
-                                    'State: ${state[index]}',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 17,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              )
-            : selectedvalue == 3
-                ? Expanded(
-                    child: ListView.builder(
-                        itemCount: branchid.length,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                selectedBox = index;
-                              });
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Container(
-                                color: selectedBox == index
-                                    ? Colors.deepPurple[900]
-                                    : Colors.deepPurple[700],
-                                height: 100,
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Text(
-                                          'Branch Id: ${branchid[index]}',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 17,
-                                          ),
-                                        ),
-                                        Text(
-                                          'Location: ${location[index]}',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 17,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Text(
-                                          'Branch Name: ${branchname[index]}',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 17,
-                                          ),
-                                        ),
-                                        Text(
-                                          'City: ${city[index]}',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 17,
-                                          ),
-                                        ),
-                                        Text(
-                                          'State: ${state[index]}',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 17,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: data.length,
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                onTap: () {
+                  setState(() {
+                    selectedBox = index;
+                  });
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    color: selectedBox == index
+                        ? Colors.deepPurple[900]
+                        : Colors.deepPurple[700],
+                    height: 100,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text(
+                              'Branch Name: ${data[index]['BranchName']}',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 17,
                               ),
                             ),
-                          );
-                        }))
-                : SizedBox(),
+                            Text(
+                              'Location: ${data[index]['Location']}',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 17,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text(
+                              'Branch Id: ${data[index]['BranchId']}',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 17,
+                              ),
+                            ),
+                            Text(
+                              'City: ${data[index]['City']}',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 17,
+                              ),
+                            ),
+                            Text(
+                              'State: ${data[index]['State']}',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 17,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
       ],
     );
   }
