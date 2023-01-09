@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:sadms/Database/database.dart';
+import 'package:sadms/Login/login.dart';
 import 'package:sadms/Manager/employee.dart';
 
 class UpdateEmployee extends StatefulWidget {
@@ -20,13 +21,35 @@ class UpdateEmployeeState extends State<UpdateEmployee> {
   List<TextEditingController> controllers =
       List.generate(6, (index) => TextEditingController());
   List<String> error = ['', '', '', '', '', ''];
+  List<String> branches = [
+    ' Select Branch                                                                                  ',
+    EmployeeState.updateEmployee['BranchName']
+  ];
   int age = -1;
   String gender = 'a';
   bool valid = true;
 
+  void getData() async {
+    await DB.openCon('branch');
+    List<Map<String, dynamic>> data = await DB.collection.find().toList();
+    await DB.closeCon();
+    setState(() {
+      for (int i = 0; i < data.length; i++) {
+        if (data[i]['BranchName'] !=
+            EmployeeState.updateEmployee['BranchName']) {
+          branches.add(data[i]['BranchName']);
+        }
+      }
+      branches.sort((a, b) => a.compareTo(b));
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+    controllers[5].text =
+        ' Select Branch                                                                                  ';
+    getData();
     controllers[0].text = EmployeeState.updateEmployee['Name'];
     controllers[1].text = EmployeeState.updateEmployee['Username'];
     controllers[2].text = EmployeeState.updateEmployee['Phone'];
@@ -92,7 +115,8 @@ class UpdateEmployeeState extends State<UpdateEmployee> {
                               : error[0] == 'maximum'
                                   ? 'Maximum Limit is Exceeded'
                                   : null,
-                      prefixIcon: Icon(Icons.text_format_outlined),
+                      prefixIcon: Icon(Icons.text_format_outlined,
+                          color: Colors.deepPurple.shade500),
                       prefixIconColor: Colors.deepPurple.shade500,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.horizontal(),
@@ -136,7 +160,8 @@ class UpdateEmployeeState extends State<UpdateEmployee> {
                               : error[1] == 'maximum'
                                   ? 'Maximum Limit is Exceeded'
                                   : null,
-                      prefixIcon: Icon(Icons.supervised_user_circle),
+                      prefixIcon: Icon(Icons.supervised_user_circle,
+                          color: Colors.deepPurple.shade500),
                       prefixIconColor: Colors.deepPurple.shade500,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.horizontal(),
@@ -180,7 +205,8 @@ class UpdateEmployeeState extends State<UpdateEmployee> {
                           : error[2] == 'invalid'
                               ? 'Enter a 10 digit Mobile Number'
                               : null,
-                      prefixIcon: Icon(Icons.phone),
+                      prefixIcon:
+                          Icon(Icons.phone, color: Colors.deepPurple.shade500),
                       prefixIconColor: Colors.deepPurple.shade500,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.horizontal(),
@@ -217,7 +243,8 @@ class UpdateEmployeeState extends State<UpdateEmployee> {
                           : error[3] == 'invalid'
                               ? 'Invalid Email Id'
                               : null,
-                      prefixIcon: Icon(Icons.email),
+                      prefixIcon:
+                          Icon(Icons.email, color: Colors.deepPurple.shade500),
                       prefixIconColor: Colors.deepPurple.shade500,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.horizontal(),
@@ -334,10 +361,12 @@ class UpdateEmployeeState extends State<UpdateEmployee> {
                           fontWeight: FontWeight.bold),
                       errorText:
                           error[4] == 'empty' ? 'Date Can\'t be empty' : null,
-                      prefixIcon: Icon(Icons.date_range),
+                      prefixIcon: Icon(Icons.date_range,
+                          color: Colors.deepPurple.shade500),
                       prefixIconColor: Colors.deepPurple.shade500,
                       suffixIcon: IconButton(
-                          icon: Icon(Icons.edit_calendar),
+                          icon: Icon(Icons.edit_calendar,
+                              color: Colors.deepPurple.shade500),
                           onPressed: () {
                             showDatePicker(
                               context: context,
@@ -365,42 +394,60 @@ class UpdateEmployeeState extends State<UpdateEmployee> {
                   ),
                 ),
                 error[4] == '' ? SizedBox(height: 34) : SizedBox(height: 10),
-                SizedBox(
+                Container(
+                  color: Colors.white,
                   width: 600,
-                  child: TextField(
-                    controller: controllers[5],
-                    decoration: InputDecoration(
-                      fillColor: Colors.white,
-                      filled: true,
-                      hintText: 'Naupada Branch',
-                      labelText: 'Branch Name',
-                      labelStyle: TextStyle(
-                          backgroundColor: Colors.white,
-                          color: Colors.deepPurple.shade500,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold),
-                      errorText: error[5] == 'empty'
-                          ? 'Branch Name Can\'t be empty'
-                          : error[5] == 'invalid'
-                              ? 'Invalid Branch Name'
-                              : null,
-                      prefixIcon: Icon(Icons.store),
-                      prefixIconColor: Colors.deepPurple.shade500,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.horizontal(),
+                  child: Row(
+                    children: [
+                      SizedBox(width: 9),
+                      SizedBox(
+                          child:
+                              Icon(Icons.store, color: Colors.deepPurple[500])),
+                      SizedBox(width: 7),
+                      DropdownButton<String>(
+                        dropdownColor: Colors.white,
+                        value: controllers[5].text,
+                        iconEnabledColor: Colors.deepPurple.shade500,
+                        style: TextStyle(
+                            color: Colors.deepPurple.shade500,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold),
+                        items: branches
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(
+                              value,
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            controllers[5].text = newValue!;
+                            if (controllers[5].text ==
+                                ' Select Branch                                                                                  ') {
+                              error[5] = 'Branch not selected';
+                            } else {
+                              error[5] = '';
+                            }
+                          });
+                        },
                       ),
-                    ),
-                    onChanged: (value) {
-                      setState(() {
-                        if (value.length < 8 || value.length > 20) {
-                          error[5] = 'invalid';
-                        } else {
-                          error[5] = '';
-                        }
-                      });
-                    },
+                    ],
                   ),
                 ),
+                error[5] == 'Branch not selected'
+                    ? Container(
+                        width: 575,
+                        height: 34,
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Branch Selection is Mandatory',
+                          style:
+                              TextStyle(color: Colors.red[700], fontSize: 12),
+                          textAlign: TextAlign.start,
+                        ))
+                    : SizedBox(height: 34),
               ],
             ),
             error[5] == '' ? SizedBox(height: 30) : SizedBox(height: 6),
@@ -417,9 +464,14 @@ class UpdateEmployeeState extends State<UpdateEmployee> {
                         }
                       }
                       for (int i = 0; i < 6; i++) {
-                        if (controllers[i].text == '') {
+                        if (controllers[i].text == '' || error[i] != '') {
                           valid = false;
                         }
+                      }
+                      if (controllers[5].text ==
+                          ' Select Branch                                                                                  ') {
+                        valid = false;
+                        error[5] = 'Branch not selected';
                       }
                       if (gender == '' || gender == 'a') {
                         valid = false;
@@ -442,8 +494,10 @@ class UpdateEmployeeState extends State<UpdateEmployee> {
                           'Username', controllers[1].text, 'Age', age);
                       await DB.updatedata('Username', controllers[1].text,
                           'BranchName', controllers[5].text);
+                      await DB.updatedata('Username', controllers[1].text,
+                          'UpdatedBy', LoginState.manager);
                       await DB.closeCon();
-                      Navigator.pop(context, {'message': 'Updated'});
+                      Navigator.pop(context);
                     }
                   },
                   icon: Icon(
@@ -467,7 +521,8 @@ class UpdateEmployeeState extends State<UpdateEmployee> {
                       controllers[3].clear();
                       gender = '';
                       controllers[4].clear();
-                      controllers[5].clear();
+                      controllers[5].text =
+                          ' Select Branch                                                                                  ';
                     });
                   },
                   icon: Icon(
