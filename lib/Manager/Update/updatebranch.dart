@@ -1,8 +1,10 @@
 // ignore_for_file: prefer_const_constructors_in_immutables, library_private_types_in_public_api, prefer_const_constructors, use_build_context_synchronously
 
+import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:sadms/Database/database.dart';
+import 'package:sadms/Login/login.dart';
 import 'package:sadms/Manager/branch.dart';
 
 class UpdateBranch extends StatefulWidget {
@@ -83,7 +85,8 @@ class _UpdateBranchState extends State<UpdateBranch> {
                               : error[0] == 'maximum'
                                   ? 'Maximum Limit is Exceeded'
                                   : null,
-                      prefixIcon: Icon(Icons.numbers),
+                      prefixIcon: Icon(Icons.numbers,
+                          color: Colors.deepPurple.shade500),
                       prefixIconColor: Colors.deepPurple.shade500,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.horizontal(),
@@ -127,7 +130,8 @@ class _UpdateBranchState extends State<UpdateBranch> {
                               : error[1] == 'maximum'
                                   ? 'Maximum Limit is Exceeded'
                                   : null,
-                      prefixIcon: Icon(Icons.store),
+                      prefixIcon:
+                          Icon(Icons.store, color: Colors.deepPurple.shade500),
                       prefixIconColor: Colors.deepPurple.shade500,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.horizontal(),
@@ -170,7 +174,8 @@ class _UpdateBranchState extends State<UpdateBranch> {
                               : error[2] == 'maximum'
                                   ? 'Maximum Limit is Exceeded'
                                   : null,
-                      prefixIcon: Icon(Icons.location_searching),
+                      prefixIcon: Icon(Icons.location_searching,
+                          color: Colors.deepPurple.shade500),
                       prefixIconColor: Colors.deepPurple.shade500,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.horizontal(),
@@ -192,92 +197,92 @@ class _UpdateBranchState extends State<UpdateBranch> {
                   ),
                 ),
                 error[2] == '' ? SizedBox(height: 39) : SizedBox(height: 15),
-                SizedBox(
+                Container(
                   width: 600,
-                  child: TextField(
-                    controller: controllers[3], // Only numbers can be entered
-                    decoration: InputDecoration(
-                      fillColor: Colors.white,
-                      filled: true,
-                      hintText: 'Mumbai',
-                      labelText: 'City',
-                      labelStyle: TextStyle(
-                          backgroundColor: Colors.white,
+                  color: Colors.white,
+                  child: Column(
+                    children: [
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          SizedBox(width: 9),
+                          SizedBox(
+                              child: Icon(Icons.location_city,
+                                  color: Colors.deepPurple[500])),
+                          SizedBox(width: 7),
+                          SizedBox(
+                            width: 100,
+                            child: Text('State City',
+                                style: TextStyle(
+                                    color: Colors.deepPurple[500],
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold)),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      CSCPicker(
+                        dropdownHeadingStyle: TextStyle(
+                            color: Colors.deepPurple.shade500,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold),
+                        dropdownItemStyle: TextStyle(
                           color: Colors.deepPurple.shade500,
                           fontSize: 18,
-                          fontWeight: FontWeight.bold),
-                      errorText: error[3] == 'empty'
-                          ? 'City Can\'t be empty'
-                          : error[3] == 'minimum'
-                              ? 'Minimum Limit is not Reached'
-                              : error[3] == 'maximum'
-                                  ? 'Maximum Limit is Exceeded'
-                                  : null,
-                      prefixIcon: Icon(Icons.location_city),
-                      prefixIconColor: Colors.deepPurple.shade500,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.horizontal(),
+                        ),
+                        selectedItemStyle: TextStyle(
+                            color: Colors.deepPurple.shade500,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold),
+                        dropdownDecoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.zero),
+                            color: Colors.white,
+                            shape: BoxShape.rectangle),
+                        disabledDropdownDecoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.zero),
+                            color: Colors.white),
+                        layout: Layout.vertical,
+                        defaultCountry: DefaultCountry.India,
+                        disableCountry: true,
+                        onCountryChanged: (country) {},
+                        onStateChanged: (value) {
+                          setState(() {
+                            controllers[4].text = value.toString();
+                          });
+                        },
+                        onCityChanged: (value) {
+                          setState(() {
+                            controllers[3].text = value.toString();
+                          });
+                        },
                       ),
-                    ),
-                    onChanged: (value) {
-                      setState(() {
-                        if (value.isNotEmpty) {
-                          if (value.length < 3) {
-                            error[3] = 'minimum';
-                          } else if (value.length > 20) {
-                            error[3] = 'maximum';
-                          } else {
-                            error[3] = '';
-                          }
-                        }
-                      });
-                    },
+                    ],
                   ),
                 ),
-                error[3] == '' ? SizedBox(height: 39) : SizedBox(height: 15),
-                SizedBox(
-                  width: 600,
-                  child: TextField(
-                    controller: controllers[4],
-                    decoration: InputDecoration(
-                      fillColor: Colors.white,
-                      filled: true,
-                      hintText: 'Maharashtra',
-                      labelText: 'State',
-                      labelStyle: TextStyle(
-                          backgroundColor: Colors.white,
-                          color: Colors.deepPurple.shade500,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold),
-                      errorText: error[4] == 'empty'
-                          ? 'Name Can\'t be empty'
-                          : error[4] == 'minimum'
-                              ? 'Minimum Limit is not Reached'
-                              : error[4] == 'maximum'
-                                  ? 'Maximum Limit is Exceeded'
-                                  : null,
-                      prefixIcon: Icon(Icons.location_on),
-                      prefixIconColor: Colors.deepPurple.shade500,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.horizontal(),
-                      ),
-                    ),
-                    onChanged: (value) {
-                      setState(() {
-                        if (value.isNotEmpty) {
-                          if (value.length < 3) {
-                            error[4] = 'minimum';
-                          } else if (value.length > 20) {
-                            error[4] = 'maximum';
-                          } else {
-                            error[4] = '';
-                          }
-                        }
-                      });
-                    },
-                  ),
-                ),
-                error[4] == '' ? SizedBox(height: 50) : SizedBox(height: 26),
+                error[3] == 'empty'
+                    ? Container(
+                        width: 575,
+                        height: 50,
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'City Can\'t be unselected',
+                          style:
+                              TextStyle(color: Colors.red[700], fontSize: 12),
+                          textAlign: TextAlign.start,
+                        ))
+                    : error[4] == 'empty'
+                        ? Container(
+                            width: 575,
+                            height: 50,
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'State Can\'t be unselected',
+                              style: TextStyle(
+                                  color: Colors.red[700], fontSize: 12),
+                              textAlign: TextAlign.start,
+                            ))
+                        : SizedBox(height: 50),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -288,6 +293,8 @@ class _UpdateBranchState extends State<UpdateBranch> {
                           for (int i = 0; i < 5; i++) {
                             if (controllers[i].text == '') {
                               error[i] = 'empty';
+                            } else {
+                              error[i] = '';
                             }
                           }
                           for (int i = 0; i < 5; i++) {
@@ -299,13 +306,13 @@ class _UpdateBranchState extends State<UpdateBranch> {
                         if (valid) {
                           await DB.openCon('branch');
                           await DB.updatedata('BranchId', controllers[0].text,
-                              'BranchName', controllers[1].text);
-                          await DB.updatedata('BranchId', controllers[0].text,
                               'Location', controllers[2].text);
                           await DB.updatedata('BranchId', controllers[0].text,
                               'City', controllers[3].text);
                           await DB.updatedata('BranchId', controllers[0].text,
                               'State', controllers[4].text);
+                          await DB.updatedata('BranchId', controllers[0].text,
+                              'UpdatedBy', LoginState.manager);
                           await DB.closeCon();
                           Navigator.pop(context);
                         }

@@ -1,8 +1,11 @@
-// ignore_for_file: prefer_const_constructors_in_immutables, library_private_types_in_public_api, prefer_const_constructors, use_build_context_synchronously
+// ignore_for_file: prefer_const_constructors_in_immutables, library_private_types_in_public_api, prefer_const_constructors, use_build_context_synchronously, prefer_const_literals_to_create_immutables
 
+import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:sadms/Database/database.dart';
+import 'package:sadms/Login/login.dart';
+import 'package:sadms/Manager/branch.dart';
 
 class AddBranch extends StatefulWidget {
   AddBranch({Key? key}) : super(key: key);
@@ -71,8 +74,11 @@ class _AddBranchState extends State<AddBranch> {
                               ? 'Minimum Limit is not Reached'
                               : error[0] == 'maximum'
                                   ? 'Maximum Limit is Exceeded'
-                                  : null,
-                      prefixIcon: Icon(Icons.numbers),
+                                  : error[0] == 'already exist'
+                                      ? 'Branch Id already exist'
+                                      : null,
+                      prefixIcon: Icon(Icons.numbers,
+                          color: Colors.deepPurple.shade500),
                       prefixIconColor: Colors.deepPurple.shade500,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.horizontal(),
@@ -115,7 +121,8 @@ class _AddBranchState extends State<AddBranch> {
                               : error[1] == 'maximum'
                                   ? 'Maximum Limit is Exceeded'
                                   : null,
-                      prefixIcon: Icon(Icons.store),
+                      prefixIcon:
+                          Icon(Icons.store, color: Colors.deepPurple.shade500),
                       prefixIconColor: Colors.deepPurple.shade500,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.horizontal(),
@@ -158,7 +165,8 @@ class _AddBranchState extends State<AddBranch> {
                               : error[2] == 'maximum'
                                   ? 'Maximum Limit is Exceeded'
                                   : null,
-                      prefixIcon: Icon(Icons.location_searching),
+                      prefixIcon: Icon(Icons.location_searching,
+                          color: Colors.deepPurple.shade500),
                       prefixIconColor: Colors.deepPurple.shade500,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.horizontal(),
@@ -180,92 +188,92 @@ class _AddBranchState extends State<AddBranch> {
                   ),
                 ),
                 error[2] == '' ? SizedBox(height: 39) : SizedBox(height: 15),
-                SizedBox(
+                Container(
                   width: 600,
-                  child: TextField(
-                    controller: controllers[3], // Only numbers can be entered
-                    decoration: InputDecoration(
-                      fillColor: Colors.white,
-                      filled: true,
-                      hintText: 'Mumbai',
-                      labelText: 'City',
-                      labelStyle: TextStyle(
-                          backgroundColor: Colors.white,
+                  color: Colors.white,
+                  child: Column(
+                    children: [
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          SizedBox(width: 9),
+                          SizedBox(
+                              child: Icon(Icons.location_city,
+                                  color: Colors.deepPurple[500])),
+                          SizedBox(width: 7),
+                          SizedBox(
+                            width: 100,
+                            child: Text('State City',
+                                style: TextStyle(
+                                    color: Colors.deepPurple[500],
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold)),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      CSCPicker(
+                        dropdownHeadingStyle: TextStyle(
+                            color: Colors.deepPurple.shade500,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold),
+                        dropdownItemStyle: TextStyle(
                           color: Colors.deepPurple.shade500,
                           fontSize: 18,
-                          fontWeight: FontWeight.bold),
-                      errorText: error[3] == 'empty'
-                          ? 'City Can\'t be empty'
-                          : error[3] == 'minimum'
-                              ? 'Minimum Limit is not Reached'
-                              : error[3] == 'maximum'
-                                  ? 'Maximum Limit is Exceeded'
-                                  : null,
-                      prefixIcon: Icon(Icons.location_city),
-                      prefixIconColor: Colors.deepPurple.shade500,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.horizontal(),
+                        ),
+                        selectedItemStyle: TextStyle(
+                            color: Colors.deepPurple.shade500,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold),
+                        dropdownDecoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.zero),
+                            color: Colors.white,
+                            shape: BoxShape.rectangle),
+                        disabledDropdownDecoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.zero),
+                            color: Colors.white),
+                        layout: Layout.vertical,
+                        defaultCountry: DefaultCountry.India,
+                        disableCountry: true,
+                        onCountryChanged: (country) {},
+                        onStateChanged: (value) {
+                          setState(() {
+                            controllers[4].text = value.toString();
+                          });
+                        },
+                        onCityChanged: (value) {
+                          setState(() {
+                            controllers[3].text = value.toString();
+                          });
+                        },
                       ),
-                    ),
-                    onChanged: (value) {
-                      setState(() {
-                        if (value.isNotEmpty) {
-                          if (value.length < 3) {
-                            error[3] = 'minimum';
-                          } else if (value.length > 20) {
-                            error[3] = 'maximum';
-                          } else {
-                            error[3] = '';
-                          }
-                        }
-                      });
-                    },
+                    ],
                   ),
                 ),
-                error[3] == '' ? SizedBox(height: 39) : SizedBox(height: 15),
-                SizedBox(
-                  width: 600,
-                  child: TextField(
-                    controller: controllers[4],
-                    decoration: InputDecoration(
-                      fillColor: Colors.white,
-                      filled: true,
-                      hintText: 'Maharashtra',
-                      labelText: 'State',
-                      labelStyle: TextStyle(
-                          backgroundColor: Colors.white,
-                          color: Colors.deepPurple.shade500,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold),
-                      errorText: error[4] == 'empty'
-                          ? 'Name Can\'t be empty'
-                          : error[4] == 'minimum'
-                              ? 'Minimum Limit is not Reached'
-                              : error[4] == 'maximum'
-                                  ? 'Maximum Limit is Exceeded'
-                                  : null,
-                      prefixIcon: Icon(Icons.location_on),
-                      prefixIconColor: Colors.deepPurple.shade500,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.horizontal(),
-                      ),
-                    ),
-                    onChanged: (value) {
-                      setState(() {
-                        if (value.isNotEmpty) {
-                          if (value.length < 3) {
-                            error[4] = 'minimum';
-                          } else if (value.length > 20) {
-                            error[4] = 'maximum';
-                          } else {
-                            error[4] = '';
-                          }
-                        }
-                      });
-                    },
-                  ),
-                ),
-                error[4] == '' ? SizedBox(height: 50) : SizedBox(height: 26),
+                error[3] == 'empty'
+                    ? Container(
+                        width: 575,
+                        height: 50,
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'City Can\'t be unselected',
+                          style:
+                              TextStyle(color: Colors.red[700], fontSize: 12),
+                          textAlign: TextAlign.start,
+                        ))
+                    : error[4] == 'empty'
+                        ? Container(
+                            width: 575,
+                            height: 50,
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'State Can\'t be unselected',
+                              style: TextStyle(
+                                  color: Colors.red[700], fontSize: 12),
+                              textAlign: TextAlign.start,
+                            ))
+                        : SizedBox(height: 50),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -276,14 +284,24 @@ class _AddBranchState extends State<AddBranch> {
                           for (int i = 0; i < 5; i++) {
                             if (controllers[i].text == '') {
                               error[i] = 'empty';
+                            } else {
+                              error[i] = '';
                             }
                           }
                           for (int i = 0; i < 5; i++) {
-                            if (controllers[i].text == '') {
+                            if (controllers[i].text == '' || error[i] != '') {
                               valid = false;
                             }
                           }
                         });
+                        for (int i = 0; i < BranchState.maindata.length; i++) {
+                          if (controllers[0].text ==
+                              BranchState.maindata[i]['BranchId']) {
+                            error[0] = 'already exist';
+                            valid = false;
+                            break;
+                          }
+                        }
                         if (valid) {
                           Map<String, dynamic> query = {
                             'BranchId': controllers[0].text,
@@ -291,6 +309,7 @@ class _AddBranchState extends State<AddBranch> {
                             'Location': controllers[2].text,
                             'City': controllers[3].text,
                             'State': controllers[4].text,
+                            'AddedBy': LoginState.manager
                           };
                           await DB.openCon('branch');
                           await DB.collection.insertOne(query);
@@ -311,7 +330,7 @@ class _AddBranchState extends State<AddBranch> {
                               'ProductId': productid[i],
                               'ProductName': productname[i],
                               'BranchName': controllers[1].text,
-                              'Quantity': 0
+                              'Quantity': 0,
                             };
                             await DB.collection.insertOne(query);
                           }

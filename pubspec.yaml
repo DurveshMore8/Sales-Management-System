@@ -40,6 +40,7 @@ dependencies:
   mongo_dart: ^0.8.2
   age_calculator: ^1.0.0
   email_validator: ^2.1.17
+  csc_picker: ^0.2.6
 
 dev_dependencies:
   flutter_test:
