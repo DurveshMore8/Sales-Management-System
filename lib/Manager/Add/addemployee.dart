@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:sadms/Database/database.dart';
 import 'package:sadms/Login/login.dart';
+import 'package:sadms/Manager/employee.dart';
 
 class AddEmployee extends StatefulWidget {
   AddEmployee({Key? key}) : super(key: key);
@@ -145,7 +146,9 @@ class AddEmployeeState extends State<AddEmployee> {
                               ? 'Minimum Limit is not Reached'
                               : error[1] == 'maximum'
                                   ? 'Maximum Limit is Exceeded'
-                                  : null,
+                                  : error[1] == 'already exist'
+                                      ? 'Username already exist'
+                                      : null,
                       prefixIcon: Icon(Icons.supervised_user_circle,
                           color: Colors.deepPurple.shade500),
                       prefixIconColor: Colors.deepPurple.shade500,
@@ -461,6 +464,14 @@ class AddEmployeeState extends State<AddEmployee> {
                       if (gender == '' || gender == 'a') {
                         valid = false;
                         gender = '';
+                      }
+                      for (int i = 0; i < EmployeeState.maindata.length; i++) {
+                        if (controllers[1].text ==
+                            EmployeeState.maindata[i]['Username']) {
+                          error[1] = 'already exist';
+                          valid = false;
+                          break;
+                        }
                       }
                     });
                     if (valid) {
