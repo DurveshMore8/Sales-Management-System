@@ -144,9 +144,8 @@ class LoginState extends State<Login> {
                                             : error[0] == 'maximum'
                                                 ? 'Maximum Limit is Exceeded'
                                                 : null,
-                                    prefixIcon:
-                                        Icon(Icons.text_format_outlined),
-                                    prefixIconColor: Colors.deepPurple.shade500,
+                                    prefixIcon: Icon(Icons.text_format_outlined,
+                                        color: Colors.deepPurple.shade500),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.horizontal(),
                                     ),
@@ -187,8 +186,8 @@ class LoginState extends State<Login> {
                                         : error[1] == 'invalid'
                                             ? 'Invalid Email Id'
                                             : null,
-                                    prefixIcon: Icon(Icons.email_outlined),
-                                    prefixIconColor: Colors.deepPurple.shade500,
+                                    prefixIcon: Icon(Icons.email_outlined,
+                                        color: Colors.deepPurple.shade500),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.horizontal(),
                                     ),
@@ -232,18 +231,20 @@ class LoginState extends State<Login> {
                                                 : error[2] == 'wrong'
                                                     ? 'Wrong Credentials Entered'
                                                     : null,
-                                    prefixIcon: Icon(Icons.lock_outlined),
-                                    prefixIconColor: Colors.deepPurple.shade500,
+                                    prefixIcon: Icon(Icons.lock_outlined,
+                                        color: Colors.deepPurple.shade500),
                                     suffixIcon: IconButton(
                                         onPressed: () {
                                           setState(() {
                                             visible = !visible;
                                           });
                                         },
-                                        icon: Icon(visible
-                                            ? Icons.visibility_off
-                                            : Icons.visibility)),
-                                    suffixIconColor: Colors.deepPurple.shade500,
+                                        icon: Icon(
+                                          visible
+                                              ? Icons.visibility_off
+                                              : Icons.visibility,
+                                          color: Colors.deepPurple.shade500,
+                                        )),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.horizontal(),
                                     ),
@@ -289,10 +290,9 @@ class LoginState extends State<Login> {
                                               : error[3] == 'maximum'
                                                   ? 'Maximum Limit is Exceeded'
                                                   : null,
-                                      prefixIcon:
-                                          Icon(Icons.text_format_outlined),
-                                      prefixIconColor:
-                                          Colors.deepPurple.shade500,
+                                      prefixIcon: Icon(
+                                          Icons.text_format_outlined,
+                                          color: Colors.deepPurple.shade500),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.horizontal(),
                                       ),
@@ -337,20 +337,20 @@ class LoginState extends State<Login> {
                                               : error[4] == 'maximum'
                                                   ? 'Maximum Limit is Exceeded'
                                                   : null,
-                                      prefixIcon: Icon(Icons.lock_outlined),
-                                      prefixIconColor:
-                                          Colors.deepPurple.shade500,
+                                      prefixIcon: Icon(Icons.lock_outlined,
+                                          color: Colors.deepPurple.shade500),
                                       suffixIcon: IconButton(
                                           onPressed: () {
                                             setState(() {
                                               visible = !visible;
                                             });
                                           },
-                                          icon: Icon(visible
-                                              ? Icons.visibility_off
-                                              : Icons.visibility)),
-                                      suffixIconColor:
-                                          Colors.deepPurple.shade500,
+                                          icon: Icon(
+                                              visible
+                                                  ? Icons.visibility_off
+                                                  : Icons.visibility,
+                                              color:
+                                                  Colors.deepPurple.shade500)),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.horizontal(),
                                       ),
