@@ -15,45 +15,21 @@ class Manager extends StatefulWidget {
 }
 
 class ManagerState extends State<Manager> {
-  List<Map<String, dynamic>> maindata = [];
+  static List<Map<String, dynamic>> maindata = [];
   List<Map<String, dynamic>> data = [];
-  List<Map<String, dynamic>> manager = [];
   static Map<String, dynamic> updateManager = {};
   var text = TextEditingController();
   int selectedBox = -1;
-  List<String> name = [];
-  List<String> username = [];
-  List<String> gender = [];
-  List<String> dob = [];
-  List<int> age = [];
-  List<String> phone = [];
-  List<String> emailid = [];
 
   void getData() async {
-    name.clear();
-    username.clear();
-    gender.clear();
-    dob.clear();
-    age.clear();
-    phone.clear();
-    emailid.clear();
     data.clear();
     await DB.openCon('managerinfo');
     maindata = await DB.collection.find().toList();
     await DB.closeCon();
-    data.addAll(maindata);
-    maindata.sort((a, b) => a['Name'].compareTo(b['Name']));
-    data.sort((a, b) => a['Name'].compareTo(b['Name']));
     setState(() {
-      for (int i = 0; i < maindata.length; i++) {
-        name.add(maindata[i]['Name']);
-        username.add(maindata[i]['Username']);
-        gender.add(maindata[i]['Gender']);
-        dob.add(maindata[i]['DateofBirth']);
-        age.add(maindata[i]['Age']);
-        emailid.add(maindata[i]['EmailId']);
-        phone.add(maindata[i]['Phone']);
-      }
+      data.addAll(maindata);
+      maindata.sort((a, b) => a['Name'].compareTo(b['Name']));
+      data.sort((a, b) => a['Name'].compareTo(b['Name']));
     });
   }
 

@@ -7,6 +7,7 @@ import 'package:sadms/Database/database.dart';
 import 'package:age_calculator/age_calculator.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:sadms/Login/login.dart';
+import 'package:sadms/Manager/manager.dart';
 
 class AddManager extends StatefulWidget {
   AddManager({Key? key}) : super(key: key);
@@ -145,7 +146,9 @@ class _AddManagerState extends State<AddManager> {
                               ? 'Minimum Limit is not Reached'
                               : error[1] == 'maximum'
                                   ? 'Maximum Limit is Exceeded'
-                                  : null,
+                                  : error[1] == 'already exist'
+                                      ? 'Username already exist'
+                                      : null,
                       prefixIcon: Icon(Icons.supervised_user_circle,
                           color: Colors.deepPurple.shade500),
                       prefixIconColor: Colors.deepPurple.shade500,
@@ -463,6 +466,14 @@ class _AddManagerState extends State<AddManager> {
                         gender = '';
                       }
                     });
+                    for (int i = 0; i < ManagerState.maindata.length; i++) {
+                      if (controllers[1].text ==
+                          ManagerState.maindata[i]['Username']) {
+                        error[1] = 'already exist';
+                        valid = false;
+                        break;
+                      }
+                    }
                     if (valid) {
                       Map<String, dynamic> query = {
                         'Username': controllers[1].text,
