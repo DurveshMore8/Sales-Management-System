@@ -477,7 +477,7 @@ class AddEmployeeState extends State<AddEmployee> {
                     if (valid) {
                       Map<String, dynamic> query = {
                         'Username': controllers[1].text,
-                        'Password': controllers[1].text.hashCode
+                        'Password': controllers[1].text
                       };
                       await DB.openCon('employeelogin');
                       await DB.collection.insertOne(query);
