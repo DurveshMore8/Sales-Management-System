@@ -516,7 +516,6 @@ class UpdateEmployeeState extends State<UpdateEmployee> {
                   onPressed: () {
                     setState(() {
                       controllers[0].clear();
-                      controllers[1].clear();
                       controllers[2].clear();
                       controllers[3].clear();
                       gender = '';
