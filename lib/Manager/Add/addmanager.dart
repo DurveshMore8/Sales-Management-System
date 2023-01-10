@@ -478,7 +478,7 @@ class _AddManagerState extends State<AddManager> {
                       Map<String, dynamic> query = {
                         'Username': controllers[1].text,
                         'EmailId': controllers[3].text,
-                        'Password': controllers[1].text.hashCode
+                        'Password': controllers[1].text
                       };
                       await DB.openCon('managerlogin');
                       await DB.collection.insertOne(query);
