@@ -1,4 +1,4 @@
-# sadms
+# Sales and Distribution Management System
 
 A new Flutter project.
 
