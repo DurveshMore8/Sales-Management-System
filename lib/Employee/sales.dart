@@ -14,7 +14,7 @@ class Sales extends StatefulWidget {
 
 class _SalesState extends State<Sales> {
   List<TextEditingController> controllers =
-      List.generate(5, (index) => TextEditingController());
+      List.generate(7, (index) => TextEditingController());
   List<String> error = ['', '', '', '', ''];
   bool valid = true;
 
@@ -262,7 +262,155 @@ class _SalesState extends State<Sales> {
               ),
             ],
           ),
-        )
+        ),
+        SizedBox(height: 20),
+        SizedBox(
+          width: 800,
+          child: TextField(
+            controller: controllers[4],
+            inputFormatters: <TextInputFormatter>[
+              FilteringTextInputFormatter.digitsOnly,
+            ],
+            decoration: InputDecoration(
+              fillColor: Colors.white,
+              filled: true,
+              hintText: '549658',
+              labelText: 'Enter OTP',
+              labelStyle: TextStyle(
+                  backgroundColor: Colors.white,
+                  color: Colors.deepPurple.shade500,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold),
+              errorText: error[4] == 'empty'
+                  ? 'OTP Can\'t be empty'
+                  : error[4] == 'minimum'
+                      ? 'Minimum Limit is not Reached'
+                      : error[4] == 'maximum'
+                          ? 'Maximum Limit is Exceeded'
+                          : null,
+              prefixIcon: Icon(Icons.phone, color: Colors.deepPurple.shade500),
+              prefixIconColor: Colors.deepPurple.shade500,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.horizontal(),
+              ),
+            ),
+            onChanged: (value) {
+              setState(() {
+                if (value.isNotEmpty) {
+                  if (value.length < 6) {
+                    error[4] = 'minimum';
+                  } else if (value.length > 6) {
+                    error[4] = 'maximum';
+                  } else {
+                    error[4] = '';
+                  }
+                }
+              });
+            },
+          ),
+        ),
+        error[4] == '' ? SizedBox(height: 34) : SizedBox(height: 10),
+        GFButton(
+          onPressed: () {
+            controllers[5].text = 'No Product Selected';
+            controllers[6].text = 'Unavailable';
+          },
+          icon: Icon(
+            Icons.check,
+            color: Colors.green,
+          ),
+          text: 'Submit OTP',
+          textColor: Colors.white,
+          color: Colors.deepPurple.shade700,
+          hoverColor: Colors.deepPurple.shade500,
+          shape: GFButtonShape.square,
+          size: GFSize.LARGE,
+        ),
+        SizedBox(height: 34),
+        Container(
+          color: Colors.deepPurple.shade900,
+          height: 75,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              SizedBox(
+                width: 400,
+                child: TextField(
+                  controller: controllers[5],
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    fillColor: Colors.white,
+                    filled: true,
+                    labelText: 'Quantity',
+                    labelStyle: TextStyle(
+                        backgroundColor: Colors.white,
+                        color: Colors.deepPurple.shade500,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),
+                    prefixIcon: Icon(Icons.production_quantity_limits,
+                        color: Colors.deepPurple.shade500),
+                    prefixIconColor: Colors.deepPurple.shade500,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.horizontal(),
+                    ),
+                  ),
+                  onChanged: (value) {},
+                ),
+              ),
+              SizedBox(
+                width: 400,
+                child: TextField(
+                  controller: controllers[6],
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    fillColor: Colors.white,
+                    filled: true,
+                    labelText: 'Total Price',
+                    labelStyle: TextStyle(
+                        backgroundColor: Colors.white,
+                        color: Colors.deepPurple.shade500,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),
+                    prefixIcon: Icon(Icons.price_change,
+                        color: Colors.deepPurple.shade500),
+                    prefixIconColor: Colors.deepPurple.shade500,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.horizontal(),
+                    ),
+                  ),
+                  onChanged: (value) {},
+                ),
+              ),
+              GFButton(
+                onPressed: () {},
+                icon: Icon(
+                  Icons.add,
+                  color: Colors.green,
+                ),
+                text: 'Modify',
+                textColor: Colors.white,
+                color: Colors.deepPurple.shade700,
+                hoverColor: Colors.deepPurple.shade500,
+                shape: GFButtonShape.square,
+                size: GFSize.LARGE,
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: 30),
+        GFButton(
+          onPressed: () {},
+          icon: Icon(
+            Icons.check,
+            color: Colors.green,
+          ),
+          text: 'Submit Order',
+          textColor: Colors.white,
+          color: Colors.deepPurple.shade700,
+          hoverColor: Colors.deepPurple.shade500,
+          shape: GFButtonShape.square,
+          size: GFSize.LARGE,
+        ),
       ],
     );
   }
