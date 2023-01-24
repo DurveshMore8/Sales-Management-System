@@ -1,9 +1,10 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_const_constructors_in_immutables, library_private_types_in_public_api
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_const_constructors_in_immutables, library_private_types_in_public_api, unnecessary_new, avoid_print, import_of_legacy_library_into_null_safe, prefer_const_declarations
 
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:sadms/Employee/Add/addsales.dart';
 
 class Sales extends StatefulWidget {
   Sales({Key? key}) : super(key: key);
@@ -14,9 +15,11 @@ class Sales extends StatefulWidget {
 
 class _SalesState extends State<Sales> {
   List<TextEditingController> controllers =
-      List.generate(7, (index) => TextEditingController());
+      List.generate(6, (index) => TextEditingController());
   List<String> error = ['', '', '', '', ''];
   bool valid = true;
+  bool btn1 = false;
+  bool btn2 = false;
 
   @override
   Widget build(BuildContext context) {
@@ -164,7 +167,7 @@ class _SalesState extends State<Sales> {
                   ),
                   onChanged: (value) {
                     setState(() {
-                      if (EmailValidator.validate(controllers[3].text)) {
+                      if (EmailValidator.validate(controllers[2].text)) {
                         error[2] = '';
                       } else {
                         error[2] = 'invalid';
@@ -177,27 +180,28 @@ class _SalesState extends State<Sales> {
                 width: 500,
                 child: TextField(
                   controller: controllers[3],
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.digitsOnly,
+                  ], // Only numbers can be entered
                   decoration: InputDecoration(
                     fillColor: Colors.white,
                     filled: true,
-                    hintText: '9876543210',
-                    labelText: 'Mobile Number',
+                    hintText: '400604',
+                    labelText: 'Pincode',
                     labelStyle: TextStyle(
                         backgroundColor: Colors.white,
                         color: Colors.deepPurple.shade500,
                         fontSize: 18,
                         fontWeight: FontWeight.bold),
                     errorText: error[3] == 'empty'
-                        ? 'Mobile Number Can\'t be empty'
+                        ? 'Pincode Can\'t be empty'
                         : error[3] == 'minimum'
                             ? 'Minimum Limit is not Reached'
                             : error[3] == 'maximum'
                                 ? 'Maximum Limit is Exceeded'
-                                : error[3] == 'already exist'
-                                    ? 'Branch Id already exist'
-                                    : null,
+                                : null,
                     prefixIcon:
-                        Icon(Icons.phone, color: Colors.deepPurple.shade500),
+                        Icon(Icons.code, color: Colors.deepPurple.shade500),
                     prefixIconColor: Colors.deepPurple.shade500,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.horizontal(),
@@ -206,9 +210,9 @@ class _SalesState extends State<Sales> {
                   onChanged: (value) {
                     setState(() {
                       if (value.isNotEmpty) {
-                        if (value.length < 10) {
+                        if (value.length < 6) {
                           error[3] = 'minimum';
-                        } else if (value.length > 10) {
+                        } else if (value.length > 6) {
                           error[3] = 'maximum';
                         } else {
                           error[3] = '';
@@ -221,196 +225,125 @@ class _SalesState extends State<Sales> {
             ],
           ),
         ),
-        SizedBox(
-          height: 100,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              GFButton(
-                onPressed: () async {},
-                icon: Icon(
-                  Icons.check,
-                  color: Colors.green,
-                ),
-                text: 'Get OTP',
-                textColor: Colors.white,
-                color: Colors.deepPurple.shade700,
-                hoverColor: Colors.deepPurple.shade500,
-                shape: GFButtonShape.square,
-                size: GFSize.LARGE,
-              ),
-              SizedBox(width: 200),
-              GFButton(
-                onPressed: () {
-                  setState(() {
-                    controllers[0].clear();
-                    controllers[1].clear();
-                    controllers[2].clear();
-                    controllers[3].clear();
-                  });
-                },
-                icon: Icon(
-                  Icons.close,
-                  color: Colors.red,
-                ),
-                text: 'Clear',
-                textColor: Colors.white,
-                color: Colors.deepPurple.shade700,
-                hoverColor: Colors.deepPurple.shade500,
-                shape: GFButtonShape.square,
-                size: GFSize.LARGE,
-              ),
-            ],
-          ),
-        ),
-        SizedBox(height: 20),
-        SizedBox(
-          width: 800,
-          child: TextField(
-            controller: controllers[4],
-            inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.digitsOnly,
-            ],
-            decoration: InputDecoration(
-              fillColor: Colors.white,
-              filled: true,
-              hintText: '549658',
-              labelText: 'Enter OTP',
-              labelStyle: TextStyle(
-                  backgroundColor: Colors.white,
-                  color: Colors.deepPurple.shade500,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold),
-              errorText: error[4] == 'empty'
-                  ? 'OTP Can\'t be empty'
-                  : error[4] == 'minimum'
-                      ? 'Minimum Limit is not Reached'
-                      : error[4] == 'maximum'
-                          ? 'Maximum Limit is Exceeded'
-                          : null,
-              prefixIcon: Icon(Icons.phone, color: Colors.deepPurple.shade500),
-              prefixIconColor: Colors.deepPurple.shade500,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.horizontal(),
-              ),
-            ),
-            onChanged: (value) {
-              setState(() {
-                if (value.isNotEmpty) {
-                  if (value.length < 6) {
-                    error[4] = 'minimum';
-                  } else if (value.length > 6) {
-                    error[4] = 'maximum';
-                  } else {
-                    error[4] = '';
-                  }
-                }
-              });
-            },
-          ),
-        ),
-        error[4] == '' ? SizedBox(height: 34) : SizedBox(height: 10),
+        SizedBox(height: 50),
         GFButton(
           onPressed: () {
-            controllers[5].text = 'No Product Selected';
-            controllers[6].text = 'Unavailable';
+            setState(() {
+              controllers[4].text = 'No Product Selected';
+              controllers[5].text = 'Not Calculated';
+              btn1 = true;
+            });
           },
           icon: Icon(
             Icons.check,
             color: Colors.green,
           ),
-          text: 'Submit OTP',
+          text: 'Create Order',
           textColor: Colors.white,
           color: Colors.deepPurple.shade700,
           hoverColor: Colors.deepPurple.shade500,
           shape: GFButtonShape.square,
           size: GFSize.LARGE,
         ),
-        SizedBox(height: 34),
-        Container(
-          color: Colors.deepPurple.shade900,
-          height: 75,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              SizedBox(
-                width: 400,
-                child: TextField(
-                  controller: controllers[5],
-                  readOnly: true,
-                  decoration: InputDecoration(
-                    fillColor: Colors.white,
-                    filled: true,
-                    labelText: 'Quantity',
-                    labelStyle: TextStyle(
-                        backgroundColor: Colors.white,
-                        color: Colors.deepPurple.shade500,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold),
-                    prefixIcon: Icon(Icons.production_quantity_limits,
-                        color: Colors.deepPurple.shade500),
-                    prefixIconColor: Colors.deepPurple.shade500,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.horizontal(),
+        SizedBox(height: 50),
+        btn1 == true
+            ? Container(
+                color: Colors.deepPurple.shade900,
+                height: 75,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    SizedBox(
+                      width: 400,
+                      child: TextField(
+                        controller: controllers[4],
+                        readOnly: true,
+                        decoration: InputDecoration(
+                          fillColor: Colors.white,
+                          filled: true,
+                          labelText: 'Quantity',
+                          labelStyle: TextStyle(
+                              backgroundColor: Colors.white,
+                              color: Colors.deepPurple.shade500,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold),
+                          prefixIcon: Icon(Icons.production_quantity_limits,
+                              color: Colors.deepPurple.shade500),
+                          prefixIconColor: Colors.deepPurple.shade500,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.horizontal(),
+                          ),
+                        ),
+                        onChanged: (value) {},
+                      ),
                     ),
-                  ),
-                  onChanged: (value) {},
-                ),
-              ),
-              SizedBox(
-                width: 400,
-                child: TextField(
-                  controller: controllers[6],
-                  readOnly: true,
-                  decoration: InputDecoration(
-                    fillColor: Colors.white,
-                    filled: true,
-                    labelText: 'Total Price',
-                    labelStyle: TextStyle(
-                        backgroundColor: Colors.white,
-                        color: Colors.deepPurple.shade500,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold),
-                    prefixIcon: Icon(Icons.price_change,
-                        color: Colors.deepPurple.shade500),
-                    prefixIconColor: Colors.deepPurple.shade500,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.horizontal(),
+                    SizedBox(
+                      width: 400,
+                      child: TextField(
+                        controller: controllers[5],
+                        readOnly: true,
+                        decoration: InputDecoration(
+                          fillColor: Colors.white,
+                          filled: true,
+                          labelText: 'Total Price',
+                          labelStyle: TextStyle(
+                              backgroundColor: Colors.white,
+                              color: Colors.deepPurple.shade500,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold),
+                          prefixIcon: Icon(Icons.price_change,
+                              color: Colors.deepPurple.shade500),
+                          prefixIconColor: Colors.deepPurple.shade500,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.horizontal(),
+                          ),
+                        ),
+                        onChanged: (value) {},
+                      ),
                     ),
-                  ),
-                  onChanged: (value) {},
+                    GFButton(
+                      onPressed: () {
+                        Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: ((context) => AddSales())))
+                            .whenComplete(() {
+                          setState(() {
+                            btn2 = true;
+                          });
+                        });
+                      },
+                      icon: Icon(
+                        Icons.add,
+                        color: Colors.green,
+                      ),
+                      text: 'Modify',
+                      textColor: Colors.white,
+                      color: Colors.deepPurple.shade700,
+                      hoverColor: Colors.deepPurple.shade500,
+                      shape: GFButtonShape.square,
+                      size: GFSize.LARGE,
+                    ),
+                  ],
                 ),
-              ),
-              GFButton(
+              )
+            : SizedBox(),
+        SizedBox(height: 50),
+        btn2 == true
+            ? GFButton(
                 onPressed: () {},
                 icon: Icon(
-                  Icons.add,
+                  Icons.check,
                   color: Colors.green,
                 ),
-                text: 'Modify',
+                text: 'Complete Purchase',
                 textColor: Colors.white,
                 color: Colors.deepPurple.shade700,
                 hoverColor: Colors.deepPurple.shade500,
                 shape: GFButtonShape.square,
                 size: GFSize.LARGE,
-              ),
-            ],
-          ),
-        ),
-        SizedBox(height: 30),
-        GFButton(
-          onPressed: () {},
-          icon: Icon(
-            Icons.check,
-            color: Colors.green,
-          ),
-          text: 'Submit Order',
-          textColor: Colors.white,
-          color: Colors.deepPurple.shade700,
-          hoverColor: Colors.deepPurple.shade500,
-          shape: GFButtonShape.square,
-          size: GFSize.LARGE,
-        ),
+              )
+            : SizedBox(),
       ],
     );
   }
