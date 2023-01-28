@@ -83,7 +83,8 @@ class _StockState extends State<Stock> {
                   color: Colors.deepPurple.shade500,
                   fontSize: 18,
                   fontWeight: FontWeight.bold),
-              prefixIcon: Icon(Icons.text_format_outlined),
+              prefixIcon: Icon(Icons.text_format_outlined,
+                  color: Colors.deepPurple.shade500),
               prefixIconColor: Colors.deepPurple.shade500,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.horizontal(),

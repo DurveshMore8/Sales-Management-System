@@ -77,7 +77,8 @@ class AddStockState extends State<AddStock> {
                               color: Colors.deepPurple.shade500,
                               fontSize: 18,
                               fontWeight: FontWeight.bold),
-                          prefixIcon: Icon(Icons.numbers),
+                          prefixIcon: Icon(Icons.numbers,
+                              color: Colors.deepPurple.shade500),
                           prefixIconColor: Colors.deepPurple.shade500,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.horizontal(),
@@ -101,7 +102,8 @@ class AddStockState extends State<AddStock> {
                               color: Colors.deepPurple.shade500,
                               fontSize: 18,
                               fontWeight: FontWeight.bold),
-                          prefixIcon: Icon(Icons.car_repair),
+                          prefixIcon: Icon(Icons.car_repair,
+                              color: Colors.deepPurple.shade500),
                           prefixIconColor: Colors.deepPurple.shade500,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.horizontal(),
@@ -125,7 +127,8 @@ class AddStockState extends State<AddStock> {
                               color: Colors.deepPurple.shade500,
                               fontSize: 18,
                               fontWeight: FontWeight.bold),
-                          prefixIcon: Icon(Icons.store),
+                          prefixIcon: Icon(Icons.store,
+                              color: Colors.deepPurple.shade500),
                           prefixIconColor: Colors.deepPurple.shade500,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.horizontal(),
@@ -156,7 +159,8 @@ class AddStockState extends State<AddStock> {
                               : error == 'outofbound'
                                   ? 'Maximum limit exceeded'
                                   : null,
-                          prefixIcon: Icon(Icons.production_quantity_limits),
+                          prefixIcon: Icon(Icons.production_quantity_limits,
+                              color: Colors.deepPurple.shade500),
                           prefixIconColor: Colors.deepPurple.shade500,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.horizontal(),
