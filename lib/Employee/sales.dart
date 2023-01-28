@@ -4,6 +4,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:sadms/Database/database.dart';
 import 'package:sadms/Employee/Add/addsales.dart';
 
 class Sales extends StatefulWidget {
@@ -309,6 +310,10 @@ class _SalesState extends State<Sales> {
                                     builder: ((context) => AddSales())))
                             .whenComplete(() {
                           setState(() {
+                            controllers[4].text =
+                                AddSalesState.total[0].toString();
+                            controllers[5].text =
+                                AddSalesState.total[1].toString();
                             btn2 = true;
                           });
                         });
