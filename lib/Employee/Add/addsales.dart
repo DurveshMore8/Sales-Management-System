@@ -312,10 +312,9 @@ class AddSalesState extends State<AddSales> {
                           });
                           total[0] += int.parse(controllers[2].text);
                           total[1] += int.parse(controllers[3].text);
-                          controllers[0].clear();
-                          controllers[1].clear();
-                          controllers[2].clear();
-                          controllers[3].clear();
+                          for (int i = 0; i <= 3; i++) {
+                            controllers[i].clear();
+                          }
                         });
                       },
                       icon: Icon(
