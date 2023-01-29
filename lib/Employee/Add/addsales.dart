@@ -14,7 +14,6 @@ class AddSales extends StatefulWidget {
 }
 
 class AddSalesState extends State<AddSales> {
-  //branchid, branchname, location, city, state
   List<TextEditingController> controllers =
       List.generate(4, (index) => TextEditingController());
   List<String> error = ['', '', '', ''];
@@ -22,7 +21,7 @@ class AddSalesState extends State<AddSales> {
   List<Map<String, dynamic>> stock = [];
   List<Map<String, dynamic>> product = [];
   List<Map<String, dynamic>> employee = [];
-  List<Map<String, dynamic>> order = [];
+  static List<Map<String, dynamic>> order = [];
   static List<int> total = [0, 0];
 
   void getData() async {
@@ -41,6 +40,8 @@ class AddSalesState extends State<AddSales> {
   @override
   void initState() {
     super.initState();
+    order.clear();
+    total = [0, 0];
     getData();
   }
 
@@ -56,14 +57,6 @@ class AddSalesState extends State<AddSales> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: const Icon(
-                      Icons.keyboard_arrow_left,
-                      color: Colors.white,
-                    )),
                 const Text(
                   'Add Sales',
                   style: TextStyle(
@@ -319,10 +312,9 @@ class AddSalesState extends State<AddSales> {
                           });
                           total[0] += int.parse(controllers[2].text);
                           total[1] += int.parse(controllers[3].text);
-                          controllers[0].clear();
-                          controllers[1].clear();
-                          controllers[2].clear();
-                          controllers[3].clear();
+                          for (int i = 0; i <= 3; i++) {
+                            controllers[i].clear();
+                          }
                         });
                       },
                       icon: Icon(
@@ -397,6 +389,20 @@ class AddSalesState extends State<AddSales> {
                                       fontSize: 17,
                                     ),
                                   ),
+                                  TextButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          total[0] -= int.parse(
+                                              order[index]['Quantity']);
+                                          total[1] -=
+                                              int.parse(order[index]['Price']);
+                                          order.removeAt(index);
+                                        });
+                                      },
+                                      child: Text(
+                                        'Delete',
+                                        style: TextStyle(color: Colors.white),
+                                      ))
                                 ],
                               ),
                             ],

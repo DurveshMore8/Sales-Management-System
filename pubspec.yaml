@@ -41,6 +41,7 @@ dependencies:
   age_calculator: ^1.0.0
   email_validator: ^2.1.17
   csc_picker: ^0.2.6
+  http: ^0.13.5
 
 dev_dependencies:
   flutter_test:
