@@ -10,7 +10,7 @@ import 'package:sadms/Manager/product.dart';
 import 'package:sadms/Manager/sales.dart';
 import 'package:sadms/Manager/branch.dart';
 import 'package:sadms/Manager/stock.dart';
-import 'package:sadms/Profile/editprofile.dart';
+import 'package:sadms/Manager/Profile/editprofile.dart';
 
 class MyNavigationBar extends StatefulWidget {
   MyNavigationBar({Key? key}) : super(key: key);
