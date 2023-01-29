@@ -3,12 +3,14 @@
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:sadms/Dashboard/managerdashboard.dart';
+import 'package:sadms/Login/login.dart';
 import 'package:sadms/Manager/employee.dart';
 import 'package:sadms/Manager/manager.dart';
 import 'package:sadms/Manager/product.dart';
 import 'package:sadms/Manager/sales.dart';
 import 'package:sadms/Manager/branch.dart';
 import 'package:sadms/Manager/stock.dart';
+import 'package:sadms/Profile/editprofile.dart';
 
 class MyNavigationBar extends StatefulWidget {
   MyNavigationBar({Key? key}) : super(key: key);
@@ -47,7 +49,43 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
                           color: Colors.white,
                         ),
                       ),
-                      SizedBox(height: 100),
+                      SizedBox(height: 50),
+                      SizedBox(
+                        width: 260,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            CircleAvatar(
+                              radius: 25,
+                              child: Text(
+                                LoginState.manager[0].toUpperCase(),
+                                style: TextStyle(
+                                    fontSize: 24, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            Text(LoginState.manager,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                )),
+                            SizedBox(height: 10),
+                            TextButton(
+                              child: Text(
+                                'Edit Profile',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: ((context) => EditProfile())));
+                              },
+                            )
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 50),
                       SizedBox(
                           width: 260,
                           height: 50,
@@ -306,7 +344,37 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
                           color: Colors.white,
                         ),
                       ),
-                      SizedBox(height: 100),
+                      SizedBox(height: 50),
+                      SizedBox(
+                        width: 60,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            CircleAvatar(
+                              radius: 25,
+                              child: Text(
+                                LoginState.manager[0].toUpperCase(),
+                                style: TextStyle(
+                                    fontSize: 24, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            SizedBox(height: 40),
+                            TextButton(
+                              child: Text(
+                                'Edit',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: ((context) => EditProfile())));
+                              },
+                            )
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 50),
                       SizedBox(
                           width: 60,
                           height: 50,
