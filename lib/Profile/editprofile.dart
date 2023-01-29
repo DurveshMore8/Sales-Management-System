@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:sadms/Database/database.dart';
 import 'package:sadms/Login/login.dart';
+import 'package:sadms/Profile/Change/changeusername.dart';
 
 class EditProfile extends StatefulWidget {
   EditProfile({Key? key}) : super(key: key);
@@ -144,12 +145,17 @@ class EditProfileState extends State<EditProfile> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         GFButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: ((context) => ChangeUsername())));
+                          },
                           icon: Icon(
                             Icons.text_format_outlined,
                             color: Colors.white,
                           ),
-                          text: 'Update Username',
+                          text: 'Change Username',
                           textColor: Colors.white,
                           color: Colors.deepPurple.shade700,
                           hoverColor: Colors.deepPurple.shade500,
@@ -162,7 +168,7 @@ class EditProfileState extends State<EditProfile> {
                             Icons.email,
                             color: Colors.white,
                           ),
-                          text: 'Update Email Id',
+                          text: 'Change Email Id',
                           textColor: Colors.white,
                           color: Colors.deepPurple.shade700,
                           hoverColor: Colors.deepPurple.shade500,
@@ -175,7 +181,7 @@ class EditProfileState extends State<EditProfile> {
                             Icons.lock_outlined,
                             color: Colors.white,
                           ),
-                          text: 'Update Password',
+                          text: 'Change Password',
                           textColor: Colors.white,
                           color: Colors.deepPurple.shade700,
                           hoverColor: Colors.deepPurple.shade500,
