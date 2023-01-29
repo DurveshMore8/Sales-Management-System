@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_const_constructors_in_immutables, prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:getwidget/getwidget.dart';
+import 'package:sadms/Database/database.dart';
+import 'package:sadms/Login/login.dart';
 
 class EditProfile extends StatefulWidget {
   EditProfile({Key? key}) : super(key: key);
@@ -10,6 +13,26 @@ class EditProfile extends StatefulWidget {
 }
 
 class EditProfileState extends State<EditProfile> {
+  List<TextEditingController> controllers =
+      List.generate(3, (index) => TextEditingController());
+  List<Map<String, dynamic>> manager = [];
+
+  void getData() async {
+    await DB.openCon('managerlogin');
+    manager =
+        await DB.collection.find({'Username': LoginState.manager}).toList();
+    await DB.closeCon();
+    controllers[0].text = manager[0]['Username'];
+    controllers[1].text = manager[0]['EmailId'];
+    controllers[2].text = manager[0]['Password'];
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,6 +63,127 @@ class EditProfileState extends State<EditProfile> {
                         ),
                       ),
                     ],
+                  ),
+                  SizedBox(height: 100),
+                  SizedBox(
+                    width: 750,
+                    child: TextField(
+                      controller: controllers[0],
+                      readOnly: true,
+                      decoration: InputDecoration(
+                        fillColor: Colors.white,
+                        filled: true,
+                        labelText: 'Username',
+                        labelStyle: TextStyle(
+                            backgroundColor: Colors.white,
+                            color: Colors.deepPurple.shade500,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold),
+                        prefixIcon: Icon(Icons.text_format_outlined,
+                            color: Colors.deepPurple.shade500),
+                        prefixIconColor: Colors.deepPurple.shade500,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.horizontal(),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 50),
+                  SizedBox(
+                    width: 750,
+                    child: TextField(
+                      controller: controllers[1],
+                      readOnly: true,
+                      decoration: InputDecoration(
+                        fillColor: Colors.white,
+                        filled: true,
+                        labelText: 'Email Id',
+                        labelStyle: TextStyle(
+                            backgroundColor: Colors.white,
+                            color: Colors.deepPurple.shade500,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold),
+                        prefixIcon: Icon(Icons.email,
+                            color: Colors.deepPurple.shade500),
+                        prefixIconColor: Colors.deepPurple.shade500,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.horizontal(),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 50),
+                  SizedBox(
+                    width: 750,
+                    child: TextField(
+                      controller: controllers[2],
+                      readOnly: true,
+                      obscureText: true,
+                      obscuringCharacter: '*',
+                      decoration: InputDecoration(
+                        fillColor: Colors.white,
+                        filled: true,
+                        labelText: 'Password',
+                        labelStyle: TextStyle(
+                            backgroundColor: Colors.white,
+                            color: Colors.deepPurple.shade500,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold),
+                        prefixIcon: Icon(Icons.lock_outlined,
+                            color: Colors.deepPurple.shade500),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.horizontal(),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 100),
+                  SizedBox(
+                    width: 750,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        GFButton(
+                          onPressed: () {},
+                          icon: Icon(
+                            Icons.text_format_outlined,
+                            color: Colors.white,
+                          ),
+                          text: 'Update Username',
+                          textColor: Colors.white,
+                          color: Colors.deepPurple.shade700,
+                          hoverColor: Colors.deepPurple.shade500,
+                          shape: GFButtonShape.square,
+                          size: GFSize.LARGE,
+                        ),
+                        GFButton(
+                          onPressed: () {},
+                          icon: Icon(
+                            Icons.email,
+                            color: Colors.white,
+                          ),
+                          text: 'Update Email Id',
+                          textColor: Colors.white,
+                          color: Colors.deepPurple.shade700,
+                          hoverColor: Colors.deepPurple.shade500,
+                          shape: GFButtonShape.square,
+                          size: GFSize.LARGE,
+                        ),
+                        GFButton(
+                          onPressed: () {},
+                          icon: Icon(
+                            Icons.lock_outlined,
+                            color: Colors.white,
+                          ),
+                          text: 'Update Password',
+                          textColor: Colors.white,
+                          color: Colors.deepPurple.shade700,
+                          hoverColor: Colors.deepPurple.shade500,
+                          shape: GFButtonShape.square,
+                          size: GFSize.LARGE,
+                        ),
+                      ],
+                    ),
                   ),
                 ])));
   }
