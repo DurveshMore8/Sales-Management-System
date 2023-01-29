@@ -367,15 +367,15 @@ class _SalesState extends State<Sales> {
                     'Products': AddSalesState.order,
                     'TotalQuantity': AddSalesState.total[0],
                     'TotalPrice': AddSalesState.total[1],
-                    'SaleBy': LoginState.employee
+                    'SaleBy': LoginState.employee,
+                    'Date': DateTime.now()
                   });
                   await DB.closeCon();
-                  controllers[0].clear();
-                  controllers[1].clear();
-                  controllers[2].clear();
-                  controllers[3].clear();
-                  controllers[4].clear();
-                  controllers[5].clear();
+                  await DB.openCon('stock');
+                  await DB.closeCon();
+                  for (int i = 0; i <= 5; i++) {
+                    controllers[i].clear();
+                  }
                 },
                 icon: Icon(
                   Icons.check,
