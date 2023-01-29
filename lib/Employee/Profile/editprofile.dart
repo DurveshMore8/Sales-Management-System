@@ -4,9 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:sadms/Database/database.dart';
 import 'package:sadms/Login/login.dart';
-import 'package:sadms/Profile/Change/changeemailid.dart';
-import 'package:sadms/Profile/Change/changepassword.dart';
-import 'package:sadms/Profile/Change/changeusername.dart';
+import 'package:sadms/Employee/Profile/Change/changepassword.dart';
+import 'package:sadms/Employee/Profile/Change/changeusername.dart';
 
 class EditProfile extends StatefulWidget {
   EditProfile({Key? key}) : super(key: key);
@@ -21,13 +20,12 @@ class EditProfileState extends State<EditProfile> {
   List<Map<String, dynamic>> manager = [];
 
   void getData() async {
-    await DB.openCon('managerlogin');
+    await DB.openCon('employeelogin');
     manager =
-        await DB.collection.find({'Username': LoginState.manager}).toList();
+        await DB.collection.find({'Username': LoginState.employee}).toList();
     await DB.closeCon();
     controllers[0].text = manager[0]['Username'];
-    controllers[1].text = manager[0]['EmailId'];
-    controllers[2].text = manager[0]['Password'];
+    controllers[1].text = manager[0]['Password'];
   }
 
   @override
@@ -97,30 +95,6 @@ class EditProfileState extends State<EditProfile> {
                     child: TextField(
                       controller: controllers[1],
                       readOnly: true,
-                      decoration: InputDecoration(
-                        fillColor: Colors.white,
-                        filled: true,
-                        labelText: 'Email Id',
-                        labelStyle: TextStyle(
-                            backgroundColor: Colors.white,
-                            color: Colors.deepPurple.shade500,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold),
-                        prefixIcon: Icon(Icons.email,
-                            color: Colors.deepPurple.shade500),
-                        prefixIconColor: Colors.deepPurple.shade500,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.horizontal(),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 50),
-                  SizedBox(
-                    width: 750,
-                    child: TextField(
-                      controller: controllers[2],
-                      readOnly: true,
                       obscureText: true,
                       obscuringCharacter: '*',
                       decoration: InputDecoration(
@@ -158,24 +132,6 @@ class EditProfileState extends State<EditProfile> {
                             color: Colors.white,
                           ),
                           text: 'Change Username',
-                          textColor: Colors.white,
-                          color: Colors.deepPurple.shade700,
-                          hoverColor: Colors.deepPurple.shade500,
-                          shape: GFButtonShape.square,
-                          size: GFSize.LARGE,
-                        ),
-                        GFButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: ((context) => ChangeEmailId())));
-                          },
-                          icon: Icon(
-                            Icons.email,
-                            color: Colors.white,
-                          ),
-                          text: 'Change Email Id',
                           textColor: Colors.white,
                           color: Colors.deepPurple.shade700,
                           hoverColor: Colors.deepPurple.shade500,
