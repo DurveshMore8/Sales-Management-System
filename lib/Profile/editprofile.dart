@@ -5,6 +5,7 @@ import 'package:getwidget/getwidget.dart';
 import 'package:sadms/Database/database.dart';
 import 'package:sadms/Login/login.dart';
 import 'package:sadms/Profile/Change/changeemailid.dart';
+import 'package:sadms/Profile/Change/changepassword.dart';
 import 'package:sadms/Profile/Change/changeusername.dart';
 
 class EditProfile extends StatefulWidget {
@@ -182,7 +183,12 @@ class EditProfileState extends State<EditProfile> {
                           size: GFSize.LARGE,
                         ),
                         GFButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: ((context) => ChangePassword())));
+                          },
                           icon: Icon(
                             Icons.lock_outlined,
                             color: Colors.white,

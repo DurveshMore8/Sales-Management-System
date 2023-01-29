@@ -1,6 +1,9 @@
-// ignore_for_file: prefer_const_constructors_in_immutables, prefer_const_constructors
+// ignore_for_file: prefer_const_constructors_in_immutables, prefer_const_constructors, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:getwidget/getwidget.dart';
+import 'package:sadms/Database/database.dart';
+import 'package:sadms/Login/login.dart';
 
 class ChangePassword extends StatefulWidget {
   ChangePassword({Key? key}) : super(key: key);
@@ -10,8 +13,243 @@ class ChangePassword extends StatefulWidget {
 }
 
 class ChangePasswordState extends State<ChangePassword> {
+  List<TextEditingController> controllers =
+      List.generate(3, (index) => TextEditingController());
+  List<bool> visible = List.generate(3, (index) => true);
+  List<String> error = ['', '', ''];
+  List<Map<String, dynamic>> manager = [];
+  bool valid = true;
+
+  void getData() async {
+    await DB.openCon('managerlogin');
+    manager =
+        await DB.collection.find({'Username': LoginState.manager}).toList();
+    await DB.closeCon();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      backgroundColor: Colors.deepPurple[400],
+      body: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+          SizedBox(height: 30),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(
+                    Icons.keyboard_arrow_left,
+                    color: Colors.white,
+                  )),
+              Text(
+                'Change Password',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: 30,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 100),
+          SizedBox(
+            width: 750,
+            child: TextField(
+              controller: controllers[0],
+              obscureText: visible[0],
+              obscuringCharacter: '*',
+              decoration: InputDecoration(
+                fillColor: Colors.white,
+                filled: true,
+                hintText: 'Current Password',
+                labelText: 'Current Password',
+                labelStyle: TextStyle(
+                    backgroundColor: Colors.white,
+                    color: Colors.deepPurple.shade500,
+                    fontWeight: FontWeight.bold),
+                errorText:
+                    error[0] == 'notsame' ? 'Incorrect Current Password' : null,
+                prefixIcon: Icon(Icons.lock_outlined,
+                    color: Colors.deepPurple.shade500),
+                suffixIcon: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        visible[0] = !visible[0];
+                      });
+                    },
+                    icon: Icon(
+                        visible[0] ? Icons.visibility_off : Icons.visibility,
+                        color: Colors.deepPurple.shade500)),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.horizontal(),
+                ),
+              ),
+              onChanged: (value) {
+                setState(() {
+                  if (controllers[0].text != manager[0]['Password']) {
+                    error[0] = 'notsame';
+                  } else {
+                    error[0] = '';
+                  }
+                });
+              },
+            ),
+          ),
+          SizedBox(height: 50),
+          SizedBox(
+            width: 750,
+            child: TextField(
+              controller: controllers[1],
+              obscureText: visible[1],
+              obscuringCharacter: '*',
+              decoration: InputDecoration(
+                fillColor: Colors.white,
+                filled: true,
+                hintText: 'New Password',
+                labelText: 'New Password',
+                labelStyle: TextStyle(
+                    backgroundColor: Colors.white,
+                    color: Colors.deepPurple.shade500,
+                    fontWeight: FontWeight.bold),
+                errorText: error[1] == 'empty'
+                    ? 'New Password Can\'t be empty'
+                    : error[1] == 'minimum'
+                        ? 'Minimum Limit is not Reached'
+                        : error[1] == 'maximum'
+                            ? 'Maximum Limit is Exceeded'
+                            : null,
+                prefixIcon: Icon(Icons.lock_outlined,
+                    color: Colors.deepPurple.shade500),
+                suffixIcon: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        visible[1] = !visible[1];
+                      });
+                    },
+                    icon: Icon(
+                        visible[1] ? Icons.visibility_off : Icons.visibility,
+                        color: Colors.deepPurple.shade500)),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.horizontal(),
+                ),
+              ),
+              onChanged: (value) {
+                setState(() {
+                  if (value.isNotEmpty) {
+                    if (value.length < 8) {
+                      error[1] = 'minimum';
+                    } else if (value.length > 40) {
+                      error[1] = 'maximum';
+                    } else {
+                      error[1] = '';
+                    }
+                  }
+                  if (controllers[0].text != controllers[1].text) {
+                    error[2] = 'notsame';
+                  }
+                });
+              },
+            ),
+          ),
+          SizedBox(height: 50),
+          SizedBox(
+            width: 750,
+            child: TextField(
+              controller: controllers[2],
+              obscureText: visible[2],
+              obscuringCharacter: '*',
+              decoration: InputDecoration(
+                fillColor: Colors.white,
+                filled: true,
+                hintText: 'Confirm Password',
+                labelText: 'Confirm Password',
+                labelStyle: TextStyle(
+                    backgroundColor: Colors.white,
+                    color: Colors.deepPurple.shade500,
+                    fontWeight: FontWeight.bold),
+                errorText:
+                    error[2] == 'notsame' ? 'Password doesn\'t Match' : null,
+                prefixIcon: Icon(Icons.lock_outlined,
+                    color: Colors.deepPurple.shade500),
+                suffixIcon: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        visible[2] = !visible[2];
+                      });
+                    },
+                    icon: Icon(
+                        visible[2] ? Icons.visibility_off : Icons.visibility,
+                        color: Colors.deepPurple.shade500)),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.horizontal(),
+                ),
+              ),
+              onChanged: (value) {
+                setState(() {
+                  setState(() {
+                    if (controllers[1].text != controllers[2].text) {
+                      error[2] = 'notsame';
+                    } else {
+                      error[2] = '';
+                    }
+                  });
+                });
+              },
+            ),
+          ),
+          SizedBox(height: 100),
+          SizedBox(
+            width: 750,
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  GFButton(
+                    onPressed: () async {
+                      valid = true;
+                      if (controllers[1].text.isEmpty) {
+                        error[1] = 'empty';
+                      }
+                      for (int i = 0; i < 3; i++) {
+                        if (error[i] != '') {
+                          valid = false;
+                          break;
+                        }
+                      }
+                      if (valid) {
+                        await DB.openCon('managerlogin');
+                        await DB.updatedata('Password', controllers[0].text,
+                            'Password', controllers[1].text);
+                        await DB.closeCon();
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                      }
+                    },
+                    icon: Icon(
+                      Icons.check,
+                      color: Colors.white,
+                    ),
+                    text: 'Confirm',
+                    textColor: Colors.white,
+                    color: Colors.deepPurple.shade700,
+                    hoverColor: Colors.deepPurple.shade500,
+                    shape: GFButtonShape.square,
+                    size: GFSize.LARGE,
+                  ),
+                ]),
+          ),
+        ]),
+      ),
+    );
   }
 }
