@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:sadms/Database/database.dart';
 import 'package:sadms/Login/login.dart';
+import 'package:sadms/Profile/Change/changeemailid.dart';
 import 'package:sadms/Profile/Change/changeusername.dart';
 
 class EditProfile extends StatefulWidget {
@@ -163,7 +164,12 @@ class EditProfileState extends State<EditProfile> {
                           size: GFSize.LARGE,
                         ),
                         GFButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: ((context) => ChangeEmailId())));
+                          },
                           icon: Icon(
                             Icons.email,
                             color: Colors.white,

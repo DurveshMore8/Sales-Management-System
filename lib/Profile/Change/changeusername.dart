@@ -45,6 +45,14 @@ class ChangeUsernameState extends State<ChangeUsername> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: Icon(
+                            Icons.keyboard_arrow_left,
+                            color: Colors.white,
+                          )),
                       Text(
                         'Change Username',
                         style: TextStyle(
@@ -131,6 +139,11 @@ class ChangeUsernameState extends State<ChangeUsername> {
                         children: [
                           GFButton(
                             onPressed: () async {
+                              setState(() {
+                                if (controllers[1].text.isEmpty) {
+                                  error = 'empty';
+                                }
+                              });
                               if (error == '') {
                                 await DB.openCon('managerlogin');
                                 manager = await DB.collection.find().toList();
