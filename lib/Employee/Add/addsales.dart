@@ -14,7 +14,6 @@ class AddSales extends StatefulWidget {
 }
 
 class AddSalesState extends State<AddSales> {
-  //branchid, branchname, location, city, state
   List<TextEditingController> controllers =
       List.generate(4, (index) => TextEditingController());
   List<String> error = ['', '', '', ''];
@@ -22,7 +21,7 @@ class AddSalesState extends State<AddSales> {
   List<Map<String, dynamic>> stock = [];
   List<Map<String, dynamic>> product = [];
   List<Map<String, dynamic>> employee = [];
-  List<Map<String, dynamic>> order = [];
+  static List<Map<String, dynamic>> order = [];
   static List<int> total = [0, 0];
 
   void getData() async {
@@ -41,6 +40,8 @@ class AddSalesState extends State<AddSales> {
   @override
   void initState() {
     super.initState();
+    order.clear();
+    total = [0, 0];
     getData();
   }
 
@@ -56,14 +57,6 @@ class AddSalesState extends State<AddSales> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: const Icon(
-                      Icons.keyboard_arrow_left,
-                      color: Colors.white,
-                    )),
                 const Text(
                   'Add Sales',
                   style: TextStyle(
@@ -397,6 +390,20 @@ class AddSalesState extends State<AddSales> {
                                       fontSize: 17,
                                     ),
                                   ),
+                                  TextButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          total[0] -= int.parse(
+                                              order[index]['Quantity']);
+                                          total[1] -=
+                                              int.parse(order[index]['Price']);
+                                          order.removeAt(index);
+                                        });
+                                      },
+                                      child: Text(
+                                        'Delete',
+                                        style: TextStyle(color: Colors.white),
+                                      ))
                                 ],
                               ),
                             ],

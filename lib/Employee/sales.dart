@@ -4,8 +4,11 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:sadms/Database/database.dart';
 import 'package:sadms/Employee/Add/addsales.dart';
+import 'package:sadms/Login/login.dart';
 
 class Sales extends StatefulWidget {
   Sales({Key? key}) : super(key: key);
@@ -21,6 +24,25 @@ class _SalesState extends State<Sales> {
   bool valid = true;
   bool btn1 = false;
   bool btn2 = false;
+
+  Future sendEmail() async {
+    final url = Uri.parse("https://api.emailjs.com/api/v1.0/email/send");
+    const serviceId = "service_hxy449r";
+    const templateId = "template_mlpo2cb";
+    const userId = "uHPLeAfO4E1R5eQgR";
+    final response = await http.post(url,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({
+          'service_id': serviceId,
+          'template_id': templateId,
+          'user_id': userId,
+          'template_params': {
+            'name': controllers[0].text,
+            'user': controllers[2].text
+          }
+        }));
+    return response.statusCode;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -336,7 +358,25 @@ class _SalesState extends State<Sales> {
         SizedBox(height: 50),
         btn2 == true
             ? GFButton(
-                onPressed: () {},
+                onPressed: () async {
+                  await DB.openCon('sales');
+                  await DB.collection.insertOne({
+                    'CustomerName': controllers[0].text,
+                    'Phone': controllers[1].text,
+                    'EmailId': controllers[2].text,
+                    'Products': AddSalesState.order,
+                    'TotalQuantity': AddSalesState.total[0],
+                    'TotalPrice': AddSalesState.total[1],
+                    'SaleBy': LoginState.employee
+                  });
+                  await DB.closeCon();
+                  controllers[0].clear();
+                  controllers[1].clear();
+                  controllers[2].clear();
+                  controllers[3].clear();
+                  controllers[4].clear();
+                  controllers[5].clear();
+                },
                 icon: Icon(
                   Icons.check,
                   color: Colors.green,
