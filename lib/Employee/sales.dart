@@ -21,6 +21,7 @@ class _SalesState extends State<Sales> {
   List<TextEditingController> controllers =
       List.generate(6, (index) => TextEditingController());
   List<String> error = ['', '', '', '', ''];
+  List<Map<String, dynamic>> branch = [];
   bool valid = true;
   bool btn1 = false;
   bool btn2 = false;
@@ -42,6 +43,19 @@ class _SalesState extends State<Sales> {
           }
         }));
     return response.statusCode;
+  }
+
+  void getData() async {
+    await DB.openCon('employeeinfo');
+    branch =
+        await DB.collection.find({'Username': LoginState.employee}).toList();
+    await DB.closeCon();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
   }
 
   @override
@@ -368,7 +382,9 @@ class _SalesState extends State<Sales> {
                     'TotalQuantity': AddSalesState.total[0],
                     'TotalPrice': AddSalesState.total[1],
                     'SaleBy': LoginState.employee,
-                    'Date': DateTime.now()
+                    'BranchName': branch[0]['BranchName'],
+                    'Date':
+                        '${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}'
                   });
                   await DB.closeCon();
                   await DB.openCon('stock');

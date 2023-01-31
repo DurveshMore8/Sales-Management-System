@@ -120,28 +120,36 @@ class AddSalesState extends State<AddSales> {
                             });
                           },
                           onSubmitted: (value) {
-                            bool exist = false;
-                            setState(() {
-                              for (int i = 0; i < stock.length; i++) {
-                                if (value == stock[i]['ProductName'] &&
-                                    stock[i]['Quantity'] != 0 &&
-                                    employee[0]['BranchName'] ==
-                                        stock[i]['BranchName']) {
-                                  exist = true;
-                                  controllers[1].text =
-                                      product[i]['SellingPrice'].toString();
-                                  break;
+                            if (stock.isNotEmpty && employee.isNotEmpty) {
+                              bool exist = false;
+                              setState(() {
+                                for (int i = 0; i < stock.length; i++) {
+                                  if (value == stock[i]['ProductName'] &&
+                                      stock[i]['Quantity'] != 0 &&
+                                      employee[0]['BranchName'] ==
+                                          stock[i]['BranchName']) {
+                                    exist = true;
+                                    for (int j = 0; j < product.length; j++) {
+                                      if (value == product[j]['ProductName']) {
+                                        controllers[1].text = product[j]
+                                                ['SellingPrice']
+                                            .toString();
+                                      }
+                                    }
+
+                                    break;
+                                  }
                                 }
-                              }
-                              if (exist == true) {
-                                error[0] = '';
-                              } else {
-                                error[0] = 'not exist';
-                                controllers[1].clear();
-                                controllers[2].clear();
-                                controllers[3].clear();
-                              }
-                            });
+                                if (exist == true) {
+                                  error[0] = '';
+                                } else {
+                                  error[0] = 'not exist';
+                                  controllers[1].clear();
+                                  controllers[2].clear();
+                                  controllers[3].clear();
+                                }
+                              });
+                            }
                           },
                         ),
                       ),
