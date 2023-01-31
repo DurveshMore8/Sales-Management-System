@@ -129,8 +129,14 @@ class AddSalesState extends State<AddSales> {
                                       employee[0]['BranchName'] ==
                                           stock[i]['BranchName']) {
                                     exist = true;
-                                    controllers[1].text =
-                                        product[i]['SellingPrice'].toString();
+                                    for (int j = 0; j < product.length; j++) {
+                                      if (value == product[j]['ProductName']) {
+                                        controllers[1].text = product[j]
+                                                ['SellingPrice']
+                                            .toString();
+                                      }
+                                    }
+
                                     break;
                                   }
                                 }
