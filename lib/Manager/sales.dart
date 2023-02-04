@@ -15,6 +15,7 @@ class _SalesState extends State<Sales> {
   int selectedValue = 1;
   int selectedPeriod = 1;
   List<Map<String, dynamic>> sales = [];
+  List<Map<String, dynamic>> search = [];
 
   void day() async {
     await DB.openCon('sales');
@@ -22,11 +23,21 @@ class _SalesState extends State<Sales> {
     await DB.closeCon();
     setState(() {
       sales.clear();
+      search.clear();
       for (int i = 0; i < s.length; i++) {
         int difference =
             DateTime.now().difference(DateTime.parse(s[i]['Date'])).inDays;
         if (difference == 0) {
-          sales.add(s[i]);
+          if (selectedValue == 2) {
+            for (int j = 0; j < s[i]['Products'].length; j++) {
+              s[i].remove('ProductName');
+              s[i].addAll({'ProductName': s[i]['Products'][j]['ProductName']});
+              sales.add(s[i]);
+            }
+          } else {
+            sales.add(s[i]);
+            search.add(s[i]);
+          }
         }
       }
     });
@@ -38,11 +49,13 @@ class _SalesState extends State<Sales> {
     await DB.closeCon();
     setState(() {
       sales.clear();
+      search.clear();
       for (int i = 0; i < s.length; i++) {
         int difference =
             DateTime.now().difference(DateTime.parse(s[i]['Date'])).inDays;
         if (difference <= 30) {
           sales.add(s[i]);
+          search.add(s[i]);
         }
       }
     });
@@ -54,7 +67,27 @@ class _SalesState extends State<Sales> {
     await DB.closeCon();
     setState(() {
       sales.clear();
+      search.clear();
+      for (int i = 0; i < s.length; i++) {
+        int difference =
+            DateTime.now().difference(DateTime.parse(s[i]['Date'])).inDays;
+        if (difference <= 365) {
+          sales.add(s[i]);
+          search.add(s[i]);
+        }
+      }
+    });
+  }
+
+  void all() async {
+    await DB.openCon('sales');
+    List<Map<String, dynamic>> s = await DB.collection.find().toList();
+    await DB.closeCon();
+    setState(() {
+      sales.clear();
+      search.clear();
       sales.addAll(s);
+      search.addAll(s);
     });
   }
 
@@ -136,6 +169,10 @@ class _SalesState extends State<Sales> {
                     value: 3,
                     alignment: Alignment.center,
                     child: Text('\t\t\t\t\t\t\t\tYearly\t\t\t\t\t\t\t\t')),
+                DropdownMenuItem(
+                    value: 4,
+                    alignment: Alignment.center,
+                    child: Text('\t\t\t\t\t\t\t\tAll\t\t\t\t\t\t\t\t')),
               ],
               onChanged: (value) {
                 setState(() {
@@ -144,8 +181,10 @@ class _SalesState extends State<Sales> {
                     day();
                   } else if (value == 2) {
                     month();
-                  } else {
+                  } else if (value == 3) {
                     year();
+                  } else {
+                    all();
                   }
                   selectedPeriod = value!;
                   text.clear();
@@ -179,7 +218,25 @@ class _SalesState extends State<Sales> {
                     ),
                   ),
                   onChanged: (value) {
-                    setState(() {});
+                    setState(() {
+                      sales.clear();
+                      if (value == '') {
+                        sales.addAll(search);
+                      } else {
+                        for (int i = 0; i < search.length; i++) {
+                          if (value.length <= search[i]['SaleBy'].length) {
+                            String namestring = '';
+                            for (int j = 0; j < value.length; j++) {
+                              namestring = namestring + search[i]['SaleBy'][j];
+                            }
+                            if (value.toLowerCase() ==
+                                namestring.toLowerCase()) {
+                              sales.add(search[i]);
+                            }
+                          }
+                        }
+                      }
+                    });
                   },
                 ),
               )
@@ -234,7 +291,27 @@ class _SalesState extends State<Sales> {
                         ),
                       ),
                       onChanged: (value) {
-                        setState(() {});
+                        setState(() {
+                          sales.clear();
+                          if (value == '') {
+                            sales.addAll(search);
+                          } else {
+                            for (int i = 0; i < search.length; i++) {
+                              if (value.length <=
+                                  search[i]['BranchName'].length) {
+                                String namestring = '';
+                                for (int j = 0; j < value.length; j++) {
+                                  namestring =
+                                      namestring + search[i]['BranchName'][j];
+                                }
+                                if (value.toLowerCase() ==
+                                    namestring.toLowerCase()) {
+                                  sales.add(search[i]);
+                                }
+                              }
+                            }
+                          }
+                        });
                       },
                     ),
                   ),
@@ -362,7 +439,7 @@ class _SalesState extends State<Sales> {
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
                                       Text(
-                                        'Product Name: ${sales[index]['Products'][0]['ProductName']}',
+                                        'Product Name: ${sales[index]['ProductName']}',
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 17,
