@@ -42,6 +42,7 @@ dependencies:
   email_validator: ^2.1.17
   csc_picker: ^0.2.6
   http: ^0.13.5
+  intl: ^0.18.0
 
 dev_dependencies:
   flutter_test:

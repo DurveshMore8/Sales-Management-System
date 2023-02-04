@@ -383,8 +383,10 @@ class _SalesState extends State<Sales> {
                     'TotalPrice': AddSalesState.total[1],
                     'SaleBy': LoginState.employee,
                     'BranchName': branch[0]['BranchName'],
-                    'Date':
-                        '${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}'
+                    'Date': DateTime(DateTime.now().year, DateTime.now().month,
+                            DateTime.now().day)
+                        .toString()
+                        .replaceAll(" 00:00:00.000", "")
                   });
                   await DB.closeCon();
                   await DB.openCon('stock');
