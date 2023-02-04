@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_const_constructors_in_immutables, library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:sadms/Database/database.dart';
 
 class Sales extends StatefulWidget {
@@ -33,7 +34,7 @@ class _SalesState extends State<Sales> {
     List<Map<String, dynamic>> s = await DB.collection.find({
       'Date': {
         r'$gte':
-            '${DateTime.now().subtract(Duration(days: 30)).day}-${DateTime.now().month}-${DateTime.now().year}'
+            '${DateTime.now().subtract(Duration(days: 30)).day}-${DateTime.now().subtract(Duration(days: 30)).month}-${DateTime.now().subtract(Duration(days: 30)).year}'
       }
     }).toList();
     await DB.closeCon();
@@ -47,7 +48,7 @@ class _SalesState extends State<Sales> {
     List<Map<String, dynamic>> s = await DB.collection.find({
       'Date': {
         r'$gte':
-            '${DateTime.now().subtract(Duration(days: 365)).day}-${DateTime.now().month}-${DateTime.now().year}'
+            '${DateTime.now().subtract(Duration(days: 365)).day}-${DateTime.now().subtract(Duration(days: 365)).month}-${DateTime.now().subtract(Duration(days: 365)).year}'
       }
     }).toList();
     await DB.closeCon();
@@ -107,7 +108,9 @@ class _SalesState extends State<Sales> {
                     day();
                   } else if (selectedPeriod == 2) {
                     month();
-                  } else {}
+                  } else {
+                    year();
+                  }
                   selectedValue = value!;
                   text.clear();
                 });
@@ -140,7 +143,9 @@ class _SalesState extends State<Sales> {
                     day();
                   } else if (value == 2) {
                     month();
-                  } else {}
+                  } else {
+                    year();
+                  }
                   selectedPeriod = value!;
                   text.clear();
                 });
