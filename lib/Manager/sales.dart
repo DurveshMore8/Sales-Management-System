@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_const_constructors_in_immutables, library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:sadms/Database/database.dart';
 
 class Sales extends StatefulWidget {
@@ -19,40 +18,42 @@ class _SalesState extends State<Sales> {
 
   void day() async {
     await DB.openCon('sales');
-    List<Map<String, dynamic>> s = await DB.collection.find({
-      'Date':
-          '${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}'
-    }).toList();
+    List<Map<String, dynamic>> s = await DB.collection.find().toList();
     await DB.closeCon();
     setState(() {
-      sales.addAll(s);
+      sales.clear();
+      for (int i = 0; i < s.length; i++) {
+        int difference =
+            DateTime.now().difference(DateTime.parse(s[i]['Date'])).inDays;
+        if (difference == 0) {
+          sales.add(s[i]);
+        }
+      }
     });
   }
 
   void month() async {
     await DB.openCon('sales');
-    List<Map<String, dynamic>> s = await DB.collection.find({
-      'Date': {
-        r'$gte':
-            '${DateTime.now().subtract(Duration(days: 30)).day}-${DateTime.now().subtract(Duration(days: 30)).month}-${DateTime.now().subtract(Duration(days: 30)).year}'
-      }
-    }).toList();
+    List<Map<String, dynamic>> s = await DB.collection.find().toList();
     await DB.closeCon();
     setState(() {
-      sales.addAll(s);
+      sales.clear();
+      for (int i = 0; i < s.length; i++) {
+        int difference =
+            DateTime.now().difference(DateTime.parse(s[i]['Date'])).inDays;
+        if (difference <= 30) {
+          sales.add(s[i]);
+        }
+      }
     });
   }
 
   void year() async {
     await DB.openCon('sales');
-    List<Map<String, dynamic>> s = await DB.collection.find({
-      'Date': {
-        r'$gte':
-            '${DateTime.now().subtract(Duration(days: 365)).day}-${DateTime.now().subtract(Duration(days: 365)).month}-${DateTime.now().subtract(Duration(days: 365)).year}'
-      }
-    }).toList();
+    List<Map<String, dynamic>> s = await DB.collection.find().toList();
     await DB.closeCon();
     setState(() {
+      sales.clear();
       sales.addAll(s);
     });
   }

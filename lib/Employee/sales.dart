@@ -4,7 +4,6 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:sadms/Database/database.dart';
@@ -384,7 +383,10 @@ class _SalesState extends State<Sales> {
                     'TotalPrice': AddSalesState.total[1],
                     'SaleBy': LoginState.employee,
                     'BranchName': branch[0]['BranchName'],
-                    'Date': DateTime.now().toUtc()
+                    'Date': DateTime(DateTime.now().year, DateTime.now().month,
+                            DateTime.now().day)
+                        .toString()
+                        .replaceAll(" 00:00:00.000", "")
                   });
                   await DB.closeCon();
                   await DB.openCon('stock');
