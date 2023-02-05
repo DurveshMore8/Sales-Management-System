@@ -18,7 +18,8 @@ class AddSalesState extends State<AddSales> {
       List.generate(4, (index) => TextEditingController());
   List<String> error = ['', '', '', ''];
   bool isLoading = true;
-  bool valid = true;
+  bool isValid = true;
+  bool price = false;
   List<Map<String, dynamic>> stock = [];
   List<Map<String, dynamic>> product = [];
   List<Map<String, dynamic>> employee = [];
@@ -46,8 +47,6 @@ class AddSalesState extends State<AddSales> {
 
   @override
   void initState() {
-    order.clear();
-    total = [0, 0];
     getData();
     super.initState();
   }
@@ -108,7 +107,7 @@ class AddSalesState extends State<AddSales> {
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold),
                                         errorText: error[0] == 'empty'
-                                            ? 'Customer\'s Name Can\'t be empty'
+                                            ? 'Product Name Can\'t be empty'
                                             : error[0] == 'minimum'
                                                 ? 'Minimum Limit is not Reached'
                                                 : error[0] == 'maximum'
@@ -163,9 +162,10 @@ class AddSalesState extends State<AddSales> {
                                                         product[j]
                                                                 ['SellingPrice']
                                                             .toString();
+                                                    price = true;
+                                                    error[1] = '';
                                                   }
                                                 }
-
                                                 break;
                                               }
                                             }
@@ -176,6 +176,7 @@ class AddSalesState extends State<AddSales> {
                                               controllers[1].clear();
                                               controllers[2].clear();
                                               controllers[3].clear();
+                                              price = false;
                                             }
                                           });
                                         }
@@ -222,11 +223,16 @@ class AddSalesState extends State<AddSales> {
                                           if (value.isNotEmpty) {
                                             if (value.length < 5) {
                                               error[1] = 'minimum';
+                                              price = false;
                                             } else if (value.length > 8) {
                                               error[1] = 'maximum';
+                                              price = false;
                                             } else {
                                               error[1] = '';
+                                              price = true;
                                             }
+                                          } else {
+                                            price = false;
                                           }
                                         });
                                       },
@@ -244,6 +250,7 @@ class AddSalesState extends State<AddSales> {
                                   SizedBox(
                                     width: 600,
                                     child: TextField(
+                                      readOnly: price ? false : true,
                                       controller: controllers[2],
                                       inputFormatters: <TextInputFormatter>[
                                         FilteringTextInputFormatter.digitsOnly,
@@ -276,6 +283,7 @@ class AddSalesState extends State<AddSales> {
                                         ),
                                       ),
                                       onChanged: (value) {
+                                        controllers[3].clear();
                                         setState(() {
                                           if (value.isNotEmpty) {
                                             if (value.length > 4) {
@@ -288,6 +296,7 @@ class AddSalesState extends State<AddSales> {
                                       },
                                       onSubmitted: ((value) {
                                         setState(() {
+                                          error[3] = '';
                                           controllers[3].text =
                                               (int.parse(controllers[1].text) *
                                                       int.parse(
@@ -300,6 +309,7 @@ class AddSalesState extends State<AddSales> {
                                   SizedBox(
                                     width: 600,
                                     child: TextField(
+                                      readOnly: true,
                                       controller: controllers[3],
                                       inputFormatters: <TextInputFormatter>[
                                         FilteringTextInputFormatter.digitsOnly,
@@ -316,12 +326,8 @@ class AddSalesState extends State<AddSales> {
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold),
                                         errorText: error[3] == 'empty'
-                                            ? 'Total Can\'t be empty'
-                                            : error[3] == 'minimum'
-                                                ? 'Minimum Limit is not Reached'
-                                                : error[3] == 'maximum'
-                                                    ? 'Maximum Limit is Exceeded'
-                                                    : null,
+                                            ? 'Total Price Can\'t be empty'
+                                            : null,
                                         prefixIcon: Icon(Icons.price_change,
                                             color: Colors.deepPurpleAccent
                                                 .withOpacity(1)),
@@ -332,19 +338,6 @@ class AddSalesState extends State<AddSales> {
                                               BorderRadius.horizontal(),
                                         ),
                                       ),
-                                      onChanged: (value) {
-                                        setState(() {
-                                          if (value.isNotEmpty) {
-                                            if (value.length < 3) {
-                                              error[3] = 'minimum';
-                                            } else if (value.length > 10) {
-                                              error[3] = 'maximum';
-                                            } else {
-                                              error[3] = '';
-                                            }
-                                          }
-                                        });
-                                      },
                                     ),
                                   ),
                                 ],
@@ -357,17 +350,30 @@ class AddSalesState extends State<AddSales> {
                                 GFButton(
                                   onPressed: () {
                                     setState(() {
-                                      order.add({
-                                        'ProductName': controllers[0].text,
-                                        'Quantity': controllers[2].text,
-                                        'Price': controllers[3].text
-                                      });
-                                      total[0] +=
-                                          int.parse(controllers[2].text);
-                                      total[1] +=
-                                          int.parse(controllers[3].text);
-                                      for (int i = 0; i <= 3; i++) {
-                                        controllers[i].clear();
+                                      isValid = true;
+                                      for (int i = 0; i < 4; i++) {
+                                        if (controllers[i].text.isEmpty) {
+                                          error[i] = 'empty';
+                                        }
+                                      }
+                                      for (int i = 0; i < 4; i++) {
+                                        if (error[i] != '') {
+                                          isValid = false;
+                                        }
+                                      }
+                                      if (isValid) {
+                                        order.add({
+                                          'ProductName': controllers[0].text,
+                                          'Quantity': controllers[2].text,
+                                          'Price': controllers[3].text
+                                        });
+                                        total[0] +=
+                                            int.parse(controllers[2].text);
+                                        total[1] +=
+                                            int.parse(controllers[3].text);
+                                        for (int i = 0; i <= 3; i++) {
+                                          controllers[i].clear();
+                                        }
                                       }
                                     });
                                   },

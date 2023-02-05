@@ -23,7 +23,7 @@ class _SalesState extends State<Sales> {
   List<String> error = ['', '', '', '', ''];
   List<Map<String, dynamic>> branch = [];
   bool isLoading = true;
-  bool valid = true;
+  bool isValid = true;
   bool btn1 = false;
   bool btn2 = false;
 
@@ -62,6 +62,8 @@ class _SalesState extends State<Sales> {
   @override
   void initState() {
     getData();
+    AddSalesState.order.clear();
+    AddSalesState.total = [0, 0];
     super.initState();
   }
 
@@ -135,8 +137,12 @@ class _SalesState extends State<Sales> {
                                     if (value.isNotEmpty) {
                                       if (value.length < 8) {
                                         error[0] = 'minimum';
+                                        btn1 = false;
+                                        btn2 = false;
                                       } else if (value.length > 30) {
                                         error[0] = 'maximum';
+                                        btn1 = false;
+                                        btn2 = false;
                                       } else {
                                         error[0] = '';
                                       }
@@ -182,6 +188,8 @@ class _SalesState extends State<Sales> {
                                     if (value.length < 10 ||
                                         value.length > 10) {
                                       error[1] = 'invalid';
+                                      btn1 = false;
+                                      btn2 = false;
                                     } else {
                                       error[1] = '';
                                     }
@@ -234,6 +242,8 @@ class _SalesState extends State<Sales> {
                                   error[2] = '';
                                 } else {
                                   error[2] = 'invalid';
+                                  btn1 = false;
+                                  btn2 = false;
                                 }
                               });
                             },
@@ -277,8 +287,12 @@ class _SalesState extends State<Sales> {
                                 if (value.isNotEmpty) {
                                   if (value.length < 6) {
                                     error[3] = 'minimum';
+                                    btn1 = false;
+                                    btn2 = false;
                                   } else if (value.length > 6) {
                                     error[3] = 'maximum';
+                                    btn1 = false;
+                                    btn2 = false;
                                   } else {
                                     error[3] = '';
                                   }
@@ -294,9 +308,22 @@ class _SalesState extends State<Sales> {
                   GFButton(
                     onPressed: () {
                       setState(() {
-                        controllers[4].text = 'No Product Selected';
-                        controllers[5].text = 'Not Calculated';
-                        btn1 = true;
+                        isValid = true;
+                        for (int i = 0; i < 4; i++) {
+                          if (controllers[i].text.isEmpty) {
+                            error[i] = 'empty';
+                          }
+                        }
+                        for (int i = 0; i < 4; i++) {
+                          if (error[i] != '') {
+                            isValid = false;
+                          }
+                        }
+                        if (isValid) {
+                          controllers[4].text = 'No Product Selected';
+                          controllers[5].text = 'Not Calculated';
+                          btn1 = true;
+                        }
                       });
                     },
                     icon: Icon(
@@ -380,11 +407,18 @@ class _SalesState extends State<Sales> {
                                           builder: ((context) =>
                                               AddSales()))).whenComplete(() {
                                     setState(() {
-                                      controllers[4].text =
-                                          AddSalesState.total[0].toString();
-                                      controllers[5].text =
-                                          AddSalesState.total[1].toString();
-                                      btn2 = true;
+                                      if (AddSalesState.total[0] != 0 &&
+                                          AddSalesState.total[1] != 0) {
+                                        controllers[4].text =
+                                            AddSalesState.total[0].toString();
+                                        controllers[5].text =
+                                            AddSalesState.total[1].toString();
+                                        btn2 = true;
+                                      } else {
+                                        btn2 = false;
+                                        controllers[4].clear();
+                                        controllers[5].clear();
+                                      }
                                     });
                                   });
                                 },
@@ -409,6 +443,9 @@ class _SalesState extends State<Sales> {
                   btn2 == true
                       ? GFButton(
                           onPressed: () async {
+                            setState(() {
+                              isLoading = true;
+                            });
                             await DB.openCon('sales');
                             await DB.collection.insertOne({
                               'CustomerName': controllers[0].text,
@@ -442,9 +479,16 @@ class _SalesState extends State<Sales> {
                                           AddSalesState.order[i]['Quantity']));
                             }
                             await DB.closeCon();
-                            for (int i = 0; i <= 5; i++) {
-                              controllers[i].clear();
-                            }
+                            setState(() {
+                              isLoading = false;
+                              for (int i = 0; i <= 5; i++) {
+                                controllers[i].clear();
+                              }
+                              AddSalesState.order.clear();
+                              AddSalesState.total = [0, 0];
+                              btn1 = false;
+                              btn2 = false;
+                            });
                           },
                           icon: Icon(
                             Icons.check,
