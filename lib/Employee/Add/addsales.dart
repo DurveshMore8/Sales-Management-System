@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors_in_immutables, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:getwidget/getwidget.dart';
@@ -295,14 +297,17 @@ class AddSalesState extends State<AddSales> {
                                         });
                                       },
                                       onSubmitted: ((value) {
-                                        setState(() {
-                                          error[3] = '';
-                                          controllers[3].text =
-                                              (int.parse(controllers[1].text) *
-                                                      int.parse(
-                                                          controllers[2].text))
-                                                  .toString();
-                                        });
+                                        if (controllers[2].text.isNotEmpty ||
+                                            controllers[3].text.isNotEmpty) {
+                                          setState(() {
+                                            error[3] = '';
+                                            controllers[3].text = (int.parse(
+                                                        controllers[1].text) *
+                                                    int.parse(
+                                                        controllers[2].text))
+                                                .toString();
+                                          });
+                                        }
                                       }),
                                     ),
                                   ),
