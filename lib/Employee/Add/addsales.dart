@@ -295,14 +295,17 @@ class AddSalesState extends State<AddSales> {
                                         });
                                       },
                                       onSubmitted: ((value) {
-                                        setState(() {
-                                          error[3] = '';
-                                          controllers[3].text =
-                                              (int.parse(controllers[1].text) *
-                                                      int.parse(
-                                                          controllers[2].text))
-                                                  .toString();
-                                        });
+                                        if (controllers[2].text.isNotEmpty ||
+                                            controllers[3].text.isNotEmpty) {
+                                          setState(() {
+                                            error[3] = '';
+                                            controllers[3].text = (int.parse(
+                                                        controllers[1].text) *
+                                                    int.parse(
+                                                        controllers[2].text))
+                                                .toString();
+                                          });
+                                        }
                                       }),
                                     ),
                                   ),
