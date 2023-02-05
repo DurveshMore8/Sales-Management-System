@@ -22,7 +22,8 @@ class _SalesState extends State<Sales> {
       List.generate(6, (index) => TextEditingController());
   List<String> error = ['', '', '', '', ''];
   List<Map<String, dynamic>> branch = [];
-  bool valid = true;
+  bool isLoading = true;
+  bool isValid = true;
   bool btn1 = false;
   bool btn2 = false;
 
@@ -46,368 +47,464 @@ class _SalesState extends State<Sales> {
   }
 
   void getData() async {
+    setState(() {
+      isLoading = true;
+    });
     await DB.openCon('employeeinfo');
     branch =
         await DB.collection.find({'Username': LoginState.employee}).toList();
     await DB.closeCon();
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
   void initState() {
-    super.initState();
     getData();
+    AddSalesState.order.clear();
+    AddSalesState.total = [0, 0];
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        SizedBox(height: 20),
-        Text(
-          'Sales',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-            fontSize: 30,
-          ),
-        ),
-        SizedBox(height: 50),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            SizedBox(
-              height: 100,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return Scaffold(
+        backgroundColor: isLoading
+            ? Colors.deepPurpleAccent.shade700.withOpacity(1)
+            : Colors.deepPurpleAccent.withOpacity(1),
+        body: isLoading
+            ? Center(
+                child: CircularProgressIndicator(
+                color: Colors.white,
+              ))
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(
-                    width: 500,
-                    child: TextField(
-                      controller: controllers[0],
-                      decoration: InputDecoration(
-                        fillColor: Colors.white,
-                        filled: true,
-                        hintText: 'Durvesh More',
-                        labelText: 'Customer\'s Name',
-                        labelStyle: TextStyle(
-                            backgroundColor: Colors.white,
-                            color: Colors.deepPurple.shade500,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold),
-                        errorText: error[0] == 'empty'
-                            ? 'Customer\'s Name Can\'t be empty'
-                            : error[0] == 'minimum'
-                                ? 'Minimum Limit is not Reached'
-                                : error[0] == 'maximum'
-                                    ? 'Maximum Limit is Exceeded'
-                                    : error[0] == 'already exist'
-                                        ? 'Branch Id already exist'
-                                        : null,
-                        prefixIcon: Icon(Icons.person,
-                            color: Colors.deepPurple.shade500),
-                        prefixIconColor: Colors.deepPurple.shade500,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.horizontal(),
+                  SizedBox(height: 20),
+                  Text(
+                    'Sales',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 30,
+                    ),
+                  ),
+                  SizedBox(height: 50),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      SizedBox(
+                        height: 100,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            SizedBox(
+                              width: 500,
+                              child: TextField(
+                                controller: controllers[0],
+                                decoration: InputDecoration(
+                                  fillColor: Colors.white,
+                                  filled: true,
+                                  hintText: 'Durvesh More',
+                                  labelText: 'Customer\'s Name',
+                                  labelStyle: TextStyle(
+                                      backgroundColor: Colors.white,
+                                      color: Colors.deepPurpleAccent
+                                          .withOpacity(1),
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                  errorText: error[0] == 'empty'
+                                      ? 'Customer\'s Name Can\'t be empty'
+                                      : error[0] == 'minimum'
+                                          ? 'Minimum Limit is not Reached'
+                                          : error[0] == 'maximum'
+                                              ? 'Maximum Limit is Exceeded'
+                                              : error[0] == 'already exist'
+                                                  ? 'Branch Id already exist'
+                                                  : null,
+                                  prefixIcon: Icon(Icons.person,
+                                      color: Colors.deepPurpleAccent
+                                          .withOpacity(1)),
+                                  prefixIconColor:
+                                      Colors.deepPurpleAccent.withOpacity(1),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.horizontal(),
+                                  ),
+                                ),
+                                onChanged: (value) {
+                                  setState(() {
+                                    if (value.isNotEmpty) {
+                                      if (value.length < 8) {
+                                        error[0] = 'minimum';
+                                        btn1 = false;
+                                        btn2 = false;
+                                      } else if (value.length > 30) {
+                                        error[0] = 'maximum';
+                                        btn1 = false;
+                                        btn2 = false;
+                                      } else {
+                                        error[0] = '';
+                                      }
+                                    }
+                                  });
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              width: 500,
+                              child: TextField(
+                                controller: controllers[1],
+                                inputFormatters: <TextInputFormatter>[
+                                  FilteringTextInputFormatter.digitsOnly,
+                                ], // Only numbers can be entered
+                                decoration: InputDecoration(
+                                  fillColor: Colors.white,
+                                  filled: true,
+                                  hintText: '1234567890',
+                                  labelText: 'Mobile Number',
+                                  labelStyle: TextStyle(
+                                      backgroundColor: Colors.white,
+                                      color: Colors.deepPurpleAccent
+                                          .withOpacity(1),
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                  errorText: error[1] == 'empty'
+                                      ? 'Mobile Number Can\'t be empty'
+                                      : error[1] == 'invalid'
+                                          ? 'Enter a 10 digit Mobile Number'
+                                          : null,
+                                  prefixIcon: Icon(Icons.phone,
+                                      color: Colors.deepPurpleAccent
+                                          .withOpacity(1)),
+                                  prefixIconColor:
+                                      Colors.deepPurpleAccent.withOpacity(1),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.horizontal(),
+                                  ),
+                                ),
+                                onChanged: (value) {
+                                  setState(() {
+                                    if (value.length < 10 ||
+                                        value.length > 10) {
+                                      error[1] = 'invalid';
+                                      btn1 = false;
+                                      btn2 = false;
+                                    } else {
+                                      error[1] = '';
+                                    }
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      onChanged: (value) {
-                        setState(() {
-                          if (value.isNotEmpty) {
-                            if (value.length < 8) {
-                              error[0] = 'minimum';
-                            } else if (value.length > 30) {
-                              error[0] = 'maximum';
-                            } else {
-                              error[0] = '';
-                            }
-                          }
-                        });
-                      },
-                    ),
+                    ],
                   ),
                   SizedBox(
-                    width: 500,
-                    child: TextField(
-                      controller: controllers[1],
-                      inputFormatters: <TextInputFormatter>[
-                        FilteringTextInputFormatter.digitsOnly,
-                      ], // Only numbers can be entered
-                      decoration: InputDecoration(
-                        fillColor: Colors.white,
-                        filled: true,
-                        hintText: '1234567890',
-                        labelText: 'Mobile Number',
-                        labelStyle: TextStyle(
-                            backgroundColor: Colors.white,
-                            color: Colors.deepPurple.shade500,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold),
-                        errorText: error[1] == 'empty'
-                            ? 'Mobile Number Can\'t be empty'
-                            : error[1] == 'invalid'
-                                ? 'Enter a 10 digit Mobile Number'
-                                : null,
-                        prefixIcon: Icon(Icons.phone,
-                            color: Colors.deepPurple.shade500),
-                        prefixIconColor: Colors.deepPurple.shade500,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.horizontal(),
+                    height: 100,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        SizedBox(
+                          width: 500,
+                          child: TextField(
+                            controller: controllers[2],
+                            decoration: InputDecoration(
+                              fillColor: Colors.white,
+                              filled: true,
+                              hintText: 'something@gmail.com',
+                              labelText: 'E-mail Id',
+                              labelStyle: TextStyle(
+                                  backgroundColor: Colors.white,
+                                  color: Colors.deepPurpleAccent.withOpacity(1),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold),
+                              errorText: error[2] == 'empty'
+                                  ? 'Email Id Can\'t be empty'
+                                  : error[2] == 'invalid'
+                                      ? 'Invalid Email Id'
+                                      : null,
+                              prefixIcon: Icon(Icons.email,
+                                  color:
+                                      Colors.deepPurpleAccent.withOpacity(1)),
+                              prefixIconColor:
+                                  Colors.deepPurpleAccent.withOpacity(1),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.horizontal(),
+                              ),
+                            ),
+                            onChanged: (value) {
+                              setState(() {
+                                if (EmailValidator.validate(
+                                    controllers[2].text)) {
+                                  error[2] = '';
+                                } else {
+                                  error[2] = 'invalid';
+                                  btn1 = false;
+                                  btn2 = false;
+                                }
+                              });
+                            },
+                          ),
                         ),
-                      ),
-                      onChanged: (value) {
-                        setState(() {
-                          if (value.length < 10 || value.length > 10) {
-                            error[1] = 'invalid';
-                          } else {
-                            error[1] = '';
+                        SizedBox(
+                          width: 500,
+                          child: TextField(
+                            controller: controllers[3],
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.digitsOnly,
+                            ], // Only numbers can be entered
+                            decoration: InputDecoration(
+                              fillColor: Colors.white,
+                              filled: true,
+                              hintText: '400604',
+                              labelText: 'Pincode',
+                              labelStyle: TextStyle(
+                                  backgroundColor: Colors.white,
+                                  color: Colors.deepPurpleAccent.withOpacity(1),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold),
+                              errorText: error[3] == 'empty'
+                                  ? 'Pincode Can\'t be empty'
+                                  : error[3] == 'minimum'
+                                      ? 'Minimum Limit is not Reached'
+                                      : error[3] == 'maximum'
+                                          ? 'Maximum Limit is Exceeded'
+                                          : null,
+                              prefixIcon: Icon(Icons.code,
+                                  color:
+                                      Colors.deepPurpleAccent.withOpacity(1)),
+                              prefixIconColor:
+                                  Colors.deepPurpleAccent.withOpacity(1),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.horizontal(),
+                              ),
+                            ),
+                            onChanged: (value) {
+                              setState(() {
+                                if (value.isNotEmpty) {
+                                  if (value.length < 6) {
+                                    error[3] = 'minimum';
+                                    btn1 = false;
+                                    btn2 = false;
+                                  } else if (value.length > 6) {
+                                    error[3] = 'maximum';
+                                    btn1 = false;
+                                    btn2 = false;
+                                  } else {
+                                    error[3] = '';
+                                  }
+                                }
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 50),
+                  GFButton(
+                    onPressed: () {
+                      setState(() {
+                        isValid = true;
+                        for (int i = 0; i < 4; i++) {
+                          if (controllers[i].text.isEmpty) {
+                            error[i] = 'empty';
                           }
-                        });
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        SizedBox(
-          height: 100,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              SizedBox(
-                width: 500,
-                child: TextField(
-                  controller: controllers[2],
-                  decoration: InputDecoration(
-                    fillColor: Colors.white,
-                    filled: true,
-                    hintText: 'something@gmail.com',
-                    labelText: 'E-mail Id',
-                    labelStyle: TextStyle(
-                        backgroundColor: Colors.white,
-                        color: Colors.deepPurple.shade500,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold),
-                    errorText: error[2] == 'empty'
-                        ? 'Email Id Can\'t be empty'
-                        : error[2] == 'invalid'
-                            ? 'Invalid Email Id'
-                            : null,
-                    prefixIcon:
-                        Icon(Icons.email, color: Colors.deepPurple.shade500),
-                    prefixIconColor: Colors.deepPurple.shade500,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.horizontal(),
-                    ),
-                  ),
-                  onChanged: (value) {
-                    setState(() {
-                      if (EmailValidator.validate(controllers[2].text)) {
-                        error[2] = '';
-                      } else {
-                        error[2] = 'invalid';
-                      }
-                    });
-                  },
-                ),
-              ),
-              SizedBox(
-                width: 500,
-                child: TextField(
-                  controller: controllers[3],
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly,
-                  ], // Only numbers can be entered
-                  decoration: InputDecoration(
-                    fillColor: Colors.white,
-                    filled: true,
-                    hintText: '400604',
-                    labelText: 'Pincode',
-                    labelStyle: TextStyle(
-                        backgroundColor: Colors.white,
-                        color: Colors.deepPurple.shade500,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold),
-                    errorText: error[3] == 'empty'
-                        ? 'Pincode Can\'t be empty'
-                        : error[3] == 'minimum'
-                            ? 'Minimum Limit is not Reached'
-                            : error[3] == 'maximum'
-                                ? 'Maximum Limit is Exceeded'
-                                : null,
-                    prefixIcon:
-                        Icon(Icons.code, color: Colors.deepPurple.shade500),
-                    prefixIconColor: Colors.deepPurple.shade500,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.horizontal(),
-                    ),
-                  ),
-                  onChanged: (value) {
-                    setState(() {
-                      if (value.isNotEmpty) {
-                        if (value.length < 6) {
-                          error[3] = 'minimum';
-                        } else if (value.length > 6) {
-                          error[3] = 'maximum';
-                        } else {
-                          error[3] = '';
                         }
-                      }
-                    });
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-        SizedBox(height: 50),
-        GFButton(
-          onPressed: () {
-            setState(() {
-              controllers[4].text = 'No Product Selected';
-              controllers[5].text = 'Not Calculated';
-              btn1 = true;
-            });
-          },
-          icon: Icon(
-            Icons.check,
-            color: Colors.green,
-          ),
-          text: 'Create Order',
-          textColor: Colors.white,
-          color: Colors.deepPurple.shade700,
-          hoverColor: Colors.deepPurple.shade500,
-          shape: GFButtonShape.square,
-          size: GFSize.LARGE,
-        ),
-        SizedBox(height: 50),
-        btn1 == true
-            ? Container(
-                color: Colors.deepPurple.shade900,
-                height: 75,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    SizedBox(
-                      width: 400,
-                      child: TextField(
-                        controller: controllers[4],
-                        readOnly: true,
-                        decoration: InputDecoration(
-                          fillColor: Colors.white,
-                          filled: true,
-                          labelText: 'Quantity',
-                          labelStyle: TextStyle(
-                              backgroundColor: Colors.white,
-                              color: Colors.deepPurple.shade500,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold),
-                          prefixIcon: Icon(Icons.production_quantity_limits,
-                              color: Colors.deepPurple.shade500),
-                          prefixIconColor: Colors.deepPurple.shade500,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.horizontal(),
+                        for (int i = 0; i < 4; i++) {
+                          if (error[i] != '') {
+                            isValid = false;
+                          }
+                        }
+                        if (isValid) {
+                          controllers[4].text = 'No Product Selected';
+                          controllers[5].text = 'Not Calculated';
+                          btn1 = true;
+                        }
+                      });
+                    },
+                    icon: Icon(
+                      Icons.check,
+                      color: Colors.green,
+                    ),
+                    text: 'Create Order',
+                    textColor: Colors.white,
+                    color: Colors.deepPurpleAccent.shade700.withOpacity(0.8),
+                    hoverColor: Colors.deepPurpleAccent.shade700.withOpacity(1),
+                    shape: GFButtonShape.square,
+                    size: GFSize.LARGE,
+                  ),
+                  SizedBox(height: 50),
+                  btn1 == true
+                      ? SizedBox(
+                          height: 75,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              SizedBox(
+                                width: 400,
+                                child: TextField(
+                                  controller: controllers[4],
+                                  readOnly: true,
+                                  decoration: InputDecoration(
+                                    fillColor: Colors.white,
+                                    filled: true,
+                                    labelText: 'Quantity',
+                                    labelStyle: TextStyle(
+                                        backgroundColor: Colors.white,
+                                        color: Colors.deepPurpleAccent
+                                            .withOpacity(1),
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
+                                    prefixIcon: Icon(
+                                        Icons.production_quantity_limits,
+                                        color: Colors.deepPurpleAccent
+                                            .withOpacity(1)),
+                                    prefixIconColor:
+                                        Colors.deepPurpleAccent.withOpacity(1),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.horizontal(),
+                                    ),
+                                  ),
+                                  onChanged: (value) {},
+                                ),
+                              ),
+                              SizedBox(
+                                width: 400,
+                                child: TextField(
+                                  controller: controllers[5],
+                                  readOnly: true,
+                                  decoration: InputDecoration(
+                                    fillColor: Colors.white,
+                                    filled: true,
+                                    labelText: 'Total Price',
+                                    labelStyle: TextStyle(
+                                        backgroundColor: Colors.white,
+                                        color: Colors.deepPurpleAccent
+                                            .withOpacity(1),
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
+                                    prefixIcon: Icon(Icons.price_change,
+                                        color: Colors.deepPurpleAccent
+                                            .withOpacity(1)),
+                                    prefixIconColor:
+                                        Colors.deepPurpleAccent.withOpacity(1),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.horizontal(),
+                                    ),
+                                  ),
+                                  onChanged: (value) {},
+                                ),
+                              ),
+                              GFButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: ((context) =>
+                                              AddSales()))).whenComplete(() {
+                                    setState(() {
+                                      if (AddSalesState.total[0] != 0 &&
+                                          AddSalesState.total[1] != 0) {
+                                        controllers[4].text =
+                                            AddSalesState.total[0].toString();
+                                        controllers[5].text =
+                                            AddSalesState.total[1].toString();
+                                        btn2 = true;
+                                      } else {
+                                        btn2 = false;
+                                        controllers[4].clear();
+                                        controllers[5].clear();
+                                      }
+                                    });
+                                  });
+                                },
+                                icon: Icon(
+                                  Icons.add,
+                                  color: Colors.green,
+                                ),
+                                text: 'Modify',
+                                textColor: Colors.white,
+                                color: Colors.deepPurpleAccent.shade700
+                                    .withOpacity(0.8),
+                                hoverColor: Colors.deepPurpleAccent.shade700
+                                    .withOpacity(1),
+                                shape: GFButtonShape.square,
+                                size: GFSize.LARGE,
+                              ),
+                            ],
                           ),
-                        ),
-                        onChanged: (value) {},
-                      ),
-                    ),
-                    SizedBox(
-                      width: 400,
-                      child: TextField(
-                        controller: controllers[5],
-                        readOnly: true,
-                        decoration: InputDecoration(
-                          fillColor: Colors.white,
-                          filled: true,
-                          labelText: 'Total Price',
-                          labelStyle: TextStyle(
-                              backgroundColor: Colors.white,
-                              color: Colors.deepPurple.shade500,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold),
-                          prefixIcon: Icon(Icons.price_change,
-                              color: Colors.deepPurple.shade500),
-                          prefixIconColor: Colors.deepPurple.shade500,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.horizontal(),
+                        )
+                      : SizedBox(),
+                  SizedBox(height: 50),
+                  btn2 == true
+                      ? GFButton(
+                          onPressed: () async {
+                            setState(() {
+                              isLoading = true;
+                            });
+                            await DB.openCon('sales');
+                            await DB.collection.insertOne({
+                              'CustomerName': controllers[0].text,
+                              'Phone': controllers[1].text,
+                              'EmailId': controllers[2].text,
+                              'Products': AddSalesState.order,
+                              'TotalQuantity': AddSalesState.total[0],
+                              'TotalPrice': AddSalesState.total[1],
+                              'SaleBy': LoginState.employee,
+                              'BranchName': branch[0]['BranchName'],
+                              'Date': DateTime(DateTime.now().year,
+                                      DateTime.now().month, DateTime.now().day)
+                                  .toString()
+                                  .replaceAll(" 00:00:00.000", "")
+                            });
+                            await DB.closeCon();
+                            await DB.openCon('stock');
+                            for (int i = 0;
+                                i < AddSalesState.order.length;
+                                i++) {
+                              List<Map<String, dynamic>> data =
+                                  await DB.collection.find({
+                                'ProductName': AddSalesState.order[i]
+                                    ['ProductName'],
+                                'BranchName': branch[0]['BranchName']
+                              }).toList();
+                              DB.updatestock(
+                                  data,
+                                  data[0]['Quantity'] -
+                                      int.parse(
+                                          AddSalesState.order[i]['Quantity']));
+                            }
+                            await DB.closeCon();
+                            setState(() {
+                              isLoading = false;
+                              for (int i = 0; i <= 5; i++) {
+                                controllers[i].clear();
+                              }
+                              AddSalesState.order.clear();
+                              AddSalesState.total = [0, 0];
+                              btn1 = false;
+                              btn2 = false;
+                            });
+                          },
+                          icon: Icon(
+                            Icons.check,
+                            color: Colors.green,
                           ),
-                        ),
-                        onChanged: (value) {},
-                      ),
-                    ),
-                    GFButton(
-                      onPressed: () {
-                        Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: ((context) => AddSales())))
-                            .whenComplete(() {
-                          setState(() {
-                            controllers[4].text =
-                                AddSalesState.total[0].toString();
-                            controllers[5].text =
-                                AddSalesState.total[1].toString();
-                            btn2 = true;
-                          });
-                        });
-                      },
-                      icon: Icon(
-                        Icons.add,
-                        color: Colors.green,
-                      ),
-                      text: 'Modify',
-                      textColor: Colors.white,
-                      color: Colors.deepPurple.shade700,
-                      hoverColor: Colors.deepPurple.shade500,
-                      shape: GFButtonShape.square,
-                      size: GFSize.LARGE,
-                    ),
-                  ],
-                ),
-              )
-            : SizedBox(),
-        SizedBox(height: 50),
-        btn2 == true
-            ? GFButton(
-                onPressed: () async {
-                  await DB.openCon('sales');
-                  await DB.collection.insertOne({
-                    'CustomerName': controllers[0].text,
-                    'Phone': controllers[1].text,
-                    'EmailId': controllers[2].text,
-                    'Products': AddSalesState.order,
-                    'TotalQuantity': AddSalesState.total[0],
-                    'TotalPrice': AddSalesState.total[1],
-                    'SaleBy': LoginState.employee,
-                    'BranchName': branch[0]['BranchName'],
-                    'Date': DateTime(DateTime.now().year, DateTime.now().month,
-                            DateTime.now().day)
-                        .toString()
-                        .replaceAll(" 00:00:00.000", "")
-                  });
-                  await DB.closeCon();
-                  await DB.openCon('stock');
-                  await DB.closeCon();
-                  for (int i = 0; i <= 5; i++) {
-                    controllers[i].clear();
-                  }
-                },
-                icon: Icon(
-                  Icons.check,
-                  color: Colors.green,
-                ),
-                text: 'Complete Purchase',
-                textColor: Colors.white,
-                color: Colors.deepPurple.shade700,
-                hoverColor: Colors.deepPurple.shade500,
-                shape: GFButtonShape.square,
-                size: GFSize.LARGE,
-              )
-            : SizedBox(),
-      ],
-    );
+                          text: 'Complete Purchase',
+                          textColor: Colors.white,
+                          color:
+                              Colors.deepPurpleAccent.shade700.withOpacity(0.8),
+                          hoverColor:
+                              Colors.deepPurpleAccent.shade700.withOpacity(1),
+                          shape: GFButtonShape.square,
+                          size: GFSize.LARGE,
+                        )
+                      : SizedBox(),
+                ],
+              ));
   }
 }
