@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_const_constructors_in_immutables, library_private_types_in_public_api, list_remove_unrelated_type
 
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:sadms/Database/database.dart';
 
@@ -22,7 +23,11 @@ class _SalesState extends State<Sales> {
     setState(() {
       isLoading = true;
     });
-    await DB.openCon('sales');
+    if (selectedValue == 2) {
+      await DB.openCon('productsales');
+    } else {
+      await DB.openCon('sales');
+    }
     List<Map<String, dynamic>> s = await DB.collection.find().toList();
     await DB.closeCon();
     setState(() {
@@ -31,17 +36,9 @@ class _SalesState extends State<Sales> {
       for (int i = 0; i < s.length; i++) {
         int difference =
             DateTime.now().difference(DateTime.parse(s[i]['Date'])).inDays;
-        if (difference == 0) {
-          if (selectedValue == 2) {
-            for (int j = 0; j < s[i]['Products'].length; j++) {
-              final product = {'Product': s[i]['Products'][j]['ProductName']};
-              s[i].addEntries(product.entries);
-              sales.add(s[i]);
-            }
-          } else {
-            sales.add(s[i]);
-            search.add(s[i]);
-          }
+        if (difference <= 30) {
+          sales.add(s[i]);
+          search.add(s[i]);
         }
       }
       isLoading = false;
@@ -52,7 +49,11 @@ class _SalesState extends State<Sales> {
     setState(() {
       isLoading = true;
     });
-    await DB.openCon('sales');
+    if (selectedValue == 2) {
+      await DB.openCon('productsales');
+    } else {
+      await DB.openCon('sales');
+    }
     List<Map<String, dynamic>> s = await DB.collection.find().toList();
     await DB.closeCon();
     setState(() {
@@ -74,7 +75,11 @@ class _SalesState extends State<Sales> {
     setState(() {
       isLoading = true;
     });
-    await DB.openCon('sales');
+    if (selectedValue == 2) {
+      await DB.openCon('productsales');
+    } else {
+      await DB.openCon('sales');
+    }
     List<Map<String, dynamic>> s = await DB.collection.find().toList();
     await DB.closeCon();
     setState(() {
@@ -96,7 +101,11 @@ class _SalesState extends State<Sales> {
     setState(() {
       isLoading = true;
     });
-    await DB.openCon('sales');
+    if (selectedValue == 2) {
+      await DB.openCon('productsales');
+    } else {
+      await DB.openCon('sales');
+    }
     List<Map<String, dynamic>> s = await DB.collection.find().toList();
     await DB.closeCon();
     setState(() {
@@ -117,14 +126,18 @@ class _SalesState extends State<Sales> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: isLoading
-            ? Colors.deepPurpleAccent.shade700.withOpacity(1)
-            : Colors.deepPurpleAccent.withOpacity(1),
+        backgroundColor: Colors.deepPurple.shade400,
         body: isLoading
-            ? Center(
-                child: CircularProgressIndicator(
-                color: Colors.white,
-              ))
+            ? BackdropFilter(
+                filter: ImageFilter.blur(
+                  sigmaX: 2,
+                  sigmaY: 2,
+                ),
+                child: Center(
+                    child: CircularProgressIndicator(
+                  color: Colors.white,
+                )),
+              )
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -142,13 +155,10 @@ class _SalesState extends State<Sales> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Container(
-                        decoration: BoxDecoration(
-                          color:
-                              Colors.deepPurpleAccent.shade700.withOpacity(1),
-                        ),
+                        decoration:
+                            BoxDecoration(color: Colors.deepPurple.shade700),
                         child: DropdownButton(
-                          dropdownColor:
-                              Colors.deepPurpleAccent.shade700.withOpacity(1),
+                          dropdownColor: Colors.deepPurple.shade700,
                           style: TextStyle(color: Colors.white),
                           iconEnabledColor: Colors.white,
                           value: selectedValue,
@@ -172,28 +182,28 @@ class _SalesState extends State<Sales> {
                           ],
                           onChanged: (value) {
                             setState(() {
+                              selectedValue = value!;
+                              text.clear();
                               sales.clear();
                               if (selectedPeriod == 1) {
                                 day();
                               } else if (selectedPeriod == 2) {
                                 month();
-                              } else {
+                              } else if (selectedPeriod == 3) {
                                 year();
+                              } else {
+                                all();
                               }
-                              selectedValue = value!;
-                              text.clear();
                             });
                           },
                         ),
                       ),
                       Container(
                         decoration: BoxDecoration(
-                          color:
-                              Colors.deepPurpleAccent.shade700.withOpacity(1),
+                          color: Colors.deepPurple.shade700,
                         ),
                         child: DropdownButton(
-                          dropdownColor:
-                              Colors.deepPurpleAccent.shade700.withOpacity(1),
+                          dropdownColor: Colors.deepPurple.shade700,
                           style: TextStyle(color: Colors.white),
                           iconEnabledColor: Colors.white,
                           value: selectedPeriod,
@@ -222,6 +232,8 @@ class _SalesState extends State<Sales> {
                           ],
                           onChanged: (value) {
                             setState(() {
+                              selectedPeriod = value!;
+                              text.clear();
                               sales.clear();
                               if (value == 1) {
                                 day();
@@ -232,8 +244,6 @@ class _SalesState extends State<Sales> {
                               } else {
                                 all();
                               }
-                              selectedPeriod = value!;
-                              text.clear();
                             });
                           },
                         ),
@@ -255,14 +265,12 @@ class _SalesState extends State<Sales> {
                                   FloatingLabelAlignment.center,
                               labelStyle: TextStyle(
                                   backgroundColor: Colors.white,
-                                  color: Colors.deepPurpleAccent.withOpacity(1),
+                                  color: Colors.deepPurple.shade500,
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold),
                               prefixIcon: Icon(Icons.text_format_outlined,
-                                  color:
-                                      Colors.deepPurpleAccent.withOpacity(1)),
-                              prefixIconColor:
-                                  Colors.deepPurpleAccent.withOpacity(1),
+                                  color: Colors.deepPurple.shade500),
+                              prefixIconColor: Colors.deepPurple.shade500,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.horizontal(),
                               ),
@@ -306,21 +314,40 @@ class _SalesState extends State<Sales> {
                                       FloatingLabelAlignment.center,
                                   labelStyle: TextStyle(
                                       backgroundColor: Colors.white,
-                                      color: Colors.deepPurpleAccent
-                                          .withOpacity(1),
+                                      color: Colors.deepPurple.shade500,
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold),
                                   prefixIcon: Icon(Icons.text_format_outlined,
-                                      color: Colors.deepPurpleAccent
-                                          .withOpacity(1)),
-                                  prefixIconColor:
-                                      Colors.deepPurpleAccent.withOpacity(1),
+                                      color: Colors.deepPurple.shade500),
+                                  prefixIconColor: Colors.deepPurple.shade500,
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.horizontal(),
                                   ),
                                 ),
                                 onChanged: (value) {
-                                  setState(() {});
+                                  setState(() {
+                                    sales.clear();
+                                    if (value == '') {
+                                      sales.addAll(search);
+                                    } else {
+                                      for (int i = 0; i < search.length; i++) {
+                                        if (value.length <=
+                                            search[i]['ProductName'].length) {
+                                          String namestring = '';
+                                          for (int j = 0;
+                                              j < value.length;
+                                              j++) {
+                                            namestring = namestring +
+                                                search[i]['ProductName'][j];
+                                          }
+                                          if (value.toLowerCase() ==
+                                              namestring.toLowerCase()) {
+                                            sales.add(search[i]);
+                                          }
+                                        }
+                                      }
+                                    }
+                                  });
                                 },
                               ),
                             )
@@ -337,15 +364,12 @@ class _SalesState extends State<Sales> {
                                       FloatingLabelAlignment.center,
                                   labelStyle: TextStyle(
                                       backgroundColor: Colors.white,
-                                      color: Colors.deepPurpleAccent
-                                          .withOpacity(1),
+                                      color: Colors.deepPurple.shade500,
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold),
                                   prefixIcon: Icon(Icons.text_format_outlined,
-                                      color: Colors.deepPurpleAccent
-                                          .withOpacity(1)),
-                                  prefixIconColor:
-                                      Colors.deepPurpleAccent.withOpacity(1),
+                                      color: Colors.deepPurple.shade500),
+                                  prefixIconColor: Colors.deepPurple.shade500,
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.horizontal(),
                                   ),
@@ -387,8 +411,7 @@ class _SalesState extends State<Sales> {
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Container(
-                                    color: Colors.deepPurpleAccent.shade700
-                                        .withOpacity(1),
+                                    color: Colors.deepPurple.shade700,
                                     height: 100,
                                     child: Column(
                                       mainAxisAlignment:
@@ -465,8 +488,7 @@ class _SalesState extends State<Sales> {
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Container(
-                                        color: Colors.deepPurpleAccent.shade700
-                                            .withOpacity(1),
+                                        color: Colors.deepPurple.shade700,
                                         height: 100,
                                         child: Column(
                                           mainAxisAlignment:
@@ -504,21 +526,21 @@ class _SalesState extends State<Sales> {
                                                   MainAxisAlignment.spaceEvenly,
                                               children: [
                                                 Text(
-                                                  'Product Name: ${sales[index]['Product']}',
+                                                  'Product Name: ${sales[index]['ProductName']}',
                                                   style: TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 17,
                                                   ),
                                                 ),
                                                 Text(
-                                                  'Total Purchase: ${sales[index]['TotalPrice']}',
+                                                  'Price: ${sales[index]['Price']}',
                                                   style: TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 17,
                                                   ),
                                                 ),
                                                 Text(
-                                                  'Quantity: ${sales[index]['TotalQuantity']}',
+                                                  'Quantity: ${sales[index]['Quantity']}',
                                                   style: TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 17,
@@ -543,9 +565,7 @@ class _SalesState extends State<Sales> {
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Container(
-                                            color: Colors
-                                                .deepPurpleAccent.shade700
-                                                .withOpacity(1),
+                                            color: Colors.deepPurple.shade700,
                                             height: 100,
                                             child: Column(
                                               mainAxisAlignment:

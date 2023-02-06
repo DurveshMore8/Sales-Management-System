@@ -54,9 +54,7 @@ class AddSalesState extends State<AddSales> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: isLoading
-            ? Colors.deepPurpleAccent.shade700.withOpacity(1)
-            : Colors.deepPurpleAccent.withOpacity(1),
+        backgroundColor: Colors.deepPurple.shade400,
         body: SizedBox(
             width: MediaQuery.of(context).size.width,
             child: isLoading
@@ -102,8 +100,7 @@ class AddSalesState extends State<AddSales> {
                                         labelText: 'Product Name',
                                         labelStyle: TextStyle(
                                             backgroundColor: Colors.white,
-                                            color: Colors.deepPurpleAccent
-                                                .withOpacity(1),
+                                            color: Colors.deepPurple.shade500,
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold),
                                         errorText: error[0] == 'empty'
@@ -116,10 +113,9 @@ class AddSalesState extends State<AddSales> {
                                                         ? 'Product doesn\'t exist'
                                                         : null,
                                         prefixIcon: Icon(Icons.person,
-                                            color: Colors.deepPurpleAccent
-                                                .withOpacity(1)),
-                                        prefixIconColor: Colors.deepPurpleAccent
-                                            .withOpacity(1),
+                                            color: Colors.deepPurple.shade500),
+                                        prefixIconColor:
+                                            Colors.deepPurple.shade500,
                                         border: OutlineInputBorder(
                                           borderRadius:
                                               BorderRadius.horizontal(),
@@ -197,8 +193,7 @@ class AddSalesState extends State<AddSales> {
                                         labelText: 'Selling Price',
                                         labelStyle: TextStyle(
                                             backgroundColor: Colors.white,
-                                            color: Colors.deepPurpleAccent
-                                                .withOpacity(1),
+                                            color: Colors.deepPurple.shade500,
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold),
                                         errorText: error[1] == 'empty'
@@ -209,10 +204,9 @@ class AddSalesState extends State<AddSales> {
                                                     ? 'Maximum Limit is Exceeded'
                                                     : null,
                                         prefixIcon: Icon(Icons.price_change,
-                                            color: Colors.deepPurpleAccent
-                                                .withOpacity(1)),
-                                        prefixIconColor: Colors.deepPurpleAccent
-                                            .withOpacity(1),
+                                            color: Colors.deepPurple.shade500),
+                                        prefixIconColor:
+                                            Colors.deepPurple.shade500,
                                         border: OutlineInputBorder(
                                           borderRadius:
                                               BorderRadius.horizontal(),
@@ -262,8 +256,7 @@ class AddSalesState extends State<AddSales> {
                                         labelText: 'Quantity',
                                         labelStyle: TextStyle(
                                             backgroundColor: Colors.white,
-                                            color: Colors.deepPurpleAccent
-                                                .withOpacity(1),
+                                            color: Colors.deepPurple.shade500,
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold),
                                         errorText: error[2] == 'empty'
@@ -273,10 +266,9 @@ class AddSalesState extends State<AddSales> {
                                                 : null,
                                         prefixIcon: Icon(
                                             Icons.production_quantity_limits,
-                                            color: Colors.deepPurpleAccent
-                                                .withOpacity(1)),
-                                        prefixIconColor: Colors.deepPurpleAccent
-                                            .withOpacity(1),
+                                            color: Colors.deepPurple.shade500),
+                                        prefixIconColor:
+                                            Colors.deepPurple.shade500,
                                         border: OutlineInputBorder(
                                           borderRadius:
                                               BorderRadius.horizontal(),
@@ -324,18 +316,16 @@ class AddSalesState extends State<AddSales> {
                                         labelText: 'Total',
                                         labelStyle: TextStyle(
                                             backgroundColor: Colors.white,
-                                            color: Colors.deepPurpleAccent
-                                                .withOpacity(1),
+                                            color: Colors.deepPurple.shade500,
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold),
                                         errorText: error[3] == 'empty'
                                             ? 'Total Price Can\'t be empty'
                                             : null,
                                         prefixIcon: Icon(Icons.price_change,
-                                            color: Colors.deepPurpleAccent
-                                                .withOpacity(1)),
-                                        prefixIconColor: Colors.deepPurpleAccent
-                                            .withOpacity(1),
+                                            color: Colors.deepPurple.shade500),
+                                        prefixIconColor:
+                                            Colors.deepPurple.shade500,
                                         border: OutlineInputBorder(
                                           borderRadius:
                                               BorderRadius.horizontal(),
@@ -386,10 +376,8 @@ class AddSalesState extends State<AddSales> {
                                   ),
                                   text: 'Add Product',
                                   textColor: Colors.white,
-                                  color: Colors.deepPurpleAccent.shade700
-                                      .withOpacity(0.8),
-                                  hoverColor: Colors.deepPurpleAccent.shade700
-                                      .withOpacity(1),
+                                  color: Colors.deepPurple.shade700,
+                                  hoverColor: Colors.deepPurple.shade500,
                                   shape: GFButtonShape.square,
                                   size: GFSize.LARGE,
                                 ),
@@ -403,10 +391,8 @@ class AddSalesState extends State<AddSales> {
                                   ),
                                   text: 'Cart Completed',
                                   textColor: Colors.white,
-                                  color: Colors.deepPurpleAccent.shade700
-                                      .withOpacity(0.8),
-                                  hoverColor: Colors.deepPurpleAccent.shade700
-                                      .withOpacity(1),
+                                  color: Colors.deepPurple.shade700,
+                                  hoverColor: Colors.deepPurple.shade500,
                                   shape: GFButtonShape.square,
                                   size: GFSize.LARGE,
                                 ),
@@ -424,8 +410,7 @@ class AddSalesState extends State<AddSales> {
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Container(
-                                    color: Colors.deepPurpleAccent.shade700
-                                        .withOpacity(1),
+                                    color: Colors.deepPurple.shade700,
                                     height: 50,
                                     child: Column(
                                       mainAxisAlignment:
@@ -486,8 +471,7 @@ class AddSalesState extends State<AddSales> {
                         Container(
                             width: MediaQuery.of(context).size.width - 10,
                             height: 40,
-                            color:
-                                Colors.deepPurpleAccent.shade700.withOpacity(1),
+                            color: Colors.deepPurple.shade700,
                             child: Center(
                               child: Row(
                                 mainAxisAlignment:
