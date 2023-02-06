@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_const_constructors_in_immutables, library_private_types_in_public_api, unnecessary_new, avoid_print, import_of_legacy_library_into_null_safe, prefer_const_declarations
 
+import 'dart:ui';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -70,14 +71,18 @@ class _SalesState extends State<Sales> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: isLoading
-            ? Colors.deepPurpleAccent.shade700.withOpacity(1)
-            : Colors.deepPurpleAccent.withOpacity(1),
+        backgroundColor: Colors.deepPurple.shade400,
         body: isLoading
-            ? Center(
-                child: CircularProgressIndicator(
-                color: Colors.white,
-              ))
+            ? BackdropFilter(
+                filter: ImageFilter.blur(
+                  sigmaX: 2,
+                  sigmaY: 2,
+                ),
+                child: Center(
+                    child: CircularProgressIndicator(
+                  color: Colors.white,
+                )),
+              )
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -110,8 +115,7 @@ class _SalesState extends State<Sales> {
                                   labelText: 'Customer\'s Name',
                                   labelStyle: TextStyle(
                                       backgroundColor: Colors.white,
-                                      color: Colors.deepPurpleAccent
-                                          .withOpacity(1),
+                                      color: Colors.deepPurple.shade500,
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold),
                                   errorText: error[0] == 'empty'
@@ -124,10 +128,8 @@ class _SalesState extends State<Sales> {
                                                   ? 'Branch Id already exist'
                                                   : null,
                                   prefixIcon: Icon(Icons.person,
-                                      color: Colors.deepPurpleAccent
-                                          .withOpacity(1)),
-                                  prefixIconColor:
-                                      Colors.deepPurpleAccent.withOpacity(1),
+                                      color: Colors.deepPurple.shade500),
+                                  prefixIconColor: Colors.deepPurple.shade500,
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.horizontal(),
                                   ),
@@ -165,8 +167,7 @@ class _SalesState extends State<Sales> {
                                   labelText: 'Mobile Number',
                                   labelStyle: TextStyle(
                                       backgroundColor: Colors.white,
-                                      color: Colors.deepPurpleAccent
-                                          .withOpacity(1),
+                                      color: Colors.deepPurple.shade500,
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold),
                                   errorText: error[1] == 'empty'
@@ -175,10 +176,8 @@ class _SalesState extends State<Sales> {
                                           ? 'Enter a 10 digit Mobile Number'
                                           : null,
                                   prefixIcon: Icon(Icons.phone,
-                                      color: Colors.deepPurpleAccent
-                                          .withOpacity(1)),
-                                  prefixIconColor:
-                                      Colors.deepPurpleAccent.withOpacity(1),
+                                      color: Colors.deepPurple.shade500),
+                                  prefixIconColor: Colors.deepPurple.shade500,
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.horizontal(),
                                   ),
@@ -218,7 +217,7 @@ class _SalesState extends State<Sales> {
                               labelText: 'E-mail Id',
                               labelStyle: TextStyle(
                                   backgroundColor: Colors.white,
-                                  color: Colors.deepPurpleAccent.withOpacity(1),
+                                  color: Colors.deepPurple.shade500,
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold),
                               errorText: error[2] == 'empty'
@@ -227,10 +226,8 @@ class _SalesState extends State<Sales> {
                                       ? 'Invalid Email Id'
                                       : null,
                               prefixIcon: Icon(Icons.email,
-                                  color:
-                                      Colors.deepPurpleAccent.withOpacity(1)),
-                              prefixIconColor:
-                                  Colors.deepPurpleAccent.withOpacity(1),
+                                  color: Colors.deepPurple.shade500),
+                              prefixIconColor: Colors.deepPurple.shade500,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.horizontal(),
                               ),
@@ -263,7 +260,7 @@ class _SalesState extends State<Sales> {
                               labelText: 'Pincode',
                               labelStyle: TextStyle(
                                   backgroundColor: Colors.white,
-                                  color: Colors.deepPurpleAccent.withOpacity(1),
+                                  color: Colors.deepPurple.shade500,
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold),
                               errorText: error[3] == 'empty'
@@ -274,10 +271,8 @@ class _SalesState extends State<Sales> {
                                           ? 'Maximum Limit is Exceeded'
                                           : null,
                               prefixIcon: Icon(Icons.code,
-                                  color:
-                                      Colors.deepPurpleAccent.withOpacity(1)),
-                              prefixIconColor:
-                                  Colors.deepPurpleAccent.withOpacity(1),
+                                  color: Colors.deepPurple.shade500),
+                              prefixIconColor: Colors.deepPurple.shade500,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.horizontal(),
                               ),
@@ -332,8 +327,8 @@ class _SalesState extends State<Sales> {
                     ),
                     text: 'Create Order',
                     textColor: Colors.white,
-                    color: Colors.deepPurpleAccent.shade700.withOpacity(0.8),
-                    hoverColor: Colors.deepPurpleAccent.shade700.withOpacity(1),
+                    color: Colors.deepPurple.shade700,
+                    hoverColor: Colors.deepPurple.shade500,
                     shape: GFButtonShape.square,
                     size: GFSize.LARGE,
                   ),
@@ -355,16 +350,13 @@ class _SalesState extends State<Sales> {
                                     labelText: 'Quantity',
                                     labelStyle: TextStyle(
                                         backgroundColor: Colors.white,
-                                        color: Colors.deepPurpleAccent
-                                            .withOpacity(1),
+                                        color: Colors.deepPurple.shade500,
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold),
                                     prefixIcon: Icon(
                                         Icons.production_quantity_limits,
-                                        color: Colors.deepPurpleAccent
-                                            .withOpacity(1)),
-                                    prefixIconColor:
-                                        Colors.deepPurpleAccent.withOpacity(1),
+                                        color: Colors.deepPurple.shade500),
+                                    prefixIconColor: Colors.deepPurple.shade500,
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.horizontal(),
                                     ),
@@ -383,15 +375,12 @@ class _SalesState extends State<Sales> {
                                     labelText: 'Total Price',
                                     labelStyle: TextStyle(
                                         backgroundColor: Colors.white,
-                                        color: Colors.deepPurpleAccent
-                                            .withOpacity(1),
+                                        color: Colors.deepPurple.shade500,
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold),
                                     prefixIcon: Icon(Icons.price_change,
-                                        color: Colors.deepPurpleAccent
-                                            .withOpacity(1)),
-                                    prefixIconColor:
-                                        Colors.deepPurpleAccent.withOpacity(1),
+                                        color: Colors.deepPurple.shade500),
+                                    prefixIconColor: Colors.deepPurple.shade500,
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.horizontal(),
                                     ),
@@ -428,10 +417,8 @@ class _SalesState extends State<Sales> {
                                 ),
                                 text: 'Modify',
                                 textColor: Colors.white,
-                                color: Colors.deepPurpleAccent.shade700
-                                    .withOpacity(0.8),
-                                hoverColor: Colors.deepPurpleAccent.shade700
-                                    .withOpacity(1),
+                                color: Colors.deepPurple.shade700,
+                                hoverColor: Colors.deepPurple.shade500,
                                 shape: GFButtonShape.square,
                                 size: GFSize.LARGE,
                               ),
@@ -461,6 +448,43 @@ class _SalesState extends State<Sales> {
                                   .toString()
                                   .replaceAll(" 00:00:00.000", "")
                             });
+                            List<Map<String, dynamic>> sale =
+                                await DB.collection.find({
+                              'CustomerName': controllers[0].text,
+                              'Phone': controllers[1].text,
+                              'EmailId': controllers[2].text,
+                              'Products': AddSalesState.order,
+                              'TotalQuantity': AddSalesState.total[0],
+                              'TotalPrice': AddSalesState.total[1],
+                              'SaleBy': LoginState.employee,
+                              'BranchName': branch[0]['BranchName'],
+                              'Date': DateTime(DateTime.now().year,
+                                      DateTime.now().month, DateTime.now().day)
+                                  .toString()
+                                  .replaceAll(" 00:00:00.000", "")
+                            }).toList();
+                            await DB.closeCon();
+                            await DB.openCon('productsales');
+                            for (int i = 0;
+                                i < AddSalesState.order.length;
+                                i++) {
+                              await DB.collection.insertOne({
+                                'OrderId': sale[0]['_id'],
+                                'CustomerName': controllers[0].text,
+                                'Phone': controllers[1].text,
+                                'EmailId': controllers[2].text,
+                                'ProductName': AddSalesState.order[i]
+                                    ['ProductName'],
+                                'Quantity': AddSalesState.order[i]['Quantity'],
+                                'Price': AddSalesState.order[i]['Price'],
+                                'Date': DateTime(
+                                        DateTime.now().year,
+                                        DateTime.now().month,
+                                        DateTime.now().day)
+                                    .toString()
+                                    .replaceAll(" 00:00:00.000", "")
+                              });
+                            }
                             await DB.closeCon();
                             await DB.openCon('stock');
                             for (int i = 0;
@@ -496,10 +520,8 @@ class _SalesState extends State<Sales> {
                           ),
                           text: 'Complete Purchase',
                           textColor: Colors.white,
-                          color:
-                              Colors.deepPurpleAccent.shade700.withOpacity(0.8),
-                          hoverColor:
-                              Colors.deepPurpleAccent.shade700.withOpacity(1),
+                          color: Colors.deepPurple.shade700,
+                          hoverColor: Colors.deepPurple.shade500,
                           shape: GFButtonShape.square,
                           size: GFSize.LARGE,
                         )
