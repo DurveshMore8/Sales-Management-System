@@ -36,7 +36,7 @@ class _SalesState extends State<Sales> {
       for (int i = 0; i < s.length; i++) {
         int difference =
             DateTime.now().difference(DateTime.parse(s[i]['Date'])).inDays;
-        if (difference <= 30) {
+        if (difference == 0) {
           sales.add(s[i]);
           search.add(s[i]);
         }
