@@ -20,7 +20,7 @@ class Sales extends StatefulWidget {
 
 class _SalesState extends State<Sales> {
   List<TextEditingController> controllers =
-      List.generate(6, (index) => TextEditingController());
+      List.generate(5, (index) => TextEditingController());
   List<String> error = ['', '', '', '', ''];
   List<Map<String, dynamic>> branch = [];
   bool isLoading = true;
@@ -29,6 +29,15 @@ class _SalesState extends State<Sales> {
   bool btn2 = false;
 
   Future sendEmail() async {
+    String order = '';
+    for (int i = 0; i < AddSalesState.order.length; i++) {
+      order += '\nProduct ${i + 1}:';
+      order += '\nName: ${AddSalesState.order[i]['ProductName']}';
+      order += '\nQuantity: ${AddSalesState.order[i]['Quantity']}';
+      order += '\nPrice: ${AddSalesState.order[i]['Price']}\n';
+    }
+    order += '\nTotal Quantity: ${AddSalesState.total[0]}';
+    order += '\nTotal Price: ${AddSalesState.total[1]}\n';
     final url = Uri.parse("https://api.emailjs.com/api/v1.0/email/send");
     const serviceId = "service_hxy449r";
     const templateId = "template_mlpo2cb";
@@ -41,7 +50,8 @@ class _SalesState extends State<Sales> {
           'user_id': userId,
           'template_params': {
             'name': controllers[0].text,
-            'user': controllers[2].text
+            'user': controllers[2].text,
+            'order': order
           }
         }));
     return response.statusCode;
@@ -207,7 +217,7 @@ class _SalesState extends State<Sales> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         SizedBox(
-                          width: 500,
+                          width: 700,
                           child: TextField(
                             controller: controllers[2],
                             decoration: InputDecoration(
@@ -246,56 +256,6 @@ class _SalesState extends State<Sales> {
                             },
                           ),
                         ),
-                        SizedBox(
-                          width: 500,
-                          child: TextField(
-                            controller: controllers[3],
-                            inputFormatters: <TextInputFormatter>[
-                              FilteringTextInputFormatter.digitsOnly,
-                            ], // Only numbers can be entered
-                            decoration: InputDecoration(
-                              fillColor: Colors.white,
-                              filled: true,
-                              hintText: '400604',
-                              labelText: 'Pincode',
-                              labelStyle: TextStyle(
-                                  backgroundColor: Colors.white,
-                                  color: Colors.deepPurple.shade500,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold),
-                              errorText: error[3] == 'empty'
-                                  ? 'Pincode Can\'t be empty'
-                                  : error[3] == 'minimum'
-                                      ? 'Minimum Limit is not Reached'
-                                      : error[3] == 'maximum'
-                                          ? 'Maximum Limit is Exceeded'
-                                          : null,
-                              prefixIcon: Icon(Icons.code,
-                                  color: Colors.deepPurple.shade500),
-                              prefixIconColor: Colors.deepPurple.shade500,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.horizontal(),
-                              ),
-                            ),
-                            onChanged: (value) {
-                              setState(() {
-                                if (value.isNotEmpty) {
-                                  if (value.length < 6) {
-                                    error[3] = 'minimum';
-                                    btn1 = false;
-                                    btn2 = false;
-                                  } else if (value.length > 6) {
-                                    error[3] = 'maximum';
-                                    btn1 = false;
-                                    btn2 = false;
-                                  } else {
-                                    error[3] = '';
-                                  }
-                                }
-                              });
-                            },
-                          ),
-                        ),
                       ],
                     ),
                   ),
@@ -304,19 +264,19 @@ class _SalesState extends State<Sales> {
                     onPressed: () {
                       setState(() {
                         isValid = true;
-                        for (int i = 0; i < 4; i++) {
+                        for (int i = 0; i < 3; i++) {
                           if (controllers[i].text.isEmpty) {
                             error[i] = 'empty';
                           }
                         }
-                        for (int i = 0; i < 4; i++) {
+                        for (int i = 0; i < 3; i++) {
                           if (error[i] != '') {
                             isValid = false;
                           }
                         }
                         if (isValid) {
-                          controllers[4].text = 'No Product Selected';
-                          controllers[5].text = 'Not Calculated';
+                          controllers[3].text = 'No Product Selected';
+                          controllers[4].text = 'Not Calculated';
                           btn1 = true;
                         }
                       });
@@ -342,7 +302,7 @@ class _SalesState extends State<Sales> {
                               SizedBox(
                                 width: 400,
                                 child: TextField(
-                                  controller: controllers[4],
+                                  controller: controllers[3],
                                   readOnly: true,
                                   decoration: InputDecoration(
                                     fillColor: Colors.white,
@@ -367,7 +327,7 @@ class _SalesState extends State<Sales> {
                               SizedBox(
                                 width: 400,
                                 child: TextField(
-                                  controller: controllers[5],
+                                  controller: controllers[4],
                                   readOnly: true,
                                   decoration: InputDecoration(
                                     fillColor: Colors.white,
@@ -398,15 +358,15 @@ class _SalesState extends State<Sales> {
                                     setState(() {
                                       if (AddSalesState.total[0] != 0 &&
                                           AddSalesState.total[1] != 0) {
-                                        controllers[4].text =
+                                        controllers[3].text =
                                             AddSalesState.total[0].toString();
-                                        controllers[5].text =
+                                        controllers[4].text =
                                             AddSalesState.total[1].toString();
                                         btn2 = true;
                                       } else {
                                         btn2 = false;
+                                        controllers[3].clear();
                                         controllers[4].clear();
-                                        controllers[5].clear();
                                       }
                                     });
                                   });
@@ -503,9 +463,10 @@ class _SalesState extends State<Sales> {
                                           AddSalesState.order[i]['Quantity']));
                             }
                             await DB.closeCon();
+                            sendEmail();
                             setState(() {
                               isLoading = false;
-                              for (int i = 0; i <= 5; i++) {
+                              for (int i = 0; i <= 4; i++) {
                                 controllers[i].clear();
                               }
                               AddSalesState.order.clear();
