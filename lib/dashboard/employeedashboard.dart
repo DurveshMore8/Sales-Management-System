@@ -80,6 +80,9 @@ class _EmployeeDashboardState extends State<EmployeeDashboard> {
                       ],
                     ),
                   ),
+                  SizedBox(
+                    height: 50,
+                  ),
                 ],
               ));
   }
