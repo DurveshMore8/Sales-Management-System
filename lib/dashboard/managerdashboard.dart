@@ -18,6 +18,7 @@ class _ManagerDashboardState extends State<ManagerDashboard> {
   List<Map<String, dynamic>> employee = [];
   List<Map<String, dynamic>> product = [];
   List<Map<String, dynamic>> branch = [];
+  List<Map<String, dynamic>> customer = [];
 
   void getData() async {
     setState(() {
@@ -35,6 +36,22 @@ class _ManagerDashboardState extends State<ManagerDashboard> {
     List<Map<String, dynamic>> products = await DB.collection.find().toList();
     await DB.closeCon();
 
+    // Customer Sort
+    if (manager['BranchName'] != '') {
+      for (int i = 0; i < sales.length; i++) {
+        int difference =
+            DateTime.now().difference(DateTime.parse(sales[i]['Date'])).inDays;
+        if (difference == 0 &&
+            manager['BranchName'] == sales[i]['BranchName']) {
+          customer.add(sales[i]);
+        }
+      }
+    }
+    customer.sort((a, b) => b['TotalPrice'].compareTo(a['TotalPrice']));
+    if (customer.length > 5) {
+      customer.removeRange(5, customer.length);
+    }
+
     // Employee Sort
     await DB.openCon('employeelogin');
     List<Map<String, dynamic>> e = await DB.collection.find().toList();
@@ -44,7 +61,9 @@ class _ManagerDashboardState extends State<ManagerDashboard> {
     }
     for (int i = 0; i < employee.length; i++) {
       for (int j = 0; j < sales.length; j++) {
-        if (employee[i]['Username'] == sales[j]['SaleBy']) {
+        int differnce =
+            DateTime.now().difference(DateTime.parse(sales[j]['Date'])).inDays;
+        if (employee[i]['Username'] == sales[j]['SaleBy'] && differnce == 0) {
           employee[i]['Quantity'] += sales[j]['TotalQuantity'];
           employee[i]['Price'] += sales[j]['TotalPrice'];
         }
@@ -65,8 +84,12 @@ class _ManagerDashboardState extends State<ManagerDashboard> {
     }
     for (int i = 0; i < product.length; i++) {
       for (int j = 0; j < products.length; j++) {
+        int differnce = DateTime.now()
+            .difference(DateTime.parse(products[j]['Date']))
+            .inDays;
         if (product[i]['ProductName'] == products[j]['ProductName'] &&
-            products[j]['Quantity'] != 0) {
+            products[j]['Quantity'] != 0 &&
+            differnce == 0) {
           product[i]['Quantity'] += int.parse(products[j]['Quantity']);
           product[i]['Price'] += int.parse(products[j]['Price']);
         }
@@ -86,7 +109,10 @@ class _ManagerDashboardState extends State<ManagerDashboard> {
     }
     for (int i = 0; i < branch.length; i++) {
       for (int j = 0; j < sales.length; j++) {
-        if (branch[i]['BranchName'] == sales[j]['BranchName']) {
+        int differnce =
+            DateTime.now().difference(DateTime.parse(sales[j]['Date'])).inDays;
+        if (branch[i]['BranchName'] == sales[j]['BranchName'] &&
+            differnce == 0) {
           branch[i]['Quantity'] += sales[j]['TotalQuantity'];
           branch[i]['Price'] += sales[j]['TotalPrice'];
         }
@@ -164,11 +190,59 @@ class _ManagerDashboardState extends State<ManagerDashboard> {
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Padding(
-                                      padding: const EdgeInsets.all(5),
+                                      padding: EdgeInsets.all(5),
                                       child: Container(
                                         color: Colors.deepPurple.shade400,
                                         width: 600,
                                         height: 250,
+                                        child: manager['BranchName'] == ''
+                                            ? Row()
+                                            : ListView.builder(
+                                                itemCount: customer.length < 5
+                                                    ? customer.length
+                                                    : 5,
+                                                itemBuilder: (context, index) {
+                                                  return Padding(
+                                                      padding:
+                                                          EdgeInsets.all(5),
+                                                      child: Container(
+                                                        color: Colors.deepPurple
+                                                            .shade800,
+                                                        height: 40,
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceEvenly,
+                                                          children: [
+                                                            Text(
+                                                              'Customer Name: ${customer[index]['CustomerName']}',
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 17,
+                                                              ),
+                                                            ),
+                                                            Text(
+                                                              'Quantity: ${customer[index]['TotalQuantity']}',
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 17,
+                                                              ),
+                                                            ),
+                                                            Text(
+                                                              'Price: ${customer[index]['TotalPrice']}',
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 17,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ));
+                                                },
+                                              ),
                                       )),
                                   Padding(
                                     padding: const EdgeInsets.all(5),
