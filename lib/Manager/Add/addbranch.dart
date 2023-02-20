@@ -255,7 +255,7 @@ class _AddBranchState extends State<AddBranch> {
                                     borderRadius: BorderRadius.all(Radius.zero),
                                     color: Colors.white),
                                 layout: Layout.vertical,
-                                defaultCountry: DefaultCountry.India,
+                                defaultCountry: CscCountry.India,
                                 disableCountry: true,
                                 onCountryChanged: (country) {},
                                 onStateChanged: (value) {

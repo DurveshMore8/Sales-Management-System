@@ -1,9 +1,15 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_const_constructors_in_immutables, library_private_types_in_public_api
 
+import 'dart:io';
 import 'dart:ui';
+import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:sadms/Database/database.dart';
 import 'package:sadms/Login/login.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
 
 class ManagerDashboard extends StatefulWidget {
   ManagerDashboard({Key? key}) : super(key: key);
@@ -14,11 +20,15 @@ class ManagerDashboard extends StatefulWidget {
 
 class _ManagerDashboardState extends State<ManagerDashboard> {
   bool isLoading = false;
+  int selectedValue = 1;
+  int year = 2023;
   Map<String, dynamic> manager = {};
   List<Map<String, dynamic>> employee = [];
   List<Map<String, dynamic>> product = [];
   List<Map<String, dynamic>> branch = [];
   List<Map<String, dynamic>> customer = [];
+
+  Future generateReport() async {}
 
   void getData() async {
     setState(() {
@@ -47,6 +57,7 @@ class _ManagerDashboardState extends State<ManagerDashboard> {
         }
       }
     }
+
     customer.sort((a, b) => b['TotalPrice'].compareTo(a['TotalPrice']));
     if (customer.length > 5) {
       customer.removeRange(5, customer.length);
@@ -69,6 +80,14 @@ class _ManagerDashboardState extends State<ManagerDashboard> {
         }
       }
     }
+
+    // remove employees with no sale
+    for (int i = employee.length - 1; i >= 0; i--) {
+      if (employee[i]['Quantity'] == 0 || employee[i]['Price'] == 0) {
+        employee.removeAt(i);
+      }
+    }
+
     employee.sort((a, b) => b['Price'].compareTo(a['Price']));
     if (employee.length > 5) {
       employee.removeRange(5, employee.length);
@@ -95,6 +114,14 @@ class _ManagerDashboardState extends State<ManagerDashboard> {
         }
       }
     }
+
+    // remove products with no sale
+    for (int i = product.length - 1; i >= 0; i--) {
+      if (product[i]['Quantity'] == 0 || product[i]['Price'] == 0) {
+        product.removeAt(i);
+      }
+    }
+
     product.sort((a, b) => b['Price'].compareTo(a['Price']));
     if (product.length > 5) {
       product.removeRange(5, product.length);
@@ -118,6 +145,14 @@ class _ManagerDashboardState extends State<ManagerDashboard> {
         }
       }
     }
+
+    // remove branchs with no sale
+    for (int i = branch.length - 1; i >= 0; i--) {
+      if (branch[i]['Quantity'] == 0 || branch[i]['Price'] == 0) {
+        branch.removeAt(i);
+      }
+    }
+
     branch.sort(((a, b) => b['Price'].compareTo(a['Price'])));
     if (branch.length > 5) {
       branch.removeRange(5, branch.length);
@@ -177,7 +212,9 @@ class _ManagerDashboardState extends State<ManagerDashboard> {
                     ),
                   ),
                   SizedBox(height: 30),
-                  Expanded(
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height - 173,
+                    width: MediaQuery.of(context).size.width - 60,
                     child: Padding(
                       padding: EdgeInsets.all(10),
                       child: Container(
@@ -193,13 +230,187 @@ class _ManagerDashboardState extends State<ManagerDashboard> {
                                       padding: EdgeInsets.all(5),
                                       child: Container(
                                         color: Colors.deepPurple.shade400,
-                                        width: 600,
-                                        height: 250,
+                                        width:
+                                            MediaQuery.of(context).size.width -
+                                                950,
+                                        height:
+                                            MediaQuery.of(context).size.height -
+                                                530,
                                         child: manager['BranchName'] == ''
-                                            ? Row()
+                                            ? Padding(
+                                                padding: EdgeInsets.all(5),
+                                                child: Container(
+                                                  color: Colors
+                                                      .deepPurple.shade400,
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    children: [
+                                                      Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                                color: Colors
+                                                                    .deepPurple
+                                                                    .shade800),
+                                                        child: DropdownButton(
+                                                          dropdownColor: Colors
+                                                              .deepPurple
+                                                              .shade800,
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white),
+                                                          iconEnabledColor:
+                                                              Colors.white,
+                                                          value: selectedValue,
+                                                          items: [
+                                                            DropdownMenuItem(
+                                                              value: 1,
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
+                                                              child: Text(
+                                                                  '\t\t\t\t\t\t\t\t2023\t\t\t\t\t\t\t\t'),
+                                                            ),
+                                                            DropdownMenuItem(
+                                                                value: 2,
+                                                                alignment:
+                                                                    Alignment
+                                                                        .center,
+                                                                child: Text(
+                                                                    '\t\t\t\t\t\t\t\t2022\t\t\t\t\t\t\t\t')),
+                                                            DropdownMenuItem(
+                                                                value: 3,
+                                                                alignment:
+                                                                    Alignment
+                                                                        .center,
+                                                                child: Text(
+                                                                    '\t\t\t\t\t\t\t\t2021\t\t\t\t\t\t\t\t')),
+                                                          ],
+                                                          onChanged: (value) {
+                                                            setState(() {
+                                                              selectedValue =
+                                                                  value!;
+                                                              if (value == 1) {
+                                                                year = 2023;
+                                                              } else if (value ==
+                                                                  2) {
+                                                                year = 2022;
+                                                              } else if (value ==
+                                                                  3) {
+                                                                year = 2021;
+                                                              }
+                                                            });
+                                                          },
+                                                        ),
+                                                      ),
+                                                      GFButton(
+                                                        onPressed: () =>
+                                                            generateReport(),
+                                                        text:
+                                                            'Generate Reports',
+                                                        color: Colors.deepPurple
+                                                            .shade800,
+                                                        shape: GFButtonShape
+                                                            .square,
+                                                        size: GFSize.LARGE,
+                                                        padding:
+                                                            EdgeInsets.all(10),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ))
+                                            : customer.isEmpty
+                                                ? Center(
+                                                    child: Text(
+                                                      'No Customers found',
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 17),
+                                                    ),
+                                                  )
+                                                : ListView.builder(
+                                                    itemCount:
+                                                        customer.length < 5
+                                                            ? customer.length
+                                                            : 5,
+                                                    itemBuilder:
+                                                        (context, index) {
+                                                      return Padding(
+                                                          padding:
+                                                              EdgeInsets.all(5),
+                                                          child: Container(
+                                                            color: Colors
+                                                                .deepPurple
+                                                                .shade800,
+                                                            height: 40,
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceEvenly,
+                                                              children: [
+                                                                Text(
+                                                                  'Customer Name: ${customer[index]['CustomerName']}',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize:
+                                                                        15,
+                                                                  ),
+                                                                ),
+                                                                Text(
+                                                                  'Quantity: ${customer[index]['TotalQuantity']}',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize:
+                                                                        15,
+                                                                  ),
+                                                                ),
+                                                                Text(
+                                                                  'Price: ${customer[index]['TotalPrice']}',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize:
+                                                                        15,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ));
+                                                    },
+                                                  ),
+                                      )),
+                                  Padding(
+                                    padding: const EdgeInsets.all(5),
+                                    child: Container(
+                                        color: Colors.deepPurple.shade400,
+                                        width:
+                                            MediaQuery.of(context).size.width -
+                                                950,
+                                        height:
+                                            MediaQuery.of(context).size.height -
+                                                530,
+                                        child: employee.isEmpty
+                                            ? Center(
+                                                child: Text(
+                                                  'No Employees found',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 17),
+                                                ),
+                                              )
                                             : ListView.builder(
-                                                itemCount: customer.length < 5
-                                                    ? customer.length
+                                                itemCount: employee.length < 5
+                                                    ? employee.length
                                                     : 5,
                                                 itemBuilder: (context, index) {
                                                   return Padding(
@@ -215,83 +426,34 @@ class _ManagerDashboardState extends State<ManagerDashboard> {
                                                                   .spaceEvenly,
                                                           children: [
                                                             Text(
-                                                              'Customer Name: ${customer[index]['CustomerName']}',
+                                                              'Username: ${employee[index]['Username']}',
                                                               style: TextStyle(
                                                                 color: Colors
                                                                     .white,
-                                                                fontSize: 17,
+                                                                fontSize: 15,
                                                               ),
                                                             ),
                                                             Text(
-                                                              'Quantity: ${customer[index]['TotalQuantity']}',
+                                                              'Quantity: ${employee[index]['Quantity']}',
                                                               style: TextStyle(
                                                                 color: Colors
                                                                     .white,
-                                                                fontSize: 17,
+                                                                fontSize: 15,
                                                               ),
                                                             ),
                                                             Text(
-                                                              'Price: ${customer[index]['TotalPrice']}',
+                                                              'Price: ${employee[index]['Price']}',
                                                               style: TextStyle(
                                                                 color: Colors
                                                                     .white,
-                                                                fontSize: 17,
+                                                                fontSize: 15,
                                                               ),
                                                             ),
                                                           ],
                                                         ),
                                                       ));
                                                 },
-                                              ),
-                                      )),
-                                  Padding(
-                                    padding: const EdgeInsets.all(5),
-                                    child: Container(
-                                        color: Colors.deepPurple.shade400,
-                                        width: 600,
-                                        height: 250,
-                                        child: ListView.builder(
-                                          itemCount: employee.length < 5
-                                              ? employee.length
-                                              : 5,
-                                          itemBuilder: (context, index) {
-                                            return Padding(
-                                                padding: EdgeInsets.all(5),
-                                                child: Container(
-                                                  color: Colors
-                                                      .deepPurple.shade800,
-                                                  height: 40,
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceEvenly,
-                                                    children: [
-                                                      Text(
-                                                        'Username: ${employee[index]['Username']}',
-                                                        style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 17,
-                                                        ),
-                                                      ),
-                                                      Text(
-                                                        'Quantity: ${employee[index]['Quantity']}',
-                                                        style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 17,
-                                                        ),
-                                                      ),
-                                                      Text(
-                                                        'Price: ${employee[index]['Price']}',
-                                                        style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 17,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ));
-                                          },
-                                        )),
+                                              )),
                                   ),
                                 ],
                               ),
@@ -303,99 +465,137 @@ class _ManagerDashboardState extends State<ManagerDashboard> {
                                     padding: const EdgeInsets.all(5),
                                     child: Container(
                                         color: Colors.deepPurple.shade400,
-                                        width: 600,
-                                        height: 250,
-                                        child: ListView.builder(
-                                          itemCount: product.length < 5
-                                              ? product.length
-                                              : 5,
-                                          itemBuilder: (context, index) {
-                                            return Padding(
-                                                padding: EdgeInsets.all(5),
-                                                child: Container(
-                                                  color: Colors
-                                                      .deepPurple.shade800,
-                                                  height: 40,
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceEvenly,
-                                                    children: [
-                                                      Text(
-                                                        'ProductName: ${product[index]['ProductName']}',
-                                                        style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 17,
+                                        width:
+                                            MediaQuery.of(context).size.width -
+                                                950,
+                                        height:
+                                            MediaQuery.of(context).size.height -
+                                                530,
+                                        child: product.isEmpty
+                                            ? Center(
+                                                child: Text(
+                                                  'No Product found',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 17),
+                                                ),
+                                              )
+                                            : ListView.builder(
+                                                itemCount: product.length < 5
+                                                    ? product.length
+                                                    : 5,
+                                                itemBuilder: (context, index) {
+                                                  return Padding(
+                                                      padding:
+                                                          EdgeInsets.all(5),
+                                                      child: Container(
+                                                        color: Colors.deepPurple
+                                                            .shade800,
+                                                        height: 40,
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceEvenly,
+                                                          children: [
+                                                            Text(
+                                                              'ProductName: ${product[index]['ProductName']}',
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 15,
+                                                              ),
+                                                            ),
+                                                            Text(
+                                                              'Quantity: ${product[index]['Quantity']}',
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 15,
+                                                              ),
+                                                            ),
+                                                            Text(
+                                                              'Price: ${product[index]['Price']}',
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 15,
+                                                              ),
+                                                            ),
+                                                          ],
                                                         ),
-                                                      ),
-                                                      Text(
-                                                        'Quantity: ${product[index]['Quantity']}',
-                                                        style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 17,
-                                                        ),
-                                                      ),
-                                                      Text(
-                                                        'Price: ${product[index]['Price']}',
-                                                        style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 17,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ));
-                                          },
-                                        )),
+                                                      ));
+                                                },
+                                              )),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(5),
                                     child: Container(
                                         color: Colors.deepPurple.shade400,
-                                        width: 600,
-                                        height: 250,
-                                        child: ListView.builder(
-                                          itemCount: branch.length < 5
-                                              ? branch.length
-                                              : 5,
-                                          itemBuilder: (context, index) {
-                                            return Padding(
-                                                padding: EdgeInsets.all(5),
-                                                child: Container(
-                                                  color: Colors
-                                                      .deepPurple.shade800,
-                                                  height: 40,
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceEvenly,
-                                                    children: [
-                                                      Text(
-                                                        'BranchName: ${branch[index]['BranchName']}',
-                                                        style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 17,
+                                        width:
+                                            MediaQuery.of(context).size.width -
+                                                950,
+                                        height:
+                                            MediaQuery.of(context).size.height -
+                                                530,
+                                        child: branch.isEmpty
+                                            ? Center(
+                                                child: Text(
+                                                  'No Branch found',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 17),
+                                                ),
+                                              )
+                                            : ListView.builder(
+                                                itemCount: branch.length < 5
+                                                    ? branch.length
+                                                    : 5,
+                                                itemBuilder: (context, index) {
+                                                  return Padding(
+                                                      padding:
+                                                          EdgeInsets.all(5),
+                                                      child: Container(
+                                                        color: Colors.deepPurple
+                                                            .shade800,
+                                                        height: 40,
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceEvenly,
+                                                          children: [
+                                                            Text(
+                                                              'BranchName: ${branch[index]['BranchName']}',
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 15,
+                                                              ),
+                                                            ),
+                                                            Text(
+                                                              'Quantity: ${branch[index]['Quantity']}',
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 15,
+                                                              ),
+                                                            ),
+                                                            Text(
+                                                              'Price: ${branch[index]['Price']}',
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 15,
+                                                              ),
+                                                            ),
+                                                          ],
                                                         ),
-                                                      ),
-                                                      Text(
-                                                        'Quantity: ${branch[index]['Quantity']}',
-                                                        style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 17,
-                                                        ),
-                                                      ),
-                                                      Text(
-                                                        'Price: ${branch[index]['Price']}',
-                                                        style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 17,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ));
-                                          },
-                                        )),
+                                                      ));
+                                                },
+                                              )),
                                   ),
                                 ],
                               ),
