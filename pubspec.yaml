@@ -43,6 +43,8 @@ dependencies:
   csc_picker: ^0.2.6
   http: ^0.13.5
   intl: ^0.18.0
+  pdf: ^3.6.0
+  printing: ^5.10.1
 
 dev_dependencies:
   flutter_test:
