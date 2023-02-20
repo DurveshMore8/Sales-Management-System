@@ -57,6 +57,7 @@ class _ManagerDashboardState extends State<ManagerDashboard> {
         }
       }
     }
+
     customer.sort((a, b) => b['TotalPrice'].compareTo(a['TotalPrice']));
     if (customer.length > 5) {
       customer.removeRange(5, customer.length);
