@@ -1,30 +1,31 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
+// ignore_for_file: unused_local_variable, prefer_const_constructors, await_only_futures
 
-import 'package:flutter/material.dart';
+@Timeout(Duration(seconds: 200))
+
+import 'package:flutter_driver/flutter_driver.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:sadms/main.dart';
+import 'package:sadms/Database/database.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  test('Manager Login Valid', () async {
+    final driver = await FlutterDriver.connect(
+        dartVmServiceUrl: 'ws://127.0.0.1:50446/GdbI5ylFWWs=/ws');
+    await DB.openCon("managerlogin");
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    await driver.tap(ByValueKey('Username'));
+    await driver.enterText('durvesh8403');
+    await driver.tap(ByValueKey('EmailId'));
+    await driver.enterText('durveshmore2003@gmail.com');
+    await driver.tap(ByValueKey('Password'));
+    await driver.enterText('durvesh8');
+    await driver.tap(ByValueKey('Login'));
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    await driver.waitFor(ByValueKey('ManagerName'));
+    String result = await driver.getText(ByValueKey('ManagerName'));
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    expect(result, equals('durvesh8403'));
+
+    await driver.close();
+    await DB.closeCon();
   });
 }
