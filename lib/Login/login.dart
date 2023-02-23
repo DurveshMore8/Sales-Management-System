@@ -143,6 +143,7 @@ class LoginState extends State<Login> {
                                       width: 750,
                                       child: TextField(
                                         controller: controllers[0],
+                                        key: Key('Username'),
                                         decoration: InputDecoration(
                                           fillColor: Colors.white,
                                           filled: true,
@@ -190,6 +191,7 @@ class LoginState extends State<Login> {
                                       width: 750,
                                       child: TextField(
                                         controller: controllers[1],
+                                        key: Key('EmailId'),
                                         decoration: InputDecoration(
                                           fillColor: Colors.white,
                                           filled: true,
@@ -231,6 +233,7 @@ class LoginState extends State<Login> {
                                       width: 750,
                                       child: TextField(
                                         controller: controllers[2],
+                                        key: Key('Password'),
                                         obscureText: visible,
                                         obscuringCharacter: '*',
                                         decoration: InputDecoration(
@@ -516,6 +519,7 @@ class LoginState extends State<Login> {
                                 color: Colors.green,
                               ),
                               text: 'Yes, LogIn',
+                              key: Key("Login"),
                               textColor: Colors.white,
                               color: Colors.deepPurple.shade700,
                               hoverColor: Colors.deepPurple.shade500,

@@ -1,7 +1,11 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:flutter/material.dart';
 import 'package:sadms/Login/login.dart';
+import 'package:flutter_driver/driver_extension.dart';
 
 void main() {
+  enableFlutterDriverExtension();
   runApp(const MyApp());
 }
 

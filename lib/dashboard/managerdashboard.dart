@@ -324,8 +324,8 @@ class _ManagerDashboardState extends State<ManagerDashboard> {
     );
 
     // Saves File in Dowloads Folder
-    File file =
-        File("C:\\Users\\Durvesh Mangesh More\\Downloads\\SalesReport.pdf");
+    String name = Platform.localHostname;
+    File file = File("C:\\Users\\$name\\Downloads\\SalesReport.pdf");
     file.writeAsBytesSync(await document.save());
   }
 

@@ -65,6 +65,7 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
                             ),
                             SizedBox(height: 10),
                             Text(LoginState.manager,
+                                key: Key('ManagerName'),
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
