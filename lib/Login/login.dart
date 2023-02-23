@@ -143,7 +143,7 @@ class LoginState extends State<Login> {
                                       width: 750,
                                       child: TextField(
                                         controller: controllers[0],
-                                        key: Key('Username'),
+                                        key: Key('M-Username'),
                                         decoration: InputDecoration(
                                           fillColor: Colors.white,
                                           filled: true,
@@ -191,7 +191,7 @@ class LoginState extends State<Login> {
                                       width: 750,
                                       child: TextField(
                                         controller: controllers[1],
-                                        key: Key('EmailId'),
+                                        key: Key('M-EmailId'),
                                         decoration: InputDecoration(
                                           fillColor: Colors.white,
                                           filled: true,
@@ -233,7 +233,7 @@ class LoginState extends State<Login> {
                                       width: 750,
                                       child: TextField(
                                         controller: controllers[2],
-                                        key: Key('Password'),
+                                        key: Key('M-Password'),
                                         obscureText: visible,
                                         obscuringCharacter: '*',
                                         decoration: InputDecoration(
@@ -300,6 +300,7 @@ class LoginState extends State<Login> {
                                         width: 750,
                                         child: TextField(
                                           controller: controllers[3],
+                                          key: Key('E-Username'),
                                           decoration: InputDecoration(
                                             fillColor: Colors.white,
                                             filled: true,
@@ -348,6 +349,7 @@ class LoginState extends State<Login> {
                                         width: 750,
                                         child: TextField(
                                           controller: controllers[4],
+                                          key: Key('E-Password'),
                                           obscureText: visible,
                                           obscuringCharacter: '*',
                                           decoration: InputDecoration(

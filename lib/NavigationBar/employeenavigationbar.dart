@@ -61,6 +61,7 @@ class _EmployeeNavigationBarState extends State<EmployeeNavigationBar> {
                             ),
                             SizedBox(height: 10),
                             Text(LoginState.employee,
+                                key: Key('EmployeeName'),
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
