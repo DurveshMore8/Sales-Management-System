@@ -143,7 +143,7 @@ class LoginState extends State<Login> {
                                       width: 750,
                                       child: TextField(
                                         controller: controllers[0],
-                                        key: Key('Username'),
+                                        key: Key('M-Username'),
                                         decoration: InputDecoration(
                                           fillColor: Colors.white,
                                           filled: true,
@@ -191,7 +191,7 @@ class LoginState extends State<Login> {
                                       width: 750,
                                       child: TextField(
                                         controller: controllers[1],
-                                        key: Key('EmailId'),
+                                        key: Key('M-EmailId'),
                                         decoration: InputDecoration(
                                           fillColor: Colors.white,
                                           filled: true,
@@ -233,7 +233,7 @@ class LoginState extends State<Login> {
                                       width: 750,
                                       child: TextField(
                                         controller: controllers[2],
-                                        key: Key('Password'),
+                                        key: Key('M-Password'),
                                         obscureText: visible,
                                         obscuringCharacter: '*',
                                         decoration: InputDecoration(
@@ -300,6 +300,7 @@ class LoginState extends State<Login> {
                                         width: 750,
                                         child: TextField(
                                           controller: controllers[3],
+                                          key: Key('E-Username'),
                                           decoration: InputDecoration(
                                             fillColor: Colors.white,
                                             filled: true,
@@ -348,6 +349,7 @@ class LoginState extends State<Login> {
                                         width: 750,
                                         child: TextField(
                                           controller: controllers[4],
+                                          key: Key('E-Password'),
                                           obscureText: visible,
                                           obscuringCharacter: '*',
                                           decoration: InputDecoration(
@@ -421,9 +423,6 @@ class LoginState extends State<Login> {
                             GFButton(
                               onPressed: () async {
                                 //manager button clicked
-                                setState(() {
-                                  isLoading = true;
-                                });
                                 valid = true;
                                 setState(() {
                                   for (int i = 0; i < 3; i++) {
@@ -432,12 +431,16 @@ class LoginState extends State<Login> {
                                     }
                                   }
                                   for (int i = 0; i < 3; i++) {
-                                    if (controllers[i].text == '') {
+                                    if (controllers[i].text == '' ||
+                                        error[i] != '') {
                                       valid = false;
                                     }
                                   }
                                 });
                                 if (valid) {
+                                  setState(() {
+                                    isLoading = true;
+                                  });
                                   if (selected == 'manager') {
                                     await DB.openCon('managerlogin');
                                     var value = await DB.collection.find({
@@ -448,9 +451,7 @@ class LoginState extends State<Login> {
                                     await DB.closeCon();
                                     if (value.length == 0) {
                                       controllers[2].clear();
-                                      setState(() {
-                                        error[2] = 'wrong';
-                                      });
+                                      error[2] = 'wrong';
                                     } else {
                                       manager = controllers[0].text;
                                       Navigator.push(
@@ -462,6 +463,9 @@ class LoginState extends State<Login> {
                                         controllers[0].clear();
                                         controllers[1].clear();
                                         controllers[2].clear();
+                                        for (int i = 0; i < 5; i++) {
+                                          error[i] = '';
+                                        }
                                       });
                                     }
                                   }
@@ -474,12 +478,16 @@ class LoginState extends State<Login> {
                                       }
                                     }
                                     for (int i = 3; i < 5; i++) {
-                                      if (controllers[i].text == '') {
+                                      if (controllers[i].text == '' ||
+                                          error[i] != '') {
                                         valid = false;
                                       }
                                     }
                                   });
                                   if (valid) {
+                                    setState(() {
+                                      isLoading = true;
+                                    });
                                     await DB.openCon('employeelogin');
                                     var value = await DB.collection.find({
                                       'Username': controllers[3].text,
@@ -502,15 +510,15 @@ class LoginState extends State<Login> {
                                         () {
                                           controllers[3].clear();
                                           controllers[4].clear();
+                                          for (int i = 0; i < 5; i++) {
+                                            error[i] = '';
+                                          }
                                         },
                                       );
                                     }
                                   }
                                 }
                                 setState(() {
-                                  for (int i = 0; i < 5; i++) {
-                                    error[i] = '';
-                                  }
                                   isLoading = false;
                                 });
                               },
@@ -545,6 +553,7 @@ class LoginState extends State<Login> {
                                 color: Colors.red,
                               ),
                               text: 'No, Clear',
+                              key: Key('Clear'),
                               textColor: Colors.white,
                               color: Colors.deepPurple.shade700,
                               hoverColor: Colors.deepPurple.shade500,
