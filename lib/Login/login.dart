@@ -431,7 +431,8 @@ class LoginState extends State<Login> {
                                     }
                                   }
                                   for (int i = 0; i < 3; i++) {
-                                    if (controllers[i].text == '') {
+                                    if (controllers[i].text == '' ||
+                                        error[i] != '') {
                                       valid = false;
                                     }
                                   }
@@ -477,7 +478,8 @@ class LoginState extends State<Login> {
                                       }
                                     }
                                     for (int i = 3; i < 5; i++) {
-                                      if (controllers[i].text == '') {
+                                      if (controllers[i].text == '' ||
+                                          error[i] != '') {
                                         valid = false;
                                       }
                                     }
