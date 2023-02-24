@@ -11,7 +11,7 @@ void main() {
 
   void start() async {
     driver = await FlutterDriver.connect(
-        dartVmServiceUrl: 'ws://127.0.0.1:55243/WB6AuASONVE=/ws');
+        dartVmServiceUrl: 'ws://127.0.0.1:49181/6bogwAWK1zk=/ws');
   }
 
   void end() async {
@@ -52,8 +52,15 @@ void main() {
       await driver.tap(ByValueKey('M-EmailId'));
       await driver.enterText('durveshmore2003@gmail.com');
       await driver.tap(ByValueKey('M-Password'));
-      await driver.enterText('durvesh8');
+      await driver.enterText('durvesh');
       await driver.tap(ByValueKey('Login'));
+
+      await driver.waitFor(ByText('Login Page'));
+      String result = await driver.getText(ByValueKey('M-Password'));
+
+      expect(result, isEmpty);
+
+      await driver.tap(ByValueKey('Clear'));
 
       await DB.closeCon();
       end();
@@ -75,7 +82,30 @@ void main() {
 
       expect(result, 'durvesh8403');
 
+      await driver.tap(ByText('Log Out'));
+
       await DB.closeCon();
+      end();
+    });
+
+    test('Employee Login Invalid', () async {
+      start();
+      await DB.openCon('employeelogin');
+
+      await driver.tap(ByValueKey('E-Username'));
+      await driver.enterText('durvesh8403');
+      await driver.tap(ByValueKey('E-Password'));
+      await driver.enterText('durvesh');
+      await driver.tap(ByValueKey('Login'));
+
+      await driver.waitFor(ByText('Login Page'));
+      String result = await driver.getText(ByValueKey('E-Password'));
+
+      expect(result, isEmpty);
+
+      await driver.tap(ByValueKey('Clear'));
+
+      DB.closeCon();
       end();
     });
   });

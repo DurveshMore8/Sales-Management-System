@@ -423,9 +423,6 @@ class LoginState extends State<Login> {
                             GFButton(
                               onPressed: () async {
                                 //manager button clicked
-                                setState(() {
-                                  isLoading = true;
-                                });
                                 valid = true;
                                 setState(() {
                                   for (int i = 0; i < 3; i++) {
@@ -440,6 +437,9 @@ class LoginState extends State<Login> {
                                   }
                                 });
                                 if (valid) {
+                                  setState(() {
+                                    isLoading = true;
+                                  });
                                   if (selected == 'manager') {
                                     await DB.openCon('managerlogin');
                                     var value = await DB.collection.find({
@@ -450,9 +450,7 @@ class LoginState extends State<Login> {
                                     await DB.closeCon();
                                     if (value.length == 0) {
                                       controllers[2].clear();
-                                      setState(() {
-                                        error[2] = 'wrong';
-                                      });
+                                      error[2] = 'wrong';
                                     } else {
                                       manager = controllers[0].text;
                                       Navigator.push(
@@ -464,6 +462,9 @@ class LoginState extends State<Login> {
                                         controllers[0].clear();
                                         controllers[1].clear();
                                         controllers[2].clear();
+                                        for (int i = 0; i < 5; i++) {
+                                          error[i] = '';
+                                        }
                                       });
                                     }
                                   }
@@ -482,6 +483,9 @@ class LoginState extends State<Login> {
                                     }
                                   });
                                   if (valid) {
+                                    setState(() {
+                                      isLoading = true;
+                                    });
                                     await DB.openCon('employeelogin');
                                     var value = await DB.collection.find({
                                       'Username': controllers[3].text,
@@ -504,15 +508,15 @@ class LoginState extends State<Login> {
                                         () {
                                           controllers[3].clear();
                                           controllers[4].clear();
+                                          for (int i = 0; i < 5; i++) {
+                                            error[i] = '';
+                                          }
                                         },
                                       );
                                     }
                                   }
                                 }
                                 setState(() {
-                                  for (int i = 0; i < 5; i++) {
-                                    error[i] = '';
-                                  }
                                   isLoading = false;
                                 });
                               },
@@ -547,6 +551,7 @@ class LoginState extends State<Login> {
                                 color: Colors.red,
                               ),
                               text: 'No, Clear',
+                              key: Key('Clear'),
                               textColor: Colors.white,
                               color: Colors.deepPurple.shade700,
                               hoverColor: Colors.deepPurple.shade500,
