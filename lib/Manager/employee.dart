@@ -65,6 +65,7 @@ class EmployeeState extends State<Employee> {
                   SizedBox(height: 20),
                   Text(
                     'Employee',
+                    key: Key('Heading'),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
@@ -76,6 +77,7 @@ class EmployeeState extends State<Employee> {
                     width: 750,
                     child: TextField(
                         controller: text,
+                        key: Key('Search'),
                         decoration: InputDecoration(
                           fillColor: Colors.white,
                           filled: true,
@@ -142,6 +144,7 @@ class EmployeeState extends State<Employee> {
                           color: Colors.green,
                         ),
                         text: 'Add',
+                        key: Key('Add'),
                         textColor: Colors.white,
                         color: Colors.deepPurple.shade700,
                         hoverColor: Colors.deepPurple.shade500,
@@ -169,6 +172,7 @@ class EmployeeState extends State<Employee> {
                           color: Colors.blue,
                         ),
                         text: 'Update',
+                        key: Key('Update'),
                         textColor: Colors.white,
                         color: Colors.deepPurple.shade700,
                         hoverColor: Colors.deepPurple.shade500,
@@ -199,6 +203,7 @@ class EmployeeState extends State<Employee> {
                           color: Colors.red,
                         ),
                         text: 'Delete',
+                        key: Key('Delete'),
                         textColor: Colors.white,
                         color: Colors.deepPurple.shade700,
                         hoverColor: Colors.deepPurple.shade500,

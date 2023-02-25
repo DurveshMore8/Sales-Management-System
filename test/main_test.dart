@@ -7,21 +7,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sadms/Database/database.dart';
 
 void main() {
+  String url = 'ws://127.0.0.1:51540/v-cMajKJZFM=/ws';
   late FlutterDriver driver;
 
-  void start() async {
-    driver = await FlutterDriver.connect(
-        dartVmServiceUrl: 'ws://127.0.0.1:50494/fJ8NoVe37XM=/ws');
-  }
-
-  void end() async {
-    driver.close();
-  }
-
   // Module 1
-  group('Module 1', () {
+  group('Module 1: Login', () {
     test('Manager Login Valid', () async {
-      start();
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
       await DB.openCon("managerlogin");
 
       await driver.tap(ByValueKey('M-Username'));
@@ -40,11 +32,11 @@ void main() {
       await driver.tap(ByText('Log Out'));
 
       await DB.closeCon();
-      end();
+      driver.close();
     });
 
     test('Manager Login Invalid', () async {
-      start();
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
       await DB.openCon("managerlogin");
 
       await driver.tap(ByValueKey('M-Username'));
@@ -63,11 +55,11 @@ void main() {
       await driver.tap(ByValueKey('Clear'));
 
       await DB.closeCon();
-      end();
+      driver.close();
     });
 
     test('Employee Login Valid', () async {
-      start();
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
       await DB.openCon('employeelogin');
 
       await driver.tap(ByText('Employee Login'));
@@ -85,11 +77,11 @@ void main() {
       await driver.tap(ByText('Log Out'));
 
       await DB.closeCon();
-      end();
+      driver.close();
     });
 
     test('Employee Login Invalid', () async {
-      start();
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
       await DB.openCon('employeelogin');
 
       await driver.tap(ByValueKey('E-Username'));
@@ -106,11 +98,11 @@ void main() {
       await driver.tap(ByValueKey('Clear'));
 
       DB.closeCon();
-      end();
+      driver.close();
     });
 
     test('Email Validation', () async {
-      start();
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
       await DB.openCon('managerlogin');
 
       await driver.tap(ByText('Manager Login'));
@@ -130,7 +122,82 @@ void main() {
       await driver.tap(ByValueKey('Clear'));
 
       await DB.closeCon();
-      end();
+      driver.close();
+    });
+  });
+
+  // Module 4
+  group('Module 4: Manager', () {
+    test('Load Manager Data', () async {
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+      await DB.openCon('managerinfo');
+
+      await driver.tap(ByValueKey('Manager'));
+      String result = await driver.getText(ByValueKey('Heading'));
+
+      expect(result, isNotEmpty);
+
+      await DB.closeCon();
+      driver.close();
+    });
+    test('Add Manager', () async {
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+      await DB.openCon('managerinfo');
+      await DB.openCon('managerlogin');
+
+      await driver.tap(ByValueKey('Add'));
+      await driver.waitFor(ByText('Add Manager'));
+
+      await driver.tap(ByValueKey('Name'));
+      await driver.enterText('testname');
+      await driver.tap(ByValueKey('Username'));
+      await driver.enterText('testusername');
+      await driver.tap(ByValueKey('Mobile'));
+      await driver.enterText('9865465735');
+      await driver.tap(ByValueKey('EmailId'));
+      await driver.enterText('testemail@gmail.com');
+      await driver.tap(ByValueKey('Female'));
+      await driver.tap(ByValueKey('Calendar'));
+      await driver.waitFor(ByValueKey('Calendar'));
+      await driver.tap(ByTooltipMessage('Switch to input'));
+      await driver.tap(ByType('TextField'));
+      await driver.enterText('04/08/2003');
+      await driver.tap(ByText('OK'));
+      await driver.waitFor(ByValueKey('BranchName'));
+      await driver.tap(ByValueKey('BranchName'));
+      await driver.tap(ByText('Kisan Nagar Branch'));
+
+      await driver.tap(ByValueKey('Add'));
+      await driver.waitFor(ByValueKey('Heading'));
+
+      String result = await driver.getText(ByText('Username: testusername'));
+
+      expect(result, isNotEmpty);
+
+      await DB.closeCon();
+      await DB.closeCon();
+      driver.close();
+    });
+    test('Delete Manager', () async {
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+      await DB.openCon('managerinfo');
+      await DB.openCon('managerlogin');
+
+      await driver.tap(ByValueKey('Search'));
+      await driver.enterText('testname');
+
+      await driver.tap(ByText('Username: testusername'));
+      await driver.tap(ByValueKey('Delete'));
+
+      await driver.waitFor(ByValueKey('Heading'));
+      await driver.tap(ByValueKey('Search'));
+      await driver.enterText('testname');
+
+      await driver.enterText('');
+
+      await DB.closeCon();
+      await DB.closeCon();
+      driver.close();
     });
   });
 }
