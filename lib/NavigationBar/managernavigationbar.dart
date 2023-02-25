@@ -40,6 +40,7 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
                         width: 60,
                         height: 50,
                         child: IconButton(
+                          key: Key('Menu'),
                           onPressed: () {
                             setState(() {
                               expanded = !expanded;
@@ -74,6 +75,7 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
                             TextButton(
                               child: Text(
                                 'Edit Profile',
+                                key: Key('EditProfile'),
                                 style: TextStyle(color: Colors.white),
                               ),
                               onPressed: () {
@@ -106,6 +108,7 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
                                   icon: Icon(Icons.dashboard,
                                       color: Colors.white),
                                   text: 'Dashboard',
+                                  key: Key('Dashboard'),
                                   textStyle: TextStyle(fontSize: 20),
                                   color: Colors.deepPurple.shade700,
                                   shape: GFButtonShape.square,
@@ -137,6 +140,7 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
                                   icon: Icon(Icons.manage_accounts,
                                       color: Colors.white),
                                   text: 'Manager',
+                                  key: Key('Manager'),
                                   textStyle: TextStyle(fontSize: 20),
                                   color: Colors.deepPurple.shade700,
                                   shape: GFButtonShape.square,
@@ -168,6 +172,7 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
                                   icon: Icon(Icons.emoji_people,
                                       color: Colors.white),
                                   text: 'Employee',
+                                  key: Key('Employee'),
                                   textStyle: TextStyle(fontSize: 20),
                                   color: Colors.deepPurple.shade700,
                                   shape: GFButtonShape.square,
@@ -199,6 +204,7 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
                                   icon: Icon(Icons.car_repair,
                                       color: Colors.white),
                                   text: 'Product',
+                                  key: Key('Product'),
                                   textStyle: TextStyle(fontSize: 20),
                                   color: Colors.deepPurple.shade700,
                                   shape: GFButtonShape.square,
@@ -228,6 +234,7 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
                               : GFButton(
                                   icon: Icon(Icons.store, color: Colors.white),
                                   text: 'Branch',
+                                  key: Key('Branch'),
                                   textStyle: TextStyle(fontSize: 20),
                                   color: Colors.deepPurple.shade700,
                                   shape: GFButtonShape.square,
@@ -259,6 +266,7 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
                                   icon: Icon(Icons.production_quantity_limits,
                                       color: Colors.white),
                                   text: 'Stock',
+                                  key: Key('Stock'),
                                   textStyle: TextStyle(fontSize: 20),
                                   color: Colors.deepPurple.shade700,
                                   shape: GFButtonShape.square,
@@ -290,6 +298,7 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
                                   icon: Icon(Icons.point_of_sale,
                                       color: Colors.white),
                                   text: 'Sales',
+                                  key: Key('Sales'),
                                   textStyle: TextStyle(fontSize: 20),
                                   color: Colors.deepPurple.shade700,
                                   shape: GFButtonShape.square,
@@ -308,6 +317,7 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
                         child: GFButton(
                           icon: Icon(Icons.logout, color: Colors.white),
                           text: 'Log Out',
+                          key: Key('Log Out'),
                           textStyle: TextStyle(fontSize: 20),
                           color: Colors.deepPurple.shade700,
                           shape: GFButtonShape.square,

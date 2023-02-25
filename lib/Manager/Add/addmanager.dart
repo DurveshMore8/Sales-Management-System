@@ -106,6 +106,7 @@ class _AddManagerState extends State<AddManager> {
                           width: 600,
                           child: TextField(
                             controller: controllers[0],
+                            key: Key('Name'),
                             decoration: InputDecoration(
                               fillColor: Colors.white,
                               filled: true,
@@ -152,6 +153,7 @@ class _AddManagerState extends State<AddManager> {
                           width: 600,
                           child: TextField(
                             controller: controllers[1],
+                            key: Key('Username'),
                             decoration: InputDecoration(
                               fillColor: Colors.white,
                               filled: true,
@@ -200,6 +202,7 @@ class _AddManagerState extends State<AddManager> {
                           width: 600,
                           child: TextField(
                             controller: controllers[2],
+                            key: Key('Mobile'),
                             inputFormatters: <TextInputFormatter>[
                               FilteringTextInputFormatter.digitsOnly,
                             ], // Only numbers can be entered
@@ -243,6 +246,7 @@ class _AddManagerState extends State<AddManager> {
                           width: 600,
                           child: TextField(
                             controller: controllers[3],
+                            key: Key('EmailId'),
                             decoration: InputDecoration(
                               fillColor: Colors.white,
                               filled: true,
@@ -310,6 +314,7 @@ class _AddManagerState extends State<AddManager> {
                                             fontWeight: FontWeight.w700)),
                                     leading: GFRadio(
                                       value: 'Male',
+                                      key: Key('Male'),
                                       groupValue: gender,
                                       activeBgColor: Colors.white,
                                       radioColor: Colors.deepPurple.shade500,
@@ -335,6 +340,7 @@ class _AddManagerState extends State<AddManager> {
                                             fontWeight: FontWeight.w700)),
                                     leading: GFRadio(
                                       value: 'Female',
+                                      key: Key('Female'),
                                       groupValue: gender,
                                       activeBgColor: Colors.white,
                                       radioColor: Colors.deepPurple.shade500,
@@ -370,6 +376,7 @@ class _AddManagerState extends State<AddManager> {
                           width: 600,
                           child: TextField(
                             controller: controllers[4],
+                            key: Key('DOB'),
                             readOnly: true,
                             decoration: InputDecoration(
                               fillColor: Colors.white,
@@ -389,6 +396,7 @@ class _AddManagerState extends State<AddManager> {
                               prefixIconColor: Colors.deepPurple.shade500,
                               suffixIcon: IconButton(
                                   icon: Icon(Icons.edit_calendar,
+                                      key: Key('Calendar'),
                                       color: Colors.deepPurple.shade500),
                                   onPressed: () {
                                     showDatePicker(
@@ -431,6 +439,7 @@ class _AddManagerState extends State<AddManager> {
                                       color: Colors.deepPurple[500])),
                               SizedBox(width: 7),
                               DropdownButton<String>(
+                                key: Key('BranchName'),
                                 dropdownColor: Colors.white,
                                 value: controllers[5].text,
                                 iconEnabledColor: Colors.deepPurple.shade500,
@@ -553,6 +562,7 @@ class _AddManagerState extends State<AddManager> {
                             color: Colors.green,
                           ),
                           text: 'Confirm',
+                          key: Key('Add'),
                           textColor: Colors.white,
                           color: Colors.deepPurple.shade700,
                           hoverColor: Colors.deepPurple.shade500,
