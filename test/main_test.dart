@@ -170,10 +170,13 @@ void main() {
       await driver.tap(ByValueKey('Add'));
       await driver.waitFor(ByValueKey('Heading'));
 
+      await driver.tap(ByValueKey('Search'));
+      await driver.enterText('testname');
       String result = await driver.getText(ByText('Username: testusername'));
 
       expect(result, isNotEmpty);
 
+      await driver.enterText('');
       await DB.closeCon();
       await DB.closeCon();
       driver.close();
@@ -182,6 +185,83 @@ void main() {
       driver = await FlutterDriver.connect(dartVmServiceUrl: url);
       await DB.openCon('managerinfo');
       await DB.openCon('managerlogin');
+
+      await driver.tap(ByValueKey('Search'));
+      await driver.enterText('testname');
+
+      await driver.tap(ByText('Username: testusername'));
+      await driver.tap(ByValueKey('Delete'));
+
+      await driver.waitFor(ByValueKey('Heading'));
+      await driver.tap(ByValueKey('Search'));
+      await driver.enterText('testname');
+
+      await driver.enterText('');
+
+      await DB.closeCon();
+      await DB.closeCon();
+      driver.close();
+    });
+  });
+
+  //Module 5
+  group('Module 5: Employee', () {
+    test('Load Employee Data', () async {
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+      await DB.openCon('employeeinfo');
+
+      await driver.tap(ByValueKey('Employee'));
+      String result = await driver.getText(ByValueKey('Heading'));
+
+      expect(result, isNotEmpty);
+
+      await DB.closeCon();
+      driver.close();
+    });
+    test('Add Employee', () async {
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+      await DB.openCon('employeeinfo');
+      await DB.openCon('employeelogin');
+
+      await driver.tap(ByValueKey('Add'));
+      await driver.waitFor(ByText('Add Employee'));
+
+      await driver.tap(ByValueKey('Name'));
+      await driver.enterText('testname');
+      await driver.tap(ByValueKey('Username'));
+      await driver.enterText('testusername');
+      await driver.enterText('9865465735');
+      await driver.tap(ByValueKey('EmailId'));
+      await driver.enterText('testemail@gmail.com');
+      await driver.tap(ByValueKey('Female'));
+      await driver.tap(ByValueKey('Calendar'));
+      await driver.waitFor(ByValueKey('Calendar'));
+      await driver.tap(ByTooltipMessage('Switch to input'));
+      await driver.tap(ByType('TextField'));
+      await driver.enterText('04/08/2003');
+      await driver.tap(ByText('OK'));
+      await driver.waitFor(ByValueKey('BranchName'));
+      await driver.tap(ByValueKey('BranchName'));
+      await driver.tap(ByText('Brahmand Branch'));
+
+      await driver.tap(ByValueKey('Add'));
+      await driver.waitFor(ByValueKey('Heading'));
+
+      await driver.tap(ByValueKey('Search'));
+      await driver.enterText('testname');
+      String result = await driver.getText(ByText('Username: testusername'));
+
+      expect(result, isNotEmpty);
+
+      await driver.enterText('');
+      await DB.closeCon();
+      await DB.closeCon();
+      driver.close();
+    });
+    test('Delete Employee', () async {
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+      await DB.openCon('employeeinfo');
+      await DB.openCon('employeelogin');
 
       await driver.tap(ByValueKey('Search'));
       await driver.enterText('testname');
