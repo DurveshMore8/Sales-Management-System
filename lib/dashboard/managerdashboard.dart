@@ -488,6 +488,7 @@ class _ManagerDashboardState extends State<ManagerDashboard> {
                   SizedBox(height: 20),
                   Text(
                     'Dashboard',
+                    key: Key('Title_Dashboard'),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.white,

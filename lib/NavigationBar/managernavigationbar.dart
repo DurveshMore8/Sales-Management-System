@@ -352,6 +352,7 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
                             });
                           },
                           icon: Icon(Icons.menu),
+                          key: Key('Menu'),
                           color: Colors.white,
                         ),
                       ),
@@ -373,6 +374,7 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
                             TextButton(
                               child: Text(
                                 'Edit',
+                                key: Key('Edit'),
                                 style: TextStyle(color: Colors.white),
                               ),
                               onPressed: () {

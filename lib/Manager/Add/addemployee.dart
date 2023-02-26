@@ -558,6 +558,7 @@ class AddEmployeeState extends State<AddEmployee> {
                             color: Colors.green,
                           ),
                           text: 'Confirm',
+                          key: Key('Add'),
                           textColor: Colors.white,
                           color: Colors.deepPurple.shade700,
                           hoverColor: Colors.deepPurple.shade500,

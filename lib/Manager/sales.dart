@@ -144,6 +144,7 @@ class _SalesState extends State<Sales> {
                   SizedBox(height: 20),
                   Text(
                     'Sales',
+                    key: Key('Title_Sales'),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
