@@ -312,7 +312,7 @@ void main() {
       await DB.openCon('managerinfo');
 
       await driver.tap(ByValueKey('Manager'));
-      String result = await driver.getText(ByValueKey('Heading'));
+      String result = await driver.getText(ByValueKey('Title_Manager'));
 
       expect(result, isNotEmpty);
 
@@ -347,15 +347,67 @@ void main() {
       await driver.tap(ByText('Kisan Nagar Branch'));
 
       await driver.tap(ByValueKey('Add'));
-      await driver.waitFor(ByValueKey('Heading'));
+      await driver.waitFor(ByValueKey('Title_Manager'));
 
       await driver.tap(ByValueKey('Search'));
-      await driver.enterText('testname');
+      await driver.enterText('testusername');
       String result = await driver.getText(ByText('Username: testusername'));
 
       expect(result, isNotEmpty);
 
       await driver.enterText('');
+      await DB.closeCon();
+      await DB.closeCon();
+      driver.close();
+    });
+    test('Update Manager', () async {
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+      await DB.openCon('managerinfo');
+      await DB.openCon('managerlogin');
+
+      await driver.tap(ByValueKey('Search'));
+      await driver.enterText('testusername');
+      await driver.tap(ByText('Username: testusername'));
+      await driver.tap(ByValueKey('Update'));
+      await driver.waitFor(ByText('Update Manager'));
+
+      await driver.tap(ByValueKey('Name'));
+      await driver.enterText('');
+      await driver.enterText('updatedtestname');
+      await driver.tap(ByValueKey('Mobile'));
+      await driver.enterText('');
+      await driver.enterText('7986354789');
+      await driver.tap(ByValueKey('EmailId'));
+      await driver.enterText('');
+      await driver.enterText('updatedtestemail@gmail.com');
+      await driver.tap(ByValueKey('Male'));
+      await driver.tap(ByValueKey('Calendar'));
+      await driver.waitFor(ByValueKey('Calendar'));
+      await driver.tap(ByTooltipMessage('Switch to input'));
+      await driver.tap(ByType('TextField'));
+      await driver.enterText('11/23/1992');
+      await driver.tap(ByText('OK'));
+      await driver.waitFor(ByValueKey('BranchName'));
+      await driver.tap(ByValueKey('BranchName'));
+      await driver.tap(ByText('Brahmand Branch'));
+
+      await driver.tap(ByValueKey('Update'));
+      await driver.waitFor(ByValueKey('Title_Manager'));
+
+      await driver.tap(ByValueKey('Search'));
+      await driver.enterText('testusername');
+
+      expect(await driver.getText(ByValueKey('Name')), 'Name: updatedtestname');
+      expect(await driver.getText(ByValueKey('Mobile')), 'Phone: 7986354789');
+      expect(await driver.getText(ByValueKey('EmailId')),
+          'EmailId: updatedtestemail@gmail.com');
+      expect(await driver.getText(ByValueKey('DOB')), 'DOB: 1992-11-23');
+      expect(await driver.getText(ByValueKey('Gender')), 'Gender: Male');
+      expect(await driver.getText(ByValueKey('BranchName')),
+          'Branch Name: Brahmand Branch');
+
+      await driver.enterText('');
+
       await DB.closeCon();
       await DB.closeCon();
       driver.close();
@@ -366,14 +418,17 @@ void main() {
       await DB.openCon('managerlogin');
 
       await driver.tap(ByValueKey('Search'));
-      await driver.enterText('testname');
+      await driver.enterText('testusername');
 
       await driver.tap(ByText('Username: testusername'));
       await driver.tap(ByValueKey('Delete'));
 
-      await driver.waitFor(ByValueKey('Heading'));
+      await driver.waitFor(ByValueKey('Title_Manager'));
       await driver.tap(ByValueKey('Search'));
-      await driver.enterText('testname');
+      await driver.enterText('testusername');
+
+      expect(
+          await driver.getText(ByValueKey('Message')), 'No Manager Available');
 
       await driver.enterText('');
 
