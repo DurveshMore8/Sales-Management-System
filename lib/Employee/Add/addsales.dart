@@ -17,6 +17,7 @@ class AddSalesState extends State<AddSales> {
   List<TextEditingController> controllers =
       List.generate(4, (index) => TextEditingController());
   List<String> error = ['', '', '', ''];
+  int quantity = 0;
   bool isLoading = true;
   bool isValid = true;
   bool price = false;
@@ -158,6 +159,8 @@ class AddSalesState extends State<AddSales> {
                                                         product[j]
                                                                 ['SellingPrice']
                                                             .toString();
+                                                    quantity =
+                                                        stock[i]['Quantity'];
                                                     price = true;
                                                     error[1] = '';
                                                   }
@@ -252,7 +255,7 @@ class AddSalesState extends State<AddSales> {
                                       decoration: InputDecoration(
                                         fillColor: Colors.white,
                                         filled: true,
-                                        hintText: '20',
+                                        hintText: 'Available: $quantity',
                                         labelText: 'Quantity',
                                         labelStyle: TextStyle(
                                             backgroundColor: Colors.white,
@@ -263,7 +266,9 @@ class AddSalesState extends State<AddSales> {
                                             ? 'Quantity Can\'t be empty'
                                             : error[2] == 'maximum'
                                                 ? 'Maximum Limit is Exceeded'
-                                                : null,
+                                                : error[2] == 'exceed'
+                                                    ? 'Quantity exceeded'
+                                                    : null,
                                         prefixIcon: Icon(
                                             Icons.production_quantity_limits,
                                             color: Colors.deepPurple.shade500),
@@ -287,17 +292,28 @@ class AddSalesState extends State<AddSales> {
                                         });
                                       },
                                       onSubmitted: ((value) {
-                                        if (controllers[2].text.isNotEmpty ||
-                                            controllers[3].text.isNotEmpty) {
-                                          setState(() {
+                                        setState(() {
+                                          if (quantity <
+                                              int.parse(value.toString())) {
+                                            error[2] = 'exceed';
+                                          } else {
+                                            error[2] = '';
                                             error[3] = '';
-                                            controllers[3].text = (int.parse(
-                                                        controllers[1].text) *
-                                                    int.parse(
-                                                        controllers[2].text))
-                                                .toString();
-                                          });
-                                        }
+                                            if (controllers[2]
+                                                    .text
+                                                    .isNotEmpty ||
+                                                controllers[3]
+                                                    .text
+                                                    .isNotEmpty) {
+                                              error[2] = '';
+                                              controllers[3].text = (int.parse(
+                                                          controllers[1].text) *
+                                                      int.parse(
+                                                          controllers[2].text))
+                                                  .toString();
+                                            }
+                                          }
+                                        });
                                       }),
                                     ),
                                   ),

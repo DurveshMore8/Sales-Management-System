@@ -65,6 +65,7 @@ class ProductState extends State<Product> {
                   SizedBox(height: 20),
                   Text(
                     'Product',
+                    key: Key('Title_Product'),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.white,

@@ -84,6 +84,7 @@ class StockState extends State<Stock> {
                   SizedBox(height: 20),
                   Text(
                     'Stock',
+                    key: Key('Title_Stock'),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.white,

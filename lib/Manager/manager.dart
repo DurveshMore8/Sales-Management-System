@@ -66,7 +66,7 @@ class ManagerState extends State<Manager> {
                   SizedBox(height: 20),
                   Text(
                     'Manager',
-                    key: Key('Heading'),
+                    key: Key('Title_Manager'),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.white,

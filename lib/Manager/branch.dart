@@ -65,6 +65,7 @@ class BranchState extends State<Branch> {
                   SizedBox(height: 20),
                   Text(
                     'Branch',
+                    key: Key('Title_Branch'),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.white,

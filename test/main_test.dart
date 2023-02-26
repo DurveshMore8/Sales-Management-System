@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sadms/Database/database.dart';
 
 void main() {
-  String url = 'ws://127.0.0.1:51540/v-cMajKJZFM=/ws';
+  String url = 'ws://127.0.0.1:50666/tl92tKoeQTE=/ws';
   late FlutterDriver driver;
 
   // Module 1
@@ -126,6 +126,185 @@ void main() {
     });
   });
 
+  // Module 2
+  group('Module 2: Navigation Bar', () {
+    test('Slider', () async {
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+
+      await driver.tap(ByValueKey('Menu'));
+      await driver.waitFor(ByText('Edit'));
+      await driver.tap(ByValueKey('Menu'));
+      await driver.waitFor(ByText('Edit Profile'));
+
+      driver.close();
+    });
+    test('Buttons Test from Dashboard', () async {
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+
+      await driver.tap(ByValueKey('EditProfile'));
+      await driver.waitFor(ByText('Edit Profile'));
+      await driver.tap(ByValueKey('Back'));
+      await driver.tap(ByValueKey('Manager'));
+      await driver.waitFor(ByValueKey('Title_Manager'));
+      await driver.tap(ByValueKey('Dashboard'));
+      await driver.waitFor(ByValueKey('Title_Dashboard'));
+      await driver.tap(ByValueKey('Employee'));
+      await driver.waitFor(ByValueKey('Title_Employee'));
+      await driver.tap(ByValueKey('Dashboard'));
+      await driver.waitFor(ByValueKey('Title_Dashboard'));
+      await driver.tap(ByValueKey('Product'));
+      await driver.waitFor(ByValueKey('Title_Product'));
+      await driver.tap(ByValueKey('Dashboard'));
+      await driver.waitFor(ByValueKey('Title_Dashboard'));
+      await driver.tap(ByValueKey('Branch'));
+      await driver.waitFor(ByValueKey('Title_Branch'));
+      await driver.tap(ByValueKey('Dashboard'));
+      await driver.waitFor(ByValueKey('Title_Dashboard'));
+      await driver.tap(ByValueKey('Stock'));
+      await driver.waitFor(ByValueKey('Title_Stock'));
+      await driver.tap(ByValueKey('Dashboard'));
+      await driver.waitFor(ByValueKey('Title_Dashboard'));
+      await driver.tap(ByValueKey('Sales'));
+      await driver.waitFor(ByValueKey('Title_Sales'));
+      await driver.tap(ByValueKey('Dashboard'));
+      await driver.waitFor(ByValueKey('Title_Dashboard'));
+
+      driver.close();
+    });
+    test('Button Test from Manager', () async {
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+
+      await driver.tap(ByValueKey('Manager'));
+      await driver.waitFor(ByValueKey('Title_Manager'));
+      await driver.tap(ByValueKey('EditProfile'));
+      await driver.waitFor(ByText('Edit Profile'));
+      await driver.tap(ByValueKey('Back'));
+      await driver.waitFor(ByValueKey('Title_Manager'));
+      await driver.tap(ByValueKey('Employee'));
+      await driver.waitFor(ByValueKey('Title_Employee'));
+      await driver.tap(ByValueKey('Manager'));
+      await driver.waitFor(ByValueKey('Title_Manager'));
+      await driver.tap(ByValueKey('Product'));
+      await driver.waitFor(ByValueKey('Title_Product'));
+      await driver.tap(ByValueKey('Manager'));
+      await driver.waitFor(ByValueKey('Title_Manager'));
+      await driver.tap(ByValueKey('Branch'));
+      await driver.waitFor(ByValueKey('Title_Branch'));
+      await driver.tap(ByValueKey('Manager'));
+      await driver.waitFor(ByValueKey('Title_Manager'));
+      await driver.tap(ByValueKey('Stock'));
+      await driver.waitFor(ByValueKey('Title_Stock'));
+      await driver.tap(ByValueKey('Manager'));
+      await driver.waitFor(ByValueKey('Title_Manager'));
+      await driver.tap(ByValueKey('Sales'));
+      await driver.waitFor(ByValueKey('Title_Sales'));
+      await driver.tap(ByValueKey('Manager'));
+      await driver.waitFor(ByValueKey('Title_Manager'));
+
+      driver.close();
+    });
+    test('Button Test from Employee', () async {
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+
+      await driver.tap(ByValueKey('Employee'));
+      await driver.waitFor(ByValueKey('Title_Employee'));
+      await driver.tap(ByValueKey('EditProfile'));
+      await driver.waitFor(ByText('Edit Profile'));
+      await driver.tap(ByValueKey('Back'));
+      await driver.waitFor(ByValueKey('Title_Employee'));
+      await driver.tap(ByValueKey('Product'));
+      await driver.waitFor(ByValueKey('Title_Product'));
+      await driver.tap(ByValueKey('Employee'));
+      await driver.waitFor(ByValueKey('Title_Employee'));
+      await driver.tap(ByValueKey('Branch'));
+      await driver.waitFor(ByValueKey('Title_Branch'));
+      await driver.tap(ByValueKey('Employee'));
+      await driver.waitFor(ByValueKey('Title_Employee'));
+      await driver.tap(ByValueKey('Stock'));
+      await driver.waitFor(ByValueKey('Title_Stock'));
+      await driver.tap(ByValueKey('Employee'));
+      await driver.waitFor(ByValueKey('Title_Employee'));
+      await driver.tap(ByValueKey('Sales'));
+      await driver.waitFor(ByValueKey('Title_Sales'));
+      await driver.tap(ByValueKey('Employee'));
+      await driver.waitFor(ByValueKey('Title_Employee'));
+
+      driver.close();
+    });
+    test('Button Test from Product', () async {
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+
+      await driver.tap(ByValueKey('Product'));
+      await driver.waitFor(ByValueKey('Title_Product'));
+      await driver.tap(ByValueKey('EditProfile'));
+      await driver.waitFor(ByText('Edit Profile'));
+      await driver.tap(ByValueKey('Back'));
+      await driver.waitFor(ByValueKey('Title_Product'));
+      await driver.tap(ByValueKey('Branch'));
+      await driver.waitFor(ByValueKey('Title_Branch'));
+      await driver.tap(ByValueKey('Product'));
+      await driver.waitFor(ByValueKey('Title_Product'));
+      await driver.tap(ByValueKey('Stock'));
+      await driver.waitFor(ByValueKey('Title_Stock'));
+      await driver.tap(ByValueKey('Product'));
+      await driver.waitFor(ByValueKey('Title_Product'));
+      await driver.tap(ByValueKey('Sales'));
+      await driver.waitFor(ByValueKey('Title_Sales'));
+      await driver.tap(ByValueKey('Product'));
+      await driver.waitFor(ByValueKey('Title_Product'));
+
+      driver.close();
+    });
+    test('Button Test from Branch', () async {
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+
+      await driver.tap(ByValueKey('Branch'));
+      await driver.waitFor(ByValueKey('Title_Branch'));
+      await driver.tap(ByValueKey('EditProfile'));
+      await driver.waitFor(ByText('Edit Profile'));
+      await driver.tap(ByValueKey('Back'));
+      await driver.waitFor(ByValueKey('Title_Branch'));
+      await driver.tap(ByValueKey('Stock'));
+      await driver.waitFor(ByValueKey('Title_Stock'));
+      await driver.tap(ByValueKey('Branch'));
+      await driver.waitFor(ByValueKey('Title_Branch'));
+      await driver.tap(ByValueKey('Sales'));
+      await driver.waitFor(ByValueKey('Title_Sales'));
+      await driver.tap(ByValueKey('Branch'));
+      await driver.waitFor(ByValueKey('Title_Branch'));
+
+      driver.close();
+    });
+    test('Button Test from Stock', () async {
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+
+      await driver.tap(ByValueKey('Stock'));
+      await driver.waitFor(ByValueKey('Title_Stock'));
+      await driver.tap(ByValueKey('EditProfile'));
+      await driver.waitFor(ByText('Edit Profile'));
+      await driver.tap(ByValueKey('Back'));
+      await driver.waitFor(ByValueKey('Title_Stock'));
+      await driver.tap(ByValueKey('Sales'));
+      await driver.waitFor(ByValueKey('Title_Sales'));
+      await driver.tap(ByValueKey('Stock'));
+      await driver.waitFor(ByValueKey('Title_Stock'));
+
+      driver.close();
+    });
+    test('Button Test from Sales', () async {
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+
+      await driver.tap(ByValueKey('Sales'));
+      await driver.waitFor(ByValueKey('Title_Sales'));
+      await driver.tap(ByValueKey('EditProfile'));
+      await driver.waitFor(ByText('Edit Profile'));
+      await driver.tap(ByValueKey('Back'));
+      await driver.waitFor(ByValueKey('Title_Sales'));
+
+      driver.close();
+    });
+  });
+
   // Module 4
   group('Module 4: Manager', () {
     test('Load Manager Data', () async {
@@ -230,7 +409,8 @@ void main() {
       await driver.enterText('testname');
       await driver.tap(ByValueKey('Username'));
       await driver.enterText('testusername');
-      await driver.enterText('9865465735');
+      await driver.tap(ByValueKey('Mobile'));
+      await driver.enterText('9868521547');
       await driver.tap(ByValueKey('EmailId'));
       await driver.enterText('testemail@gmail.com');
       await driver.tap(ByValueKey('Female'));

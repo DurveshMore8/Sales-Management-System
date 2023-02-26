@@ -74,6 +74,7 @@ class EditProfileState extends State<EditProfile> {
                               },
                               icon: Icon(
                                 Icons.keyboard_arrow_left,
+                                key: Key('Back'),
                                 color: Colors.white,
                               )),
                           Text(
