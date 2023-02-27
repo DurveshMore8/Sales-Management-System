@@ -738,7 +738,7 @@ void main() {
       await DB.closeCon();
       driver.close();
     });
-    test('Delete Employee', () async {
+    test('Delete Product', () async {
       driver = await FlutterDriver.connect(dartVmServiceUrl: url);
       await DB.openCon('product');
       await DB.openCon('stock');
@@ -837,6 +837,44 @@ void main() {
       await driver.enterText('');
 
       await DB.closeCon();
+      await DB.closeCon();
+      driver.close();
+    });
+    test('Update Branch', () async {
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+      await DB.openCon('branch');
+
+      await driver.tap(ByValueKey('Search'));
+      await driver.enterText('testbranchname');
+      await driver.tap(ByText('Branch Name: testbranchname'));
+      await driver.tap(ByValueKey('Update'));
+      await driver.waitFor(ByText('Update Branch'));
+
+      await driver.tap(ByValueKey('Location'));
+      await driver.enterText('');
+      await driver.enterText('updatedtestlocation');
+      await driver.tap(ByText('State'));
+      await driver.enterText('Delh');
+      await driver.tap(ByText('Delhi'));
+      await driver.waitFor(ByText('Delhi'));
+      await driver.tap(ByText('City'));
+      await driver.enterText('Rohin');
+      await driver.tap(ByText('Rohini'));
+      await driver.waitFor(ByText('Rohini'));
+
+      await driver.tap(ByValueKey('Update'));
+      await driver.waitFor(ByValueKey('Title_Branch'));
+
+      await driver.tap(ByValueKey('Search'));
+      await driver.enterText('testbranchname');
+
+      expect(await driver.getText(ByValueKey('Location')),
+          'Location: updatedtestlocation');
+      expect(await driver.getText(ByValueKey('State')), 'State: Delhi');
+      expect(await driver.getText(ByValueKey('City')), 'City: Rohini');
+
+      await driver.enterText('');
+
       await DB.closeCon();
       driver.close();
     });

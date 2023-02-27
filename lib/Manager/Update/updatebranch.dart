@@ -174,8 +174,8 @@ class _UpdateBranchState extends State<UpdateBranch> {
                         SizedBox(
                           width: 600,
                           child: TextField(
-                            controller:
-                                controllers[2], // Only numbers can be entered
+                            controller: controllers[2],
+                            key: Key('Location'),
                             decoration: InputDecoration(
                               fillColor: Colors.white,
                               filled: true,
@@ -361,6 +361,7 @@ class _UpdateBranchState extends State<UpdateBranch> {
                                 color: Colors.green,
                               ),
                               text: 'Confirm',
+                              key: Key('Update'),
                               textColor: Colors.white,
                               color: Colors.deepPurple.shade700,
                               hoverColor: Colors.deepPurple.shade500,

@@ -173,6 +173,7 @@ class BranchState extends State<Branch> {
                           color: Colors.blue,
                         ),
                         text: 'Update',
+                        key: Key('Update'),
                         textColor: Colors.white,
                         color: Colors.deepPurple.shade700,
                         hoverColor: Colors.deepPurple.shade500,
