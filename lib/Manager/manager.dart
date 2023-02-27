@@ -33,8 +33,8 @@ class ManagerState extends State<Manager> {
     await DB.closeCon();
     setState(() {
       data.addAll(maindata);
-      maindata.sort((a, b) => a['Name'].compareTo(b['Name']));
-      data.sort((a, b) => a['Name'].compareTo(b['Name']));
+      maindata.sort((a, b) => a['Username'].compareTo(b['Username']));
+      data.sort((a, b) => a['Username'].compareTo(b['Username']));
       isLoading = false;
     });
   }
@@ -82,8 +82,8 @@ class ManagerState extends State<Manager> {
                         decoration: InputDecoration(
                           fillColor: Colors.white,
                           filled: true,
-                          hintText: 'Durvesh More',
-                          labelText: 'Name',
+                          hintText: 'durvesh93852',
+                          labelText: 'Username',
                           floatingLabelAlignment: FloatingLabelAlignment.center,
                           labelStyle: TextStyle(
                               backgroundColor: Colors.white,
@@ -105,11 +105,11 @@ class ManagerState extends State<Manager> {
                             } else {
                               for (int i = 0; i < maindata.length; i++) {
                                 if (value.length <=
-                                    maindata[i]['Name'].length) {
+                                    maindata[i]['Username'].length) {
                                   String namestring = '';
                                   for (int j = 0; j < value.length; j++) {
                                     namestring =
-                                        namestring + maindata[i]['Name'][j];
+                                        namestring + maindata[i]['Username'][j];
                                   }
                                   if (value.toLowerCase() ==
                                       namestring.toLowerCase()) {
@@ -194,7 +194,10 @@ class ManagerState extends State<Manager> {
                                 {'Username': data[selectedBox]['Username']});
                             await DB.closeCon();
                             selectedBox = -1;
-                            getData();
+                            setState(() {
+                              getData();
+                              isLoading = false;
+                            });
                           }
                         },
                         icon: Icon(
@@ -215,7 +218,7 @@ class ManagerState extends State<Manager> {
                   Expanded(
                     child: ListView.builder(
                       key: Key('List'),
-                      itemCount: data.length,
+                      itemCount: data.isEmpty ? 1 : data.length,
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () {
@@ -231,92 +234,110 @@ class ManagerState extends State<Manager> {
                           },
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              color: selectedBox == index
-                                  ? Colors.deepPurple[900]
-                                  : Colors.deepPurple[700],
-                              height: 100,
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Text(
-                                        'Name: ${data[index]['Name']}',
-                                        style: TextStyle(
+                            child: data.isEmpty
+                                ? Center(
+                                    child: Text(
+                                      'No Manager Available',
+                                      key: Key('Message'),
+                                      style: TextStyle(
                                           color: Colors.white,
-                                          fontSize: 17,
-                                        ),
-                                      ),
-                                      Text(
-                                        'Username: ${data[index]['Username']}',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 17,
-                                        ),
-                                      ),
-                                      Text(
-                                        'EmailId: ${data[index]['EmailId']}',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 17,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Text(
-                                        'Phone: ${data[index]['Phone']}',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 17,
-                                        ),
-                                      ),
-                                      Text(
-                                        'DOB: ${data[index]['DateofBirth']}',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 17,
-                                        ),
-                                      ),
-                                      Text(
-                                        'Age: ${data[index]['Age']}',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 17,
-                                        ),
-                                      ),
-                                      Text(
-                                        'Gender: ${data[index]['Gender']}',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 17,
-                                        ),
-                                      ),
-                                      data[index]['BranchName'] == ''
-                                          ? Text('Branch Name: No Branch',
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 17,
-                                              ))
-                                          : Text(
-                                              'Branch Name: ${data[index]['BranchName']}',
+                                          fontSize: 25,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  )
+                                : Container(
+                                    color: selectedBox == index
+                                        ? Colors.deepPurple[900]
+                                        : Colors.deepPurple[700],
+                                    height: 100,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Text(
+                                              'Name: ${data[index]['Name']}',
+                                              key: Key('Name'),
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 17,
                                               ),
                                             ),
-                                    ],
+                                            Text(
+                                              'Username: ${data[index]['Username']}',
+                                              key: Key('Username'),
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 17,
+                                              ),
+                                            ),
+                                            Text(
+                                              'EmailId: ${data[index]['EmailId']}',
+                                              key: Key('EmailId'),
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 17,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Text(
+                                              'Phone: ${data[index]['Phone']}',
+                                              key: Key('Mobile'),
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 17,
+                                              ),
+                                            ),
+                                            Text(
+                                              'DOB: ${data[index]['DateofBirth']}',
+                                              key: Key('DOB'),
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 17,
+                                              ),
+                                            ),
+                                            Text(
+                                              'Age: ${data[index]['Age']}',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 17,
+                                              ),
+                                            ),
+                                            Text(
+                                              'Gender: ${data[index]['Gender']}',
+                                              key: Key('Gender'),
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 17,
+                                              ),
+                                            ),
+                                            data[index]['BranchName'] == ''
+                                                ? Text('Branch Name: No Branch',
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 17,
+                                                    ))
+                                                : Text(
+                                                    'Branch Name: ${data[index]['BranchName']}',
+                                                    key: Key('BranchName'),
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 17,
+                                                    ),
+                                                  ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ],
-                              ),
-                            ),
                           ),
                         );
                       },

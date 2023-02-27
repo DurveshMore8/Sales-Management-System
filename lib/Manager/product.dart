@@ -77,6 +77,7 @@ class ProductState extends State<Product> {
                     width: 750,
                     child: TextField(
                       controller: text,
+                      key: Key('Search'),
                       decoration: InputDecoration(
                         fillColor: Colors.white,
                         filled: true,
@@ -141,6 +142,7 @@ class ProductState extends State<Product> {
                         },
                         icon: Icon(
                           Icons.add,
+                          key: Key('Add'),
                           color: Colors.green,
                         ),
                         text: 'Add',
@@ -171,6 +173,7 @@ class ProductState extends State<Product> {
                           color: Colors.blue,
                         ),
                         text: 'Update',
+                        key: Key('Update'),
                         textColor: Colors.white,
                         color: Colors.deepPurple.shade700,
                         hoverColor: Colors.deepPurple.shade500,
@@ -193,7 +196,10 @@ class ProductState extends State<Product> {
                                 {'ProductId': data[selectedBox]['ProductId']});
                             await DB.closeCon();
                             selectedBox = -1;
-                            getData();
+                            setState(() {
+                              getData();
+                              isLoading = false;
+                            });
                           }
                         },
                         icon: Icon(
@@ -201,6 +207,7 @@ class ProductState extends State<Product> {
                           color: Colors.red,
                         ),
                         text: 'Delete',
+                        key: Key('Delete'),
                         textColor: Colors.white,
                         color: Colors.deepPurple.shade700,
                         hoverColor: Colors.deepPurple.shade500,
@@ -212,7 +219,7 @@ class ProductState extends State<Product> {
                   SizedBox(height: 50),
                   Expanded(
                     child: ListView.builder(
-                      itemCount: data.length,
+                      itemCount: data.isEmpty ? 1 : data.length,
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () {
@@ -222,65 +229,81 @@ class ProductState extends State<Product> {
                           },
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              color: selectedBox == index
-                                  ? Colors.deepPurple[900]
-                                  : Colors.deepPurple[700],
-                              height: 100,
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Text(
-                                        'Product Name: ${data[index]['ProductName']}',
-                                        style: TextStyle(
+                            child: data.isEmpty
+                                ? Center(
+                                    child: Text(
+                                      'No Product Available',
+                                      key: Key('Message'),
+                                      style: TextStyle(
                                           color: Colors.white,
-                                          fontSize: 17,
+                                          fontSize: 25,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  )
+                                : Container(
+                                    color: selectedBox == index
+                                        ? Colors.deepPurple[900]
+                                        : Colors.deepPurple[700],
+                                    height: 100,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Text(
+                                              'Product Name: ${data[index]['ProductName']}',
+                                              key: Key('ProductName'),
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 17,
+                                              ),
+                                            ),
+                                            Text(
+                                              'Cost Price: ${data[index]['CostPrice']}',
+                                              key: Key('CostPrice'),
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 17,
+                                              ),
+                                            ),
+                                            Text(
+                                              'Selling Price: ${data[index]['SellingPrice']}',
+                                              key: Key('SellingPrice'),
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 17,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ),
-                                      Text(
-                                        'Cost Price: ${data[index]['CostPrice']}',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 17,
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Text(
+                                              'Product Id: ${data[index]['ProductId']}',
+                                              key: Key('ProductId'),
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 17,
+                                              ),
+                                            ),
+                                            Text(
+                                              'Description: ${data[index]['Description']}',
+                                              key: Key('Description'),
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 17,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ),
-                                      Text(
-                                        'Selling Price: ${data[index]['SellingPrice']}',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 17,
-                                        ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Text(
-                                        'Product Id: ${data[index]['ProductId']}',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 17,
-                                        ),
-                                      ),
-                                      Text(
-                                        'Description: ${data[index]['Description']}',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 17,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
                           ),
                         );
                       },
