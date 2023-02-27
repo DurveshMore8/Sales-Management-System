@@ -632,5 +632,33 @@ void main() {
       await DB.closeCon();
       driver.close();
     });
+
+    test('Search Available Product', () async {
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+
+      await driver.tap(ByValueKey('Search'));
+      await driver.enterText('Nano');
+
+      expect(await driver.getText(ByValueKey('ProductName')),
+          'Product Name: Nano');
+
+      await driver.enterText('');
+
+      driver.close();
+    });
+
+    test('Search Unavailable Product', () async {
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+
+      await driver.tap(ByValueKey('Search'));
+      await driver.enterText('Not Product');
+
+      expect(
+          await driver.getText(ByValueKey('Message')), 'No Product Available');
+
+      await driver.enterText('');
+
+      driver.close();
+    });
   });
 }
