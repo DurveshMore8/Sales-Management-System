@@ -77,6 +77,7 @@ class BranchState extends State<Branch> {
                     width: 750,
                     child: TextField(
                       controller: text,
+                      key: Key('Search'),
                       decoration: InputDecoration(
                         fillColor: Colors.white,
                         filled: true,
@@ -241,6 +242,7 @@ class BranchState extends State<Branch> {
                                     children: [
                                       Text(
                                         'Branch Name: ${data[index]['BranchName']}',
+                                        key: Key('BranchName'),
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 17,

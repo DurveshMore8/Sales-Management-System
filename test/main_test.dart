@@ -776,5 +776,18 @@ void main() {
       await DB.closeCon();
       driver.close();
     });
+    test('Search Available Branch', () async {
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+
+      await driver.tap(ByValueKey('Search'));
+      await driver.enterText('Kisan Nagar Branch');
+
+      expect(await driver.getText(ByValueKey('BranchName')),
+          'Branch Name: Kisan Nagar Branch');
+
+      await driver.enterText('');
+
+      driver.close();
+    });
   });
 }
