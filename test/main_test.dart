@@ -763,4 +763,18 @@ void main() {
       driver.close();
     });
   });
+
+  // Module 7
+  group('Module 7: Branch', () {
+    test('Load Branch Data', () async {
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+      await DB.openCon("branch");
+
+      await driver.tap(ByValueKey('Branch'));
+      expect(await driver.getText(ByValueKey('Title_Branch')), 'Branch');
+
+      await DB.closeCon();
+      driver.close();
+    });
+  });
 }
