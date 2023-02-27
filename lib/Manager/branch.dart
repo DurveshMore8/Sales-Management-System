@@ -217,7 +217,7 @@ class BranchState extends State<Branch> {
                   SizedBox(height: 50),
                   Expanded(
                     child: ListView.builder(
-                      itemCount: data.length,
+                      itemCount: data.isEmpty ? 1 : data.length,
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () {
@@ -227,66 +227,77 @@ class BranchState extends State<Branch> {
                           },
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              color: selectedBox == index
-                                  ? Colors.deepPurple[900]
-                                  : Colors.deepPurple[700],
-                              height: 100,
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Text(
-                                        'Branch Name: ${data[index]['BranchName']}',
-                                        key: Key('BranchName'),
-                                        style: TextStyle(
+                            child: data.isEmpty
+                                ? Center(
+                                    child: Text(
+                                      'No Branch Available',
+                                      key: Key('Message'),
+                                      style: TextStyle(
                                           color: Colors.white,
-                                          fontSize: 17,
+                                          fontSize: 25,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  )
+                                : Container(
+                                    color: selectedBox == index
+                                        ? Colors.deepPurple[900]
+                                        : Colors.deepPurple[700],
+                                    height: 100,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Text(
+                                              'Branch Name: ${data[index]['BranchName']}',
+                                              key: Key('BranchName'),
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 17,
+                                              ),
+                                            ),
+                                            Text(
+                                              'Location: ${data[index]['Location']}',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 17,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ),
-                                      Text(
-                                        'Location: ${data[index]['Location']}',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 17,
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Text(
+                                              'Branch Id: ${data[index]['BranchId']}',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 17,
+                                              ),
+                                            ),
+                                            Text(
+                                              'City: ${data[index]['City']}',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 17,
+                                              ),
+                                            ),
+                                            Text(
+                                              'State: ${data[index]['State']}',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 17,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Text(
-                                        'Branch Id: ${data[index]['BranchId']}',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 17,
-                                        ),
-                                      ),
-                                      Text(
-                                        'City: ${data[index]['City']}',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 17,
-                                        ),
-                                      ),
-                                      Text(
-                                        'State: ${data[index]['State']}',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 17,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
                           ),
                         );
                       },

@@ -789,5 +789,18 @@ void main() {
 
       driver.close();
     });
+    test('Search Unavailable Branch', () async {
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+
+      await driver.tap(ByValueKey('Search'));
+      await driver.enterText('No Branch');
+
+      expect(
+          await driver.getText(ByValueKey('Message')), 'No Branch Available');
+
+      await driver.enterText('');
+
+      driver.close();
+    });
   });
 }
