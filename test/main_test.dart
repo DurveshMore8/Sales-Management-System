@@ -612,6 +612,9 @@ void main() {
       await driver.tap(ByValueKey('Search'));
       await driver.enterText('testusername');
 
+      expect(
+          await driver.getText(ByValueKey('Message')), 'No Employee Available');
+
       await driver.enterText('');
 
       await DB.closeCon();
@@ -732,6 +735,30 @@ void main() {
 
       await driver.enterText('');
 
+      await DB.closeCon();
+      driver.close();
+    });
+    test('Delete Employee', () async {
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+      await DB.openCon('product');
+      await DB.openCon('stock');
+
+      await driver.tap(ByValueKey('Search'));
+      await driver.enterText('testproductname');
+
+      await driver.tap(ByText('Product Name: testproductname'));
+      await driver.tap(ByValueKey('Delete'));
+
+      await driver.waitFor(ByValueKey('Title_Product'));
+      await driver.tap(ByValueKey('Search'));
+      await driver.enterText('testproductname');
+
+      expect(
+          await driver.getText(ByValueKey('Message')), 'No Product Available');
+
+      await driver.enterText('');
+
+      await DB.closeCon();
       await DB.closeCon();
       driver.close();
     });
