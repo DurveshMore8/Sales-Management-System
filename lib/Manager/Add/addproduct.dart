@@ -74,6 +74,7 @@ class _AddProductState extends State<AddProduct> {
                           width: 600,
                           child: TextField(
                             controller: controllers[0],
+                            key: Key('ProductId'),
                             decoration: InputDecoration(
                               fillColor: Colors.white,
                               filled: true,
@@ -122,6 +123,7 @@ class _AddProductState extends State<AddProduct> {
                           width: 600,
                           child: TextField(
                             controller: controllers[1],
+                            key: Key('ProductName'),
                             decoration: InputDecoration(
                               fillColor: Colors.white,
                               filled: true,
@@ -168,6 +170,7 @@ class _AddProductState extends State<AddProduct> {
                           width: 600,
                           child: TextField(
                             controller: controllers[2],
+                            key: Key('CostPrice'),
                             inputFormatters: <TextInputFormatter>[
                               FilteringTextInputFormatter.digitsOnly,
                             ], // Only numbers can be entered
@@ -217,6 +220,7 @@ class _AddProductState extends State<AddProduct> {
                           width: 600,
                           child: TextField(
                             controller: controllers[3],
+                            key: Key('SellingPrice'),
                             inputFormatters: <TextInputFormatter>[
                               FilteringTextInputFormatter.digitsOnly,
                             ], // Only numbers can be entered
@@ -266,6 +270,7 @@ class _AddProductState extends State<AddProduct> {
                           width: 600,
                           child: TextField(
                             controller: controllers[4],
+                            key: Key('Description'),
                             decoration: InputDecoration(
                               fillColor: Colors.white,
                               filled: true,
@@ -382,6 +387,7 @@ class _AddProductState extends State<AddProduct> {
                                 color: Colors.green,
                               ),
                               text: 'Confirm',
+                              key: Key('Add'),
                               textColor: Colors.white,
                               color: Colors.deepPurple.shade700,
                               hoverColor: Colors.deepPurple.shade500,

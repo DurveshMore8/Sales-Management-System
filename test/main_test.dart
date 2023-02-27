@@ -619,4 +619,18 @@ void main() {
       driver.close();
     });
   });
+
+  // Module 6
+  group('Module 6: Product', () {
+    test('Load Product Data', () async {
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+      await DB.openCon("product");
+
+      await driver.tap(ByValueKey('Product'));
+      expect(await driver.getText(ByValueKey('Title_Product')), 'Product');
+
+      await DB.closeCon();
+      driver.close();
+    });
+  });
 }
