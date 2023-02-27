@@ -696,5 +696,44 @@ void main() {
       DB.closeCon();
       driver.close();
     });
+
+    test('Update Product', () async {
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+      await DB.openCon('product');
+
+      await driver.tap(ByValueKey('Search'));
+      await driver.enterText('testproductname');
+      await driver.tap(ByText('Product Name: testproductname'));
+      await driver.tap(ByValueKey('Update'));
+      await driver.waitFor(ByText('Update Product'));
+
+      await driver.tap(ByValueKey('CostPrice'));
+      await driver.enterText('');
+      await driver.enterText('45000');
+      await driver.tap(ByValueKey('SellingPrice'));
+      await driver.enterText('');
+      await driver.enterText('550000');
+      await driver.tap(ByValueKey('Description'));
+      await driver.enterText('');
+      await driver.enterText('updatedtestdescription');
+
+      await driver.tap(ByValueKey('Update'));
+      await driver.waitFor(ByValueKey('Title_Product'));
+
+      await driver.tap(ByValueKey('Search'));
+      await driver.enterText('testproductname');
+
+      expect(
+          await driver.getText(ByValueKey('CostPrice')), 'Cost Price: 45000');
+      expect(await driver.getText(ByValueKey('SellingPrice')),
+          'Selling Price: 550000');
+      expect(await driver.getText(ByValueKey('Description')),
+          'Description: updatedtestdescription');
+
+      await driver.enterText('');
+
+      await DB.closeCon();
+      driver.close();
+    });
   });
 }
