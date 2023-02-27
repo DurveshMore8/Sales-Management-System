@@ -660,5 +660,41 @@ void main() {
 
       driver.close();
     });
+
+    test('Add Product', () async {
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+      await DB.openCon('product');
+      await DB.openCon('stock');
+
+      await driver.tap(ByValueKey('Add'));
+      await driver.waitFor(ByText('Add Product'));
+
+      await driver.tap(ByValueKey('ProductId'));
+      await driver.enterText('testid');
+      await driver.tap(ByValueKey('ProductName'));
+      await driver.enterText('testproductname');
+      await driver.tap(ByValueKey('CostPrice'));
+      await driver.enterText('20000');
+      await driver.tap(ByValueKey('SellingPrice'));
+      await driver.enterText('400000');
+      await driver.tap(ByValueKey('Description'));
+      await driver.enterText('testdescription');
+
+      await driver.tap(ByValueKey('Add'));
+      await driver.waitFor(ByValueKey('Title_Product'));
+
+      await driver.tap(ByValueKey('Search'));
+      await driver.enterText('testproductname');
+      String result =
+          await driver.getText(ByText('Product Name: testproductname'));
+
+      expect(result, isNotEmpty);
+
+      await driver.enterText('');
+
+      DB.closeCon();
+      DB.closeCon();
+      driver.close();
+    });
   });
 }
