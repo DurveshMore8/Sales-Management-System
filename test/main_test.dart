@@ -802,5 +802,43 @@ void main() {
 
       driver.close();
     });
+    test('Add Branch', () async {
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+      await DB.openCon('branch');
+      await DB.openCon('stock');
+
+      await driver.tap(ByValueKey('Add'));
+      await driver.waitFor(ByText('Add Branch'));
+
+      await driver.tap(ByValueKey('BranchId'));
+      await driver.enterText('testid');
+      await driver.tap(ByValueKey('BranchName'));
+      await driver.enterText('testbranchname');
+      await driver.tap(ByValueKey('Location'));
+      await driver.enterText('testbranchlocation');
+      await driver.tap(ByText('State'));
+      await driver.enterText('Maharashtr');
+      await driver.tap(ByText('Maharashtra'));
+      await driver.waitFor(ByText('Maharashtra'));
+      await driver.tap(ByText('City'));
+      await driver.enterText('Than');
+      await driver.tap(ByText('Thane'));
+      await driver.waitFor(ByText('Thane'));
+
+      await driver.tap(ByValueKey('Add'));
+      await driver.waitFor(ByValueKey('Title_Branch'));
+
+      await driver.tap(ByValueKey('Search'));
+      await driver.enterText('testbranchname');
+
+      expect(await driver.getText(ByValueKey('BranchName')),
+          'Branch Name: testbranchname');
+
+      await driver.enterText('');
+
+      await DB.closeCon();
+      await DB.closeCon();
+      driver.close();
+    });
   });
 }

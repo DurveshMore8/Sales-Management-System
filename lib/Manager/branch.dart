@@ -145,6 +145,7 @@ class BranchState extends State<Branch> {
                           color: Colors.green,
                         ),
                         text: 'Add',
+                        key: Key('Add'),
                         textColor: Colors.white,
                         color: Colors.deepPurple.shade700,
                         hoverColor: Colors.deepPurple.shade500,
@@ -261,6 +262,7 @@ class BranchState extends State<Branch> {
                                             ),
                                             Text(
                                               'Location: ${data[index]['Location']}',
+                                              key: Key('Location'),
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 17,
@@ -274,6 +276,7 @@ class BranchState extends State<Branch> {
                                           children: [
                                             Text(
                                               'Branch Id: ${data[index]['BranchId']}',
+                                              key: Key('BranchId'),
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 17,
@@ -281,6 +284,7 @@ class BranchState extends State<Branch> {
                                             ),
                                             Text(
                                               'City: ${data[index]['City']}',
+                                              key: Key('City'),
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 17,
@@ -288,6 +292,7 @@ class BranchState extends State<Branch> {
                                             ),
                                             Text(
                                               'State: ${data[index]['State']}',
+                                              key: Key('State'),
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 17,
