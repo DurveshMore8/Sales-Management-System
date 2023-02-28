@@ -72,6 +72,7 @@ class _AddBranchState extends State<AddBranch> {
                           width: 600,
                           child: TextField(
                             controller: controllers[0],
+                            key: Key('BranchId'),
                             decoration: InputDecoration(
                               fillColor: Colors.white,
                               filled: true,
@@ -120,6 +121,7 @@ class _AddBranchState extends State<AddBranch> {
                           width: 600,
                           child: TextField(
                             controller: controllers[1],
+                            key: Key('BranchName'),
                             decoration: InputDecoration(
                               fillColor: Colors.white,
                               filled: true,
@@ -165,8 +167,8 @@ class _AddBranchState extends State<AddBranch> {
                         SizedBox(
                           width: 600,
                           child: TextField(
-                            controller:
-                                controllers[2], // Only numbers can be entered
+                            controller: controllers[2],
+                            key: Key('Location'),
                             decoration: InputDecoration(
                               fillColor: Colors.white,
                               filled: true,
@@ -373,6 +375,7 @@ class _AddBranchState extends State<AddBranch> {
                                 color: Colors.green,
                               ),
                               text: 'Confirm',
+                              key: Key('Add'),
                               textColor: Colors.white,
                               color: Colors.deepPurple.shade700,
                               hoverColor: Colors.deepPurple.shade500,

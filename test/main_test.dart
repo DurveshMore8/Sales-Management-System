@@ -738,7 +738,7 @@ void main() {
       await DB.closeCon();
       driver.close();
     });
-    test('Delete Employee', () async {
+    test('Delete Product', () async {
       driver = await FlutterDriver.connect(dartVmServiceUrl: url);
       await DB.openCon('product');
       await DB.openCon('stock');
@@ -752,6 +752,146 @@ void main() {
       await driver.waitFor(ByValueKey('Title_Product'));
       await driver.tap(ByValueKey('Search'));
       await driver.enterText('testproductname');
+
+      expect(
+          await driver.getText(ByValueKey('Message')), 'No Product Available');
+
+      await driver.enterText('');
+
+      await DB.closeCon();
+      await DB.closeCon();
+      driver.close();
+    });
+  });
+
+  // Module 7
+  group('Module 7: Branch', () {
+    test('Load Branch Data', () async {
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+      await DB.openCon("branch");
+
+      await driver.tap(ByValueKey('Branch'));
+      expect(await driver.getText(ByValueKey('Title_Branch')), 'Branch');
+
+      await DB.closeCon();
+      driver.close();
+    });
+    test('Search Available Branch', () async {
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+
+      await driver.tap(ByValueKey('Search'));
+      await driver.enterText('Kisan Nagar Branch');
+
+      expect(await driver.getText(ByValueKey('BranchName')),
+          'Branch Name: Kisan Nagar Branch');
+
+      await driver.enterText('');
+
+      driver.close();
+    });
+    test('Search Unavailable Branch', () async {
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+
+      await driver.tap(ByValueKey('Search'));
+      await driver.enterText('No Branch');
+
+      expect(
+          await driver.getText(ByValueKey('Message')), 'No Branch Available');
+
+      await driver.enterText('');
+
+      driver.close();
+    });
+    test('Add Branch', () async {
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+      await DB.openCon('branch');
+      await DB.openCon('stock');
+
+      await driver.tap(ByValueKey('Add'));
+      await driver.waitFor(ByText('Add Branch'));
+
+      await driver.tap(ByValueKey('BranchId'));
+      await driver.enterText('testid');
+      await driver.tap(ByValueKey('BranchName'));
+      await driver.enterText('testbranchname');
+      await driver.tap(ByValueKey('Location'));
+      await driver.enterText('testbranchlocation');
+      await driver.tap(ByText('State'));
+      await driver.enterText('Maharashtr');
+      await driver.tap(ByText('Maharashtra'));
+      await driver.waitFor(ByText('Maharashtra'));
+      await driver.tap(ByText('City'));
+      await driver.enterText('Than');
+      await driver.tap(ByText('Thane'));
+      await driver.waitFor(ByText('Thane'));
+
+      await driver.tap(ByValueKey('Add'));
+      await driver.waitFor(ByValueKey('Title_Branch'));
+
+      await driver.tap(ByValueKey('Search'));
+      await driver.enterText('testbranchname');
+
+      expect(await driver.getText(ByValueKey('BranchName')),
+          'Branch Name: testbranchname');
+
+      await driver.enterText('');
+
+      await DB.closeCon();
+      await DB.closeCon();
+      driver.close();
+    });
+    test('Update Branch', () async {
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+      await DB.openCon('branch');
+
+      await driver.tap(ByValueKey('Search'));
+      await driver.enterText('testbranchname');
+      await driver.tap(ByText('Branch Name: testbranchname'));
+      await driver.tap(ByValueKey('Update'));
+      await driver.waitFor(ByText('Update Branch'));
+
+      await driver.tap(ByValueKey('Location'));
+      await driver.enterText('');
+      await driver.enterText('updatedtestlocation');
+      await driver.tap(ByText('State'));
+      await driver.enterText('Delh');
+      await driver.tap(ByText('Delhi'));
+      await driver.waitFor(ByText('Delhi'));
+      await driver.tap(ByText('City'));
+      await driver.enterText('Rohin');
+      await driver.tap(ByText('Rohini'));
+      await driver.waitFor(ByText('Rohini'));
+
+      await driver.tap(ByValueKey('Update'));
+      await driver.waitFor(ByValueKey('Title_Branch'));
+
+      await driver.tap(ByValueKey('Search'));
+      await driver.enterText('testbranchname');
+
+      expect(await driver.getText(ByValueKey('Location')),
+          'Location: updatedtestlocation');
+      expect(await driver.getText(ByValueKey('State')), 'State: Delhi');
+      expect(await driver.getText(ByValueKey('City')), 'City: Rohini');
+
+      await driver.enterText('');
+
+      await DB.closeCon();
+      driver.close();
+    });
+    test('Delete Branch', () async {
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+      await DB.openCon('branch');
+      await DB.openCon('stock');
+
+      await driver.tap(ByValueKey('Search'));
+      await driver.enterText('testbranchname');
+
+      await driver.tap(ByText('Branch Name: testbranchname'));
+      await driver.tap(ByValueKey('Delete'));
+
+      await driver.waitFor(ByValueKey('Title_Branch'));
+      await driver.tap(ByValueKey('Search'));
+      await driver.enterText('testbranchname');
 
       expect(
           await driver.getText(ByValueKey('Message')), 'No Product Available');
