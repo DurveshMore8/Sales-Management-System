@@ -198,9 +198,9 @@ class BranchState extends State<Branch> {
                             await DB.closeCon();
                             selectedBox = -1;
                             setState(() {
+                              getData();
                               isLoading = false;
                             });
-                            getData();
                           }
                         },
                         icon: Icon(
@@ -208,6 +208,7 @@ class BranchState extends State<Branch> {
                           color: Colors.red,
                         ),
                         text: 'Delete',
+                        key: Key('Delete'),
                         textColor: Colors.white,
                         color: Colors.deepPurple.shade700,
                         hoverColor: Colors.deepPurple.shade500,

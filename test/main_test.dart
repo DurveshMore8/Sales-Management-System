@@ -878,5 +878,29 @@ void main() {
       await DB.closeCon();
       driver.close();
     });
+    test('Delete Branch', () async {
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+      await DB.openCon('branch');
+      await DB.openCon('stock');
+
+      await driver.tap(ByValueKey('Search'));
+      await driver.enterText('testbranchname');
+
+      await driver.tap(ByText('Branch Name: testbranchname'));
+      await driver.tap(ByValueKey('Delete'));
+
+      await driver.waitFor(ByValueKey('Title_Branch'));
+      await driver.tap(ByValueKey('Search'));
+      await driver.enterText('testbranchname');
+
+      expect(
+          await driver.getText(ByValueKey('Message')), 'No Product Available');
+
+      await driver.enterText('');
+
+      await DB.closeCon();
+      await DB.closeCon();
+      driver.close();
+    });
   });
 }
