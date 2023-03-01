@@ -356,7 +356,7 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
                           color: Colors.white,
                         ),
                       ),
-                      SizedBox(height: 50),
+                      SizedBox(height: 30),
                       SizedBox(
                         width: 60,
                         child: Column(
@@ -387,7 +387,7 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
                           ],
                         ),
                       ),
-                      SizedBox(height: 50),
+                      SizedBox(height: 30),
                       SizedBox(
                           width: 60,
                           height: 50,

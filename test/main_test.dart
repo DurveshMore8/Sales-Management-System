@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sadms/Database/database.dart';
 
 void main() {
-  String url = 'ws://127.0.0.1:55663/Tp-uK_rUMoE=/ws';
+  String url = 'ws://127.0.0.1:60113/gYXUH4XMAuQ=/ws';
   late FlutterDriver driver;
 
   // Module 1
@@ -899,6 +899,18 @@ void main() {
       await driver.enterText('');
 
       await DB.closeCon();
+      await DB.closeCon();
+      driver.close();
+    });
+  });
+  group('Module 8: Stock', () {
+    test('Load Stock Data', () async {
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+      await DB.openCon("stock");
+
+      await driver.tap(ByValueKey('Stock'));
+      expect(await driver.getText(ByValueKey('Title_Stock')), 'Stock');
+
       await DB.closeCon();
       driver.close();
     });
