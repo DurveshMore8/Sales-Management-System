@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sadms/Database/database.dart';
 
 void main() {
-  String url = 'ws://127.0.0.1:60113/gYXUH4XMAuQ=/ws';
+  String url = 'ws://127.0.0.1:55613/fXzWI1MRvwk=/ws';
   late FlutterDriver driver;
 
   // Module 1
@@ -912,6 +912,39 @@ void main() {
       expect(await driver.getText(ByValueKey('Title_Stock')), 'Stock');
 
       await DB.closeCon();
+      driver.close();
+    });
+    test('Search Stock of Available Product', () async {
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+
+      await driver.tap(ByValueKey('Search'));
+      await driver.enterText('Nano');
+
+      String result =
+          "Product Name: Nano ${await driver.getText(ByText('Branch Name: Borivali Branch'))}";
+      expect(result, 'Product Name: Nano Branch Name: Borivali Branch');
+      result =
+          "Product Name: Nano ${await driver.getText(ByText('Branch Name: Brahmand Branch'))}";
+      expect(result, 'Product Name: Nano Branch Name: Brahmand Branch');
+      result =
+          "Product Name: Nano ${await driver.getText(ByText('Branch Name: Panvel Branch'))}";
+      expect(result, 'Product Name: Nano Branch Name: Panvel Branch');
+
+      await driver.enterText('');
+
+      driver.close();
+    });
+
+    test('Search Stock of Unavailable Product', () async {
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+
+      await driver.tap(ByValueKey('Search'));
+      await driver.enterText('Not Product');
+
+      expect(await driver.getText(ByValueKey('Message')), 'No Stock Available');
+
+      await driver.enterText('');
+
       driver.close();
     });
   });
