@@ -914,7 +914,7 @@ void main() {
       await DB.closeCon();
       driver.close();
     });
-    test('Search Stock of Available Product', () async {
+    test('Manager Search Stock of Available Product', () async {
       driver = await FlutterDriver.connect(dartVmServiceUrl: url);
 
       await driver.tap(ByValueKey('Search'));
@@ -934,8 +934,7 @@ void main() {
 
       driver.close();
     });
-
-    test('Search Stock of Unavailable Product', () async {
+    test('Manager Search Stock of Unavailable Product', () async {
       driver = await FlutterDriver.connect(dartVmServiceUrl: url);
 
       await driver.tap(ByValueKey('Search'));
@@ -945,6 +944,51 @@ void main() {
 
       await driver.enterText('');
 
+      driver.close();
+    });
+    test('Add Stock', () async {
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+      await DB.openCon('stock');
+
+      await driver.tap(ByValueKey('Check'));
+      await driver.tap(ByValueKey('Search'));
+      await driver.enterText('Tigor');
+      await driver.tap(ByValueKey('BranchName'));
+
+      String quantity = await driver.getText(ByValueKey('Quantity'));
+      String reverse = '';
+      for (int i = quantity.length - 1; i > 0; i--) {
+        if (quantity[i] == ' ') {
+          break;
+        } else {
+          reverse = reverse + quantity[i];
+        }
+      }
+      int number = int.parse(reverse);
+      int rev = 0;
+      while (number > 0) {
+        int digit = number % 10;
+        number = number ~/ 10;
+        rev = (rev * 10) + digit;
+      }
+
+      await driver.tap(ByValueKey('Add'));
+      await driver.waitFor(ByText('Add Stock'));
+      await driver.tap(ByValueKey('Quantity'));
+      await driver.enterText('1');
+      await driver.tap(ByValueKey('Add'));
+      await driver.waitFor(ByValueKey('Title_Stock'));
+      await driver.tap(ByValueKey('Check'));
+      await driver.tap(ByValueKey('Search'));
+      await driver.enterText('Tigor');
+
+      expect(
+          await driver.getText(ByValueKey('Quantity')), 'Quantity: ${rev + 1}');
+
+      await driver.enterText('');
+      await driver.tap(ByValueKey('Check'));
+
+      DB.closeCon();
       driver.close();
     });
   });
