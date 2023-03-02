@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sadms/Database/database.dart';
 
 void main() {
-  String url = 'ws://127.0.0.1:55663/Tp-uK_rUMoE=/ws';
+  String url = 'ws://127.0.0.1:55613/fXzWI1MRvwk=/ws';
   late FlutterDriver driver;
 
   // Module 1
@@ -900,6 +900,95 @@ void main() {
 
       await DB.closeCon();
       await DB.closeCon();
+      driver.close();
+    });
+  });
+  group('Module 8: Stock', () {
+    test('Load Stock Data', () async {
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+      await DB.openCon("stock");
+
+      await driver.tap(ByValueKey('Stock'));
+      expect(await driver.getText(ByValueKey('Title_Stock')), 'Stock');
+
+      await DB.closeCon();
+      driver.close();
+    });
+    test('Search Stock of Available Product', () async {
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+
+      await driver.tap(ByValueKey('Search'));
+      await driver.enterText('Nano');
+
+      String result =
+          "Product Name: Nano ${await driver.getText(ByText('Branch Name: Borivali Branch'))}";
+      expect(result, 'Product Name: Nano Branch Name: Borivali Branch');
+      result =
+          "Product Name: Nano ${await driver.getText(ByText('Branch Name: Brahmand Branch'))}";
+      expect(result, 'Product Name: Nano Branch Name: Brahmand Branch');
+      result =
+          "Product Name: Nano ${await driver.getText(ByText('Branch Name: Panvel Branch'))}";
+      expect(result, 'Product Name: Nano Branch Name: Panvel Branch');
+
+      await driver.enterText('');
+
+      driver.close();
+    });
+    test('Search Stock of Unavailable Product', () async {
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+
+      await driver.tap(ByValueKey('Search'));
+      await driver.enterText('Not Product');
+
+      expect(await driver.getText(ByValueKey('Message')), 'No Stock Available');
+
+      await driver.enterText('');
+
+      driver.close();
+    });
+    test('Add Stock', () async {
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+      await DB.openCon('stock');
+
+      await driver.tap(ByValueKey('Check'));
+      await driver.tap(ByValueKey('Search'));
+      await driver.enterText('Tigor');
+      await driver.tap(ByValueKey('BranchName'));
+
+      String quantity = await driver.getText(ByValueKey('Quantity'));
+      String reverse = '';
+      for (int i = quantity.length - 1; i > 0; i--) {
+        if (quantity[i] == ' ') {
+          break;
+        } else {
+          reverse = reverse + quantity[i];
+        }
+      }
+      int number = int.parse(reverse);
+      int rev = 0;
+      while (number > 0) {
+        int digit = number % 10;
+        number = number ~/ 10;
+        rev = (rev * 10) + digit;
+      }
+
+      await driver.tap(ByValueKey('Add'));
+      await driver.waitFor(ByText('Add Stock'));
+      await driver.tap(ByValueKey('Quantity'));
+      await driver.enterText('1');
+      await driver.tap(ByValueKey('Add'));
+      await driver.waitFor(ByValueKey('Title_Stock'));
+      await driver.tap(ByValueKey('Check'));
+      await driver.tap(ByValueKey('Search'));
+      await driver.enterText('Tigor');
+
+      expect(
+          await driver.getText(ByValueKey('Quantity')), 'Quantity: ${rev + 1}');
+
+      await driver.enterText('');
+      await driver.tap(ByValueKey('Check'));
+
+      DB.closeCon();
       driver.close();
     });
   });

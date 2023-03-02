@@ -96,6 +96,7 @@ class StockState extends State<Stock> {
                     width: 750,
                     child: TextField(
                       controller: text,
+                      key: Key('Search'),
                       decoration: InputDecoration(
                         fillColor: Colors.white,
                         filled: true,
@@ -179,6 +180,7 @@ class StockState extends State<Stock> {
                               getData();
                               setState(() {
                                 check = false;
+                                text.clear();
                               });
                             });
                           }
@@ -188,6 +190,7 @@ class StockState extends State<Stock> {
                           color: Colors.green,
                         ),
                         text: 'Add Stock',
+                        key: Key('Add'),
                         textColor: Colors.white,
                         color: Colors.deepPurple.shade700,
                         hoverColor: Colors.deepPurple.shade500,
@@ -204,6 +207,7 @@ class StockState extends State<Stock> {
                             color: Colors.white,
                           )),
                       leading: GFCheckbox(
+                        key: Key('Check'),
                         value: check,
                         size: 25,
                         activeBgColor: Colors.deepPurple.shade700,
@@ -229,7 +233,7 @@ class StockState extends State<Stock> {
                   ),
                   Expanded(
                     child: ListView.builder(
-                      itemCount: data.length,
+                      itemCount: data.isEmpty ? 1 : data.length,
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () {
@@ -242,58 +246,73 @@ class StockState extends State<Stock> {
                           },
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              color: selectedBox == index
-                                  ? Colors.deepPurple[900]
-                                  : Colors.deepPurple[700],
-                              height: 100,
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Text(
-                                        'Product Name: ${data[index]['ProductName']}',
-                                        style: TextStyle(
+                            child: data.isEmpty
+                                ? Center(
+                                    child: Text(
+                                      'No Stock Available',
+                                      key: Key('Message'),
+                                      style: TextStyle(
                                           color: Colors.white,
-                                          fontSize: 17,
+                                          fontSize: 25,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  )
+                                : Container(
+                                    color: selectedBox == index
+                                        ? Colors.deepPurple[900]
+                                        : Colors.deepPurple[700],
+                                    height: 100,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Text(
+                                              'Product Name: ${data[index]['ProductName']}',
+                                              key: Key('ProductName'),
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 17,
+                                              ),
+                                            ),
+                                            Text(
+                                              'Product Id: ${data[index]['ProductId']}',
+                                              key: Key('ProductId'),
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 17,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ),
-                                      Text(
-                                        'Product Id: ${data[index]['ProductId']}',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 17,
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Text(
+                                              'Branch Name: ${data[index]['BranchName']}',
+                                              key: Key('BranchName'),
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 17,
+                                              ),
+                                            ),
+                                            Text(
+                                              'Quantity: ${data[index]['Quantity']}',
+                                              key: Key('Quantity'),
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 17,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Text(
-                                        'Branch Name: ${data[index]['BranchName']}',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 17,
-                                        ),
-                                      ),
-                                      Text(
-                                        'Quantity: ${data[index]['Quantity']}',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 17,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
                           ),
                         );
                       },
