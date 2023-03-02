@@ -914,7 +914,7 @@ void main() {
       await DB.closeCon();
       driver.close();
     });
-    test('Manager Search Stock of Available Product', () async {
+    test('Search Stock of Available Product', () async {
       driver = await FlutterDriver.connect(dartVmServiceUrl: url);
 
       await driver.tap(ByValueKey('Search'));
@@ -934,7 +934,7 @@ void main() {
 
       driver.close();
     });
-    test('Manager Search Stock of Unavailable Product', () async {
+    test('Search Stock of Unavailable Product', () async {
       driver = await FlutterDriver.connect(dartVmServiceUrl: url);
 
       await driver.tap(ByValueKey('Search'));

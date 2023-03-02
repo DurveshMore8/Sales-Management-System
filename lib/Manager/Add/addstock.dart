@@ -154,6 +154,7 @@ class AddStockState extends State<AddStock> {
                           width: 600,
                           child: TextField(
                             controller: controllers[3],
+                            key: Key('Quantity'),
                             inputFormatters: <TextInputFormatter>[
                               FilteringTextInputFormatter.digitsOnly,
                             ], // Only numbers can be entered
@@ -232,6 +233,7 @@ class AddStockState extends State<AddStock> {
                                 color: Colors.green,
                               ),
                               text: 'Confirm',
+                              key: Key('Add'),
                               textColor: Colors.white,
                               color: Colors.deepPurple.shade700,
                               hoverColor: Colors.deepPurple.shade500,

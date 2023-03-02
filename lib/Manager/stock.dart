@@ -180,6 +180,7 @@ class StockState extends State<Stock> {
                               getData();
                               setState(() {
                                 check = false;
+                                text.clear();
                               });
                             });
                           }
@@ -189,6 +190,7 @@ class StockState extends State<Stock> {
                           color: Colors.green,
                         ),
                         text: 'Add Stock',
+                        key: Key('Add'),
                         textColor: Colors.white,
                         color: Colors.deepPurple.shade700,
                         hoverColor: Colors.deepPurple.shade500,
@@ -205,6 +207,7 @@ class StockState extends State<Stock> {
                             color: Colors.white,
                           )),
                       leading: GFCheckbox(
+                        key: Key('Check'),
                         value: check,
                         size: 25,
                         activeBgColor: Colors.deepPurple.shade700,
