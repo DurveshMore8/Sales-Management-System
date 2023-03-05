@@ -7,7 +7,6 @@ import 'package:sadms/Database/database.dart';
 import 'package:sadms/Login/login.dart';
 import 'package:sadms/Manager/Profile/Change/changeemailid.dart';
 import 'package:sadms/Manager/Profile/Change/changepassword.dart';
-import 'package:sadms/Manager/Profile/Change/changeusername.dart';
 
 class EditProfile extends StatefulWidget {
   EditProfile({Key? key}) : super(key: key);
@@ -91,31 +90,8 @@ class EditProfileState extends State<EditProfile> {
                       SizedBox(
                         width: 750,
                         child: TextField(
-                          controller: controllers[0],
-                          readOnly: true,
-                          decoration: InputDecoration(
-                            fillColor: Colors.white,
-                            filled: true,
-                            labelText: 'Username',
-                            labelStyle: TextStyle(
-                                backgroundColor: Colors.white,
-                                color: Colors.deepPurple.shade500,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold),
-                            prefixIcon: Icon(Icons.text_format_outlined,
-                                color: Colors.deepPurple.shade500),
-                            prefixIconColor: Colors.deepPurple.shade500,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.horizontal(),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 50),
-                      SizedBox(
-                        width: 750,
-                        child: TextField(
                           controller: controllers[1],
+                          key: Key('EmailId'),
                           readOnly: true,
                           decoration: InputDecoration(
                             fillColor: Colors.white,
@@ -140,6 +116,7 @@ class EditProfileState extends State<EditProfile> {
                         width: 750,
                         child: TextField(
                           controller: controllers[2],
+                          key: Key('Password'),
                           readOnly: true,
                           obscureText: true,
                           obscuringCharacter: '*',
@@ -172,25 +149,6 @@ class EditProfileState extends State<EditProfile> {
                                     context,
                                     MaterialPageRoute(
                                         builder: ((context) =>
-                                            ChangeUsername())));
-                              },
-                              icon: Icon(
-                                Icons.text_format_outlined,
-                                color: Colors.white,
-                              ),
-                              text: 'Change Username',
-                              textColor: Colors.white,
-                              color: Colors.deepPurple.shade700,
-                              hoverColor: Colors.deepPurple.shade500,
-                              shape: GFButtonShape.square,
-                              size: GFSize.LARGE,
-                            ),
-                            GFButton(
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: ((context) =>
                                             ChangeEmailId())));
                               },
                               icon: Icon(
@@ -198,6 +156,7 @@ class EditProfileState extends State<EditProfile> {
                                 color: Colors.white,
                               ),
                               text: 'Change Email Id',
+                              key: Key('EditEmailId'),
                               textColor: Colors.white,
                               color: Colors.deepPurple.shade700,
                               hoverColor: Colors.deepPurple.shade500,
@@ -217,6 +176,7 @@ class EditProfileState extends State<EditProfile> {
                                 color: Colors.white,
                               ),
                               text: 'Change Password',
+                              key: Key('EditPassword'),
                               textColor: Colors.white,
                               color: Colors.deepPurple.shade700,
                               hoverColor: Colors.deepPurple.shade500,

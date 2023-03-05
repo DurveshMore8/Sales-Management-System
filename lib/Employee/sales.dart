@@ -118,6 +118,7 @@ class _SalesState extends State<Sales> {
                               width: 500,
                               child: TextField(
                                 controller: controllers[0],
+                                key: Key('Customer'),
                                 decoration: InputDecoration(
                                   fillColor: Colors.white,
                                   filled: true,
@@ -167,6 +168,7 @@ class _SalesState extends State<Sales> {
                               width: 500,
                               child: TextField(
                                 controller: controllers[1],
+                                key: Key('Mobile'),
                                 inputFormatters: <TextInputFormatter>[
                                   FilteringTextInputFormatter.digitsOnly,
                                 ], // Only numbers can be entered
@@ -220,6 +222,7 @@ class _SalesState extends State<Sales> {
                           width: 700,
                           child: TextField(
                             controller: controllers[2],
+                            key: Key('EmailId'),
                             decoration: InputDecoration(
                               fillColor: Colors.white,
                               filled: true,
@@ -286,6 +289,7 @@ class _SalesState extends State<Sales> {
                       color: Colors.green,
                     ),
                     text: 'Create Order',
+                    key: Key('Create'),
                     textColor: Colors.white,
                     color: Colors.deepPurple.shade700,
                     hoverColor: Colors.deepPurple.shade500,
@@ -376,6 +380,7 @@ class _SalesState extends State<Sales> {
                                   color: Colors.green,
                                 ),
                                 text: 'Modify',
+                                key: Key('Modify'),
                                 textColor: Colors.white,
                                 color: Colors.deepPurple.shade700,
                                 hoverColor: Colors.deepPurple.shade500,
@@ -480,6 +485,7 @@ class _SalesState extends State<Sales> {
                             color: Colors.green,
                           ),
                           text: 'Complete Purchase',
+                          key: Key('Complete'),
                           textColor: Colors.white,
                           color: Colors.deepPurple.shade700,
                           hoverColor: Colors.deepPurple.shade500,

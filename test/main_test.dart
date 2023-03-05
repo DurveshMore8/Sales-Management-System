@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sadms/Database/database.dart';
 
 void main() {
-  String url = 'ws://127.0.0.1:55613/fXzWI1MRvwk=/ws';
+  String url = 'ws://127.0.0.1:63703/KEEsIw9UBPk=/ws';
   late FlutterDriver driver;
 
   // Module 1
@@ -990,6 +990,158 @@ void main() {
 
       DB.closeCon();
       driver.close();
+    });
+  });
+  group('Module 9: Sales', () {
+    test('Record Sales', () async {
+      driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+      await DB.openCon('sales');
+      await DB.openCon('productsales');
+      await DB.openCon('stock');
+      await DB.openCon('employee');
+      await DB.openCon('product');
+
+      await driver.tap(ByValueKey('Customer'));
+      await driver.enterText('testname');
+      await driver.tap(ByValueKey('Mobile'));
+      await driver.enterText('9876879548');
+      await driver.tap(ByValueKey('EmailId'));
+      await driver.enterText('testemail@gmail.com');
+      await driver.tap(ByValueKey('Create'));
+
+      await driver.waitFor(ByValueKey('Modify'));
+      await driver.tap(ByValueKey('Modify'));
+      await driver.waitFor(ByText('Add Sales'));
+
+      await driver.tap(ByValueKey('Product'));
+      await driver.enterText('Indica');
+      await driver.tap(ByValueKey('Selling'));
+      await driver.enterText('75000');
+      await driver.tap(ByValueKey('Quantity'));
+      await driver.enterText('1');
+      await driver.tap(ByValueKey('Total'));
+      await driver.enterText('75000');
+      await driver.tap(ByValueKey('Add'));
+
+      expect(await driver.getText(ByValueKey('ProductName')),
+          'Product Name: Indica');
+      expect(await driver.getText(ByValueKey('TQuantity')), 'Quantity: 1');
+
+      await driver.tap(ByValueKey('Complete'));
+      await driver.waitFor(ByValueKey('Complete'));
+      await driver.tap(ByValueKey('Complete'));
+      await driver.waitFor(ByText('Sales'));
+
+      await DB.closeCon();
+      await DB.closeCon();
+      await DB.closeCon();
+      await DB.closeCon();
+      await DB.closeCon();
+      driver.close();
+    });
+  });
+  group('Module 10: Edit Profile', () {
+    group('Manager Edit Profile', () {
+      test('Manager Load Previous Data', () async {
+        driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+        await DB.openCon("managerinfo");
+        await DB.openCon("managerlogin");
+
+        await driver.tap(ByValueKey('EditProfile'));
+
+        expect(await driver.getText(ByValueKey('EmailId')),
+            'durveshmore2003@gmail.com');
+        expect(await driver.getText(ByValueKey('Password')), 'durvesh8');
+
+        await DB.closeCon();
+        await DB.closeCon();
+        driver.close();
+      });
+      test('Manager Change EmailId', () async {
+        driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+        await DB.openCon("managerinfo");
+        await DB.openCon("managerlogin");
+
+        await driver.tap(ByValueKey('EditEmailId'));
+        await driver.waitFor(ByText('Change Email Id'));
+
+        await driver.tap(ByValueKey('New'));
+        await driver.enterText('durveshmore@gmail.com');
+        await driver.tap(ByValueKey('Edit'));
+
+        await driver.waitFor(ByValueKey('ManagerName'));
+        await driver.tap(ByValueKey('EditProfile'));
+        await driver.waitFor(ByText('Edit Profile'));
+
+        expect(await driver.getText(ByValueKey('EmailId')),
+            'durveshmore@gmail.com');
+
+        await DB.closeCon();
+        await DB.closeCon();
+        driver.close();
+      });
+      test('Manager Change Password', () async {
+        driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+        await DB.openCon("managerlogin");
+
+        await driver.tap(ByValueKey('EditPassword'));
+        await driver.waitFor(ByText('Change Password'));
+
+        await driver.tap(ByValueKey('Current'));
+        await driver.enterText('durvesh8');
+        await driver.tap(ByValueKey('New'));
+        await driver.enterText('durvesh8403');
+        await driver.tap(ByValueKey('Confirm'));
+        await driver.enterText('durvesh8403');
+        await driver.tap(ByValueKey('Edit'));
+
+        await driver.waitFor(ByValueKey('ManagerName'));
+        await driver.tap(ByValueKey('EditProfile'));
+        await driver.waitFor(ByText('Edit Profile'));
+
+        expect(await driver.getText(ByValueKey('Password')), 'durvesh8403');
+
+        await DB.closeCon();
+        driver.close();
+      });
+    });
+    group('Employee Edit Profile', () {
+      test('Employee Load Previous Data', () async {
+        driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+        await DB.openCon("employeelogin");
+
+        await driver.tap(ByValueKey('EditProfile'));
+
+        expect(await driver.getText(ByValueKey('Username')), 'durvesh8403');
+        expect(await driver.getText(ByValueKey('Password')), 'durvesh8');
+
+        await DB.closeCon();
+        driver.close();
+      });
+      test('Employee Change Password', () async {
+        driver = await FlutterDriver.connect(dartVmServiceUrl: url);
+        await DB.openCon("employeelogin");
+
+        await driver.tap(ByValueKey('EditPassword'));
+        await driver.waitFor(ByText('Change Password'));
+
+        await driver.tap(ByValueKey('Current'));
+        await driver.enterText('durvesh8');
+        await driver.tap(ByValueKey('New'));
+        await driver.enterText('durvesh8403');
+        await driver.tap(ByValueKey('Confirm'));
+        await driver.enterText('durvesh8403');
+        await driver.tap(ByValueKey('Edit'));
+
+        await driver.waitFor(ByValueKey('EmployeeName'));
+        await driver.tap(ByValueKey('EditProfile'));
+        await driver.waitFor(ByText('Edit Profile'));
+
+        expect(await driver.getText(ByValueKey('Password')), 'durvesh8403');
+
+        await DB.closeCon();
+        driver.close();
+      });
     });
   });
 }

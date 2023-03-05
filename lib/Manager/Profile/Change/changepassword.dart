@@ -88,6 +88,7 @@ class ChangePasswordState extends State<ChangePassword> {
                       width: 750,
                       child: TextField(
                         controller: controllers[0],
+                        key: Key('Current'),
                         obscureText: visible[0],
                         obscuringCharacter: '*',
                         decoration: InputDecoration(
@@ -135,6 +136,7 @@ class ChangePasswordState extends State<ChangePassword> {
                       width: 750,
                       child: TextField(
                         controller: controllers[1],
+                        key: Key('New'),
                         obscureText: visible[1],
                         obscuringCharacter: '*',
                         decoration: InputDecoration(
@@ -193,6 +195,7 @@ class ChangePasswordState extends State<ChangePassword> {
                       width: 750,
                       child: TextField(
                         controller: controllers[2],
+                        key: Key('Confirm'),
                         obscureText: visible[2],
                         obscuringCharacter: '*',
                         decoration: InputDecoration(
@@ -278,6 +281,7 @@ class ChangePasswordState extends State<ChangePassword> {
                                 color: Colors.white,
                               ),
                               text: 'Confirm',
+                              key: Key('Edit'),
                               textColor: Colors.white,
                               color: Colors.deepPurple.shade700,
                               hoverColor: Colors.deepPurple.shade500,
