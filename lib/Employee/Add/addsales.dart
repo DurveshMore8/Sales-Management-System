@@ -94,6 +94,7 @@ class AddSalesState extends State<AddSales> {
                                     width: 600,
                                     child: TextField(
                                       controller: controllers[0],
+                                      key: Key('Product'),
                                       decoration: InputDecoration(
                                         fillColor: Colors.white,
                                         filled: true,
@@ -186,6 +187,7 @@ class AddSalesState extends State<AddSales> {
                                     width: 600,
                                     child: TextField(
                                       controller: controllers[1],
+                                      key: Key('Selling'),
                                       inputFormatters: <TextInputFormatter>[
                                         FilteringTextInputFormatter.digitsOnly,
                                       ], // Only numbers can be entered
@@ -249,6 +251,7 @@ class AddSalesState extends State<AddSales> {
                                     child: TextField(
                                       readOnly: price ? false : true,
                                       controller: controllers[2],
+                                      key: Key('Quantity'),
                                       inputFormatters: <TextInputFormatter>[
                                         FilteringTextInputFormatter.digitsOnly,
                                       ], // Only numbers can be entered
@@ -320,8 +323,8 @@ class AddSalesState extends State<AddSales> {
                                   SizedBox(
                                     width: 600,
                                     child: TextField(
-                                      readOnly: true,
                                       controller: controllers[3],
+                                      key: Key('Total'),
                                       inputFormatters: <TextInputFormatter>[
                                         FilteringTextInputFormatter.digitsOnly,
                                       ], // Only numbers can be entered
@@ -391,6 +394,7 @@ class AddSalesState extends State<AddSales> {
                                     color: Colors.green,
                                   ),
                                   text: 'Add Product',
+                                  key: Key('Add'),
                                   textColor: Colors.white,
                                   color: Colors.deepPurple.shade700,
                                   hoverColor: Colors.deepPurple.shade500,
@@ -406,6 +410,7 @@ class AddSalesState extends State<AddSales> {
                                     color: Colors.green,
                                   ),
                                   text: 'Cart Completed',
+                                  key: Key('Complete'),
                                   textColor: Colors.white,
                                   color: Colors.deepPurple.shade700,
                                   hoverColor: Colors.deepPurple.shade500,
@@ -438,6 +443,7 @@ class AddSalesState extends State<AddSales> {
                                           children: [
                                             Text(
                                               'Product Name: ${order[index]['ProductName']}',
+                                              key: Key('ProductName'),
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 17,
@@ -445,6 +451,7 @@ class AddSalesState extends State<AddSales> {
                                             ),
                                             Text(
                                               'Quantity: ${order[index]['Quantity']}',
+                                              key: Key('TQuantity'),
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 17,
@@ -452,6 +459,7 @@ class AddSalesState extends State<AddSales> {
                                             ),
                                             Text(
                                               'Price: ${order[index]['Price']}',
+                                              key: Key('TPrice'),
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 17,

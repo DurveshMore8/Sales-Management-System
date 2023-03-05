@@ -112,6 +112,7 @@ class ChangeEmailIdState extends State<ChangeEmailId> {
                       width: 750,
                       child: TextField(
                         controller: controllers[1],
+                        key: Key('New'),
                         decoration: InputDecoration(
                           fillColor: Colors.white,
                           filled: true,
@@ -187,6 +188,7 @@ class ChangeEmailIdState extends State<ChangeEmailId> {
                                 color: Colors.white,
                               ),
                               text: 'Confirm',
+                              key: Key('Edit'),
                               textColor: Colors.white,
                               color: Colors.deepPurple.shade700,
                               hoverColor: Colors.deepPurple.shade500,

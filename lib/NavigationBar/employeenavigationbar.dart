@@ -70,6 +70,7 @@ class _EmployeeNavigationBarState extends State<EmployeeNavigationBar> {
                             TextButton(
                               child: Text(
                                 'Edit Profile',
+                                key: Key('EditProfile'),
                                 style: TextStyle(color: Colors.white),
                               ),
                               onPressed: () {
