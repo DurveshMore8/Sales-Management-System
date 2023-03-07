@@ -44,9 +44,11 @@ class Reports {
                 child: pw.Column(
                     mainAxisAlignment: pw.MainAxisAlignment.spaceEvenly,
                     children: [
-                  pw.Text('Sales Report',
+                  pw.Text('Business Report',
                       style: pw.TextStyle(
-                          fontSize: 50, fontWeight: pw.FontWeight.bold)),
+                          fontSize: 50,
+                          fontWeight: pw.FontWeight.bold,
+                          color: PdfColors.yellow900)),
                   pw.Text('Tanishq',
                       style: pw.TextStyle(
                           fontSize: 40,
@@ -54,7 +56,9 @@ class Reports {
                           color: PdfColors.yellow)),
                   pw.Text('${ManagerDashboardState.year}',
                       style: pw.TextStyle(
-                          fontSize: 30, fontWeight: pw.FontWeight.bold)),
+                          fontSize: 30,
+                          fontWeight: pw.FontWeight.bold,
+                          color: PdfColors.blue100)),
                 ]));
           }),
     );
@@ -389,8 +393,12 @@ class Reports {
       totalProfit += dataTable3[i][5];
     }
 
+    dynamic op = 0, oq = 0;
     dataTable3.sort((a, b) => b[5].compareTo(a[5]));
-    dataTable3.removeRange(5, dataTable2.length);
+    for (int i = 5; i < dataTable3.length; i++) {
+      op += dataTable3[i][2];
+    }
+    dataTable3.removeRange(5, dataTable3.length);
 
     // Top 5 Products Table
     final table3 = pw.Table.fromTextArray(
@@ -512,6 +520,7 @@ class Reports {
     );
 
     // Pie Chart
+    dataTable3.add(['Others', '', '', '', '', op]);
     const chartColors = [
       PdfColors.red300,
       PdfColors.blue300,
@@ -602,6 +611,230 @@ class Reports {
                   )),
               pw.SizedBox(height: 10),
               pw.SizedBox(child: pie3),
+              pw.SizedBox(height: 10)
+            ],
+          );
+        },
+      ),
+    );
+
+    await DB.openCon('branch');
+    List<Map<String, dynamic>> branch = await DB.collection.find().toList();
+    await DB.closeCon();
+    await DB.openCon('sales');
+    List<Map<String, dynamic>> data4 = await DB.collection.find().toList();
+    await DB.closeCon();
+    List<List<dynamic>> dataTable4 = [];
+    totalProfit = 0;
+    for (int i = 0; i < branch.length; i++) {
+      List<dynamic> temp = [];
+      temp.add(branch[i]['BranchName'].toString().replaceAll(' Branch', ''));
+      temp.add(0);
+      temp.add(0);
+      dataTable4.add(temp);
+    }
+
+    for (int i = 0; i < dataTable4.length; i++) {
+      for (int j = 0; j < data4.length; j++) {
+        if (dataTable4[i][0] ==
+            data4[j]['BranchName'].toString().replaceAll(' Branch', '')) {
+          dataTable4[i][1] += data4[j]['TotalQuantity'];
+          dataTable4[i][2] += data4[j]['TotalPrice'];
+        }
+      }
+    }
+
+    for (int i = 0; i < dataTable4.length; i++) {
+      totalProfit += dataTable4[i][2];
+    }
+
+    op = 0;
+    oq = 0;
+    dataTable4.sort((a, b) => b[2].compareTo(a[2]));
+    for (int i = 5; i < dataTable4.length; i++) {
+      op += dataTable4[i][2];
+      oq += dataTable4[i][1];
+    }
+    dataTable4.removeRange(5, dataTable4.length);
+
+    // Top 5 Products Table
+    final table4 = pw.Table.fromTextArray(
+      border: pw.TableBorder.all(width: 1),
+      headers: [
+        'Branch Name',
+        'Quantity',
+        'Revenue',
+      ],
+      data: List<List<dynamic>>.generate(
+        dataTable4.length,
+        (index) => <dynamic>[
+          dataTable4[index][0],
+          dataTable4[index][1],
+          dataTable4[index][2],
+        ],
+      ),
+      headerStyle: pw.TextStyle(
+        color: PdfColors.white,
+        fontWeight: pw.FontWeight.bold,
+      ),
+      headerDecoration: const pw.BoxDecoration(
+        color: baseColor,
+      ),
+      rowDecoration: const pw.BoxDecoration(
+        border: pw.Border(
+          bottom: pw.BorderSide(
+            color: baseColor,
+            width: .5,
+          ),
+        ),
+      ),
+      cellAlignment: pw.Alignment.center,
+      cellAlignments: {0: pw.Alignment.center},
+    );
+
+    // Top 5 Products Chart
+    final chart4 = pw.Chart(
+      left: pw.Container(
+        alignment: pw.Alignment.topCenter,
+        margin: const pw.EdgeInsets.only(right: 5, top: 150),
+        child: pw.Transform.rotateBox(
+          angle: pi / 2,
+          child: pw.Text('Revenue'),
+        ),
+      ),
+      overlay: pw.ChartLegend(
+        position: const pw.Alignment(-.7, 1),
+        decoration: pw.BoxDecoration(
+          color: PdfColors.white,
+          border: pw.Border.all(
+            color: PdfColors.black,
+            width: .5,
+          ),
+        ),
+      ),
+      grid: pw.CartesianGrid(
+        xAxis: pw.FixedAxis.fromStrings(
+          List<String>.generate(
+              dataTable4.length, (index) => dataTable4[index][0] as String),
+          marginStart: 30,
+          marginEnd: 30,
+          ticks: true,
+        ),
+        yAxis: pw.FixedAxis(
+          [
+            0,
+            2000000,
+            4000000,
+            6000000,
+            8000000,
+            10000000,
+            12000000,
+            14000000,
+            16000000,
+            18000000,
+            20000000
+          ],
+          format: (v) => '$v',
+          divisions: true,
+        ),
+      ),
+      datasets: [
+        pw.BarDataSet(
+          color: PdfColors.blue100,
+          legend: 'Revenue',
+          width: 30,
+          borderColor: baseColor,
+          data: List<pw.PointChartValue>.generate(
+            dataTable4.length,
+            (i) {
+              final v = dataTable4[i][2] as num;
+              return pw.PointChartValue(i.toDouble(), v.toDouble());
+            },
+          ),
+        ),
+      ],
+    );
+
+    // Pie Chart
+    dataTable4.add(['Others', oq, op]);
+    final pie4 = pw.Flexible(
+      child: pw.Chart(
+        grid: pw.PieGrid(),
+        datasets: List<pw.Dataset>.generate(dataTable4.length, (index) {
+          final data = dataTable4[index];
+          final color = chartColors[index % chartColors.length];
+          final value = (data[2] as num).toDouble();
+          final pct = ((value / totalProfit) * 100).floor();
+          return pw.PieDataSet(
+            legend: '${data[0]}\n$pct%',
+            value: value,
+            color: color,
+            legendStyle: const pw.TextStyle(fontSize: 10),
+          );
+        }),
+      ),
+    );
+
+    // Product Sales Page
+    document.addPage(
+      pw.Page(
+        pageFormat: pageFormat,
+        theme: theme,
+        build: (context) {
+          // Page layout
+          return pw.Column(
+            children: [
+              pw.Text('Branch Revenue',
+                  style: pw.TextStyle(
+                    color: PdfColors.yellow900,
+                    fontWeight: pw.FontWeight.bold,
+                    fontSize: 40,
+                  )),
+              pw.SizedBox(height: 10),
+              pw.Divider(thickness: 4),
+              pw.SizedBox(height: 10),
+              pw.Text('Top 5 Best Sellers',
+                  style: pw.TextStyle(
+                    color: PdfColors.yellow900,
+                    fontWeight: pw.FontWeight.bold,
+                    fontSize: 20,
+                  )),
+              pw.SizedBox(height: 10),
+              pw.SizedBox(height: 175, child: table4),
+              pw.SizedBox(height: 10),
+              pw.Divider(thickness: 2),
+              pw.SizedBox(height: 10),
+              pw.Text('Graphical Representation',
+                  style: pw.TextStyle(
+                    color: PdfColors.yellow900,
+                    fontWeight: pw.FontWeight.bold,
+                    fontSize: 20,
+                  )),
+              pw.SizedBox(height: 10),
+              pw.Expanded(flex: 2, child: chart4),
+            ],
+          );
+        },
+      ),
+    );
+
+    // Product Sales Page
+    document.addPage(
+      pw.Page(
+        pageFormat: pageFormat,
+        theme: theme,
+        build: (context) {
+          // Page layout
+          return pw.Column(
+            children: [
+              pw.Text('Pie Chart Representation ',
+                  style: pw.TextStyle(
+                    color: PdfColors.yellow900,
+                    fontWeight: pw.FontWeight.bold,
+                    fontSize: 20,
+                  )),
+              pw.SizedBox(height: 10),
+              pw.SizedBox(child: pie4),
               pw.SizedBox(height: 10)
             ],
           );

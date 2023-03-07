@@ -300,11 +300,11 @@ class ManagerDashboardState extends State<ManagerDashboard> {
                                                         ),
                                                       ),
                                                       GFButton(
-                                                        onPressed: () {
+                                                        onPressed: () async {
                                                           setState(() {
                                                             isLoading = true;
                                                           });
-                                                          Reports
+                                                          await Reports
                                                               .generateReport();
                                                           setState(() {
                                                             isLoading = false;
@@ -361,7 +361,7 @@ class ManagerDashboardState extends State<ManagerDashboard> {
                                                                     color: Colors
                                                                         .white,
                                                                     fontSize:
-                                                                        15,
+                                                                        12,
                                                                   ),
                                                                 ),
                                                                 Text(
@@ -371,7 +371,7 @@ class ManagerDashboardState extends State<ManagerDashboard> {
                                                                     color: Colors
                                                                         .white,
                                                                     fontSize:
-                                                                        15,
+                                                                        12,
                                                                   ),
                                                                 ),
                                                                 Text(
@@ -381,7 +381,7 @@ class ManagerDashboardState extends State<ManagerDashboard> {
                                                                     color: Colors
                                                                         .white,
                                                                     fontSize:
-                                                                        15,
+                                                                        12,
                                                                   ),
                                                                 ),
                                                               ],
@@ -433,7 +433,7 @@ class ManagerDashboardState extends State<ManagerDashboard> {
                                                               style: TextStyle(
                                                                 color: Colors
                                                                     .white,
-                                                                fontSize: 15,
+                                                                fontSize: 12,
                                                               ),
                                                             ),
                                                             Text(
@@ -441,7 +441,7 @@ class ManagerDashboardState extends State<ManagerDashboard> {
                                                               style: TextStyle(
                                                                 color: Colors
                                                                     .white,
-                                                                fontSize: 15,
+                                                                fontSize: 12,
                                                               ),
                                                             ),
                                                             Text(
@@ -449,7 +449,7 @@ class ManagerDashboardState extends State<ManagerDashboard> {
                                                               style: TextStyle(
                                                                 color: Colors
                                                                     .white,
-                                                                fontSize: 15,
+                                                                fontSize: 12,
                                                               ),
                                                             ),
                                                           ],
@@ -507,7 +507,7 @@ class ManagerDashboardState extends State<ManagerDashboard> {
                                                               style: TextStyle(
                                                                 color: Colors
                                                                     .white,
-                                                                fontSize: 15,
+                                                                fontSize: 12,
                                                               ),
                                                             ),
                                                             Text(
@@ -515,7 +515,7 @@ class ManagerDashboardState extends State<ManagerDashboard> {
                                                               style: TextStyle(
                                                                 color: Colors
                                                                     .white,
-                                                                fontSize: 15,
+                                                                fontSize: 12,
                                                               ),
                                                             ),
                                                             Text(
@@ -523,7 +523,7 @@ class ManagerDashboardState extends State<ManagerDashboard> {
                                                               style: TextStyle(
                                                                 color: Colors
                                                                     .white,
-                                                                fontSize: 15,
+                                                                fontSize: 12,
                                                               ),
                                                             ),
                                                           ],
@@ -575,7 +575,7 @@ class ManagerDashboardState extends State<ManagerDashboard> {
                                                               style: TextStyle(
                                                                 color: Colors
                                                                     .white,
-                                                                fontSize: 15,
+                                                                fontSize: 12,
                                                               ),
                                                             ),
                                                             Text(
@@ -583,7 +583,7 @@ class ManagerDashboardState extends State<ManagerDashboard> {
                                                               style: TextStyle(
                                                                 color: Colors
                                                                     .white,
-                                                                fontSize: 15,
+                                                                fontSize: 12,
                                                               ),
                                                             ),
                                                             Text(
@@ -591,7 +591,7 @@ class ManagerDashboardState extends State<ManagerDashboard> {
                                                               style: TextStyle(
                                                                 color: Colors
                                                                     .white,
-                                                                fontSize: 15,
+                                                                fontSize: 12,
                                                               ),
                                                             ),
                                                           ],
