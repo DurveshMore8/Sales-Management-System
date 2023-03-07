@@ -49,7 +49,7 @@ class Reports {
                           fontSize: 50,
                           fontWeight: pw.FontWeight.bold,
                           color: PdfColors.yellow900)),
-                  pw.Text('Tanishq',
+                  pw.Text('Tata Motors',
                       style: pw.TextStyle(
                           fontSize: 40,
                           fontWeight: pw.FontWeight.bold,
@@ -58,7 +58,7 @@ class Reports {
                       style: pw.TextStyle(
                           fontSize: 30,
                           fontWeight: pw.FontWeight.bold,
-                          color: PdfColors.blue100)),
+                          color: PdfColors.blue)),
                 ]));
           }),
     );

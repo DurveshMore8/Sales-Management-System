@@ -74,7 +74,6 @@ class AddEmployeeState extends State<AddEmployee> {
               child: Padding(
                 padding: EdgeInsets.only(bottom: 30),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(height: 20),
@@ -147,8 +146,8 @@ class AddEmployeeState extends State<AddEmployee> {
                           ),
                         ),
                         error[0] == ''
-                            ? SizedBox(height: 34)
-                            : SizedBox(height: 10),
+                            ? SizedBox(height: 29)
+                            : SizedBox(height: 5),
                         SizedBox(
                           width: 600,
                           child: TextField(
@@ -196,8 +195,8 @@ class AddEmployeeState extends State<AddEmployee> {
                           ),
                         ),
                         error[1] == ''
-                            ? SizedBox(height: 34)
-                            : SizedBox(height: 10),
+                            ? SizedBox(height: 29)
+                            : SizedBox(height: 5),
                         SizedBox(
                           width: 600,
                           child: TextField(
@@ -240,8 +239,8 @@ class AddEmployeeState extends State<AddEmployee> {
                           ),
                         ),
                         error[2] == ''
-                            ? SizedBox(height: 34)
-                            : SizedBox(height: 10),
+                            ? SizedBox(height: 29)
+                            : SizedBox(height: 5),
                         SizedBox(
                           width: 600,
                           child: TextField(
@@ -282,8 +281,8 @@ class AddEmployeeState extends State<AddEmployee> {
                           ),
                         ),
                         error[3] == ''
-                            ? SizedBox(height: 34)
-                            : SizedBox(height: 10),
+                            ? SizedBox(height: 29)
+                            : SizedBox(height: 5),
                         SizedBox(
                           width: 600,
                           child: Container(
@@ -363,7 +362,7 @@ class AddEmployeeState extends State<AddEmployee> {
                         gender == ''
                             ? Container(
                                 width: 575,
-                                height: 34,
+                                height: 29,
                                 alignment: Alignment.centerLeft,
                                 child: Text(
                                   'Gender Can\'t be unselected',
@@ -371,7 +370,7 @@ class AddEmployeeState extends State<AddEmployee> {
                                       color: Colors.red[700], fontSize: 12),
                                   textAlign: TextAlign.start,
                                 ))
-                            : SizedBox(height: 34),
+                            : SizedBox(height: 29),
                         SizedBox(
                           width: 600,
                           child: TextField(
@@ -425,8 +424,8 @@ class AddEmployeeState extends State<AddEmployee> {
                           ),
                         ),
                         error[4] == ''
-                            ? SizedBox(height: 34)
-                            : SizedBox(height: 10),
+                            ? SizedBox(height: 29)
+                            : SizedBox(height: 5),
                         Container(
                           color: Colors.white,
                           width: 600,
@@ -473,7 +472,7 @@ class AddEmployeeState extends State<AddEmployee> {
                         error[5] == 'Branch not selected'
                             ? Container(
                                 width: 575,
-                                height: 34,
+                                height: 29,
                                 alignment: Alignment.centerLeft,
                                 child: Text(
                                   'Branch Selection is Mandatory',
@@ -481,7 +480,7 @@ class AddEmployeeState extends State<AddEmployee> {
                                       color: Colors.red[700], fontSize: 12),
                                   textAlign: TextAlign.start,
                                 ))
-                            : SizedBox(height: 34),
+                            : SizedBox(height: 29),
                       ],
                     ),
                     Row(
