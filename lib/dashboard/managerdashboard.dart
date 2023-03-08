@@ -242,62 +242,14 @@ class ManagerDashboardState extends State<ManagerDashboard> {
                                                         MainAxisAlignment
                                                             .spaceEvenly,
                                                     children: [
-                                                      Container(
-                                                        decoration:
-                                                            BoxDecoration(
-                                                                color: Colors
-                                                                    .deepPurple
-                                                                    .shade800),
-                                                        child: DropdownButton(
-                                                          dropdownColor: Colors
-                                                              .deepPurple
-                                                              .shade800,
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white),
-                                                          iconEnabledColor:
-                                                              Colors.white,
-                                                          value: selectedValue,
-                                                          items: [
-                                                            DropdownMenuItem(
-                                                              value: 1,
-                                                              alignment:
-                                                                  Alignment
-                                                                      .center,
-                                                              child: Text(
-                                                                  '\t\t\t\t\t\t\t\t2023\t\t\t\t\t\t\t\t'),
-                                                            ),
-                                                            DropdownMenuItem(
-                                                                value: 2,
-                                                                alignment:
-                                                                    Alignment
-                                                                        .center,
-                                                                child: Text(
-                                                                    '\t\t\t\t\t\t\t\t2022\t\t\t\t\t\t\t\t')),
-                                                            DropdownMenuItem(
-                                                                value: 3,
-                                                                alignment:
-                                                                    Alignment
-                                                                        .center,
-                                                                child: Text(
-                                                                    '\t\t\t\t\t\t\t\t2021\t\t\t\t\t\t\t\t')),
-                                                          ],
-                                                          onChanged: (value) {
-                                                            setState(() {
-                                                              selectedValue =
-                                                                  value!;
-                                                              if (value == 1) {
-                                                                year = 2023;
-                                                              } else if (value ==
-                                                                  2) {
-                                                                year = 2022;
-                                                              } else if (value ==
-                                                                  3) {
-                                                                year = 2021;
-                                                              }
-                                                            });
-                                                          },
-                                                        ),
+                                                      Text(
+                                                        'Download Sales Report till Now',
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 25,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
                                                       ),
                                                       GFButton(
                                                         onPressed: () async {

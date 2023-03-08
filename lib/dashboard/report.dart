@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
-import 'package:sadms/Dashboard/managerdashboard.dart';
 import 'package:sadms/Database/database.dart';
 
 class Reports {
@@ -53,12 +52,12 @@ class Reports {
                       style: pw.TextStyle(
                           fontSize: 40,
                           fontWeight: pw.FontWeight.bold,
-                          color: PdfColors.yellow)),
-                  pw.Text('${ManagerDashboardState.year}',
+                          color: PdfColors.blue900)),
+                  pw.Text('Overall',
                       style: pw.TextStyle(
                           fontSize: 30,
                           fontWeight: pw.FontWeight.bold,
-                          color: PdfColors.blue)),
+                          color: PdfColors.yellow)),
                 ]));
           }),
     );
