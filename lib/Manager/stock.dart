@@ -238,7 +238,8 @@ class StockState extends State<Stock> {
                         return GestureDetector(
                           onTap: () {
                             if (data[index]['BranchName'] ==
-                                branch[0]['BranchName']) {
+                                    branch[0]['BranchName'] ||
+                                branch[0]['BranchName'] == '') {
                               setState(() {
                                 selectedBox = index;
                               });

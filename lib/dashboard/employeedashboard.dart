@@ -214,7 +214,7 @@ class _EmployeeDashboardState extends State<EmployeeDashboard> {
                                                                     TextStyle(
                                                                   color: Colors
                                                                       .white,
-                                                                  fontSize: 17,
+                                                                  fontSize: 12,
                                                                 ),
                                                               ),
                                                               Text(
@@ -223,7 +223,7 @@ class _EmployeeDashboardState extends State<EmployeeDashboard> {
                                                                     TextStyle(
                                                                   color: Colors
                                                                       .white,
-                                                                  fontSize: 17,
+                                                                  fontSize: 12,
                                                                 ),
                                                               ),
                                                               Text(
@@ -232,7 +232,7 @@ class _EmployeeDashboardState extends State<EmployeeDashboard> {
                                                                     TextStyle(
                                                                   color: Colors
                                                                       .white,
-                                                                  fontSize: 17,
+                                                                  fontSize: 12,
                                                                 ),
                                                               ),
                                                             ],
@@ -289,7 +289,7 @@ class _EmployeeDashboardState extends State<EmployeeDashboard> {
                                                                     TextStyle(
                                                                   color: Colors
                                                                       .white,
-                                                                  fontSize: 17,
+                                                                  fontSize: 12,
                                                                 ),
                                                               ),
                                                               Text(
@@ -298,7 +298,7 @@ class _EmployeeDashboardState extends State<EmployeeDashboard> {
                                                                     TextStyle(
                                                                   color: Colors
                                                                       .white,
-                                                                  fontSize: 17,
+                                                                  fontSize: 12,
                                                                 ),
                                                               ),
                                                               Text(
@@ -307,7 +307,7 @@ class _EmployeeDashboardState extends State<EmployeeDashboard> {
                                                                     TextStyle(
                                                                   color: Colors
                                                                       .white,
-                                                                  fontSize: 17,
+                                                                  fontSize: 12,
                                                                 ),
                                                               ),
                                                             ],
@@ -362,7 +362,7 @@ class _EmployeeDashboardState extends State<EmployeeDashboard> {
                                                                     TextStyle(
                                                                   color: Colors
                                                                       .white,
-                                                                  fontSize: 17,
+                                                                  fontSize: 15,
                                                                 ),
                                                               ),
                                                               Text(
@@ -371,7 +371,7 @@ class _EmployeeDashboardState extends State<EmployeeDashboard> {
                                                                     TextStyle(
                                                                   color: Colors
                                                                       .white,
-                                                                  fontSize: 17,
+                                                                  fontSize: 15,
                                                                 ),
                                                               ),
                                                               Text(
@@ -380,7 +380,7 @@ class _EmployeeDashboardState extends State<EmployeeDashboard> {
                                                                     TextStyle(
                                                                   color: Colors
                                                                       .white,
-                                                                  fontSize: 17,
+                                                                  fontSize: 15,
                                                                 ),
                                                               ),
                                                             ],
@@ -396,7 +396,7 @@ class _EmployeeDashboardState extends State<EmployeeDashboard> {
                                                                     TextStyle(
                                                                   color: Colors
                                                                       .white,
-                                                                  fontSize: 17,
+                                                                  fontSize: 15,
                                                                 ),
                                                               ),
                                                               Text(
@@ -405,7 +405,7 @@ class _EmployeeDashboardState extends State<EmployeeDashboard> {
                                                                     TextStyle(
                                                                   color: Colors
                                                                       .white,
-                                                                  fontSize: 17,
+                                                                  fontSize: 15,
                                                                 ),
                                                               ),
                                                             ],

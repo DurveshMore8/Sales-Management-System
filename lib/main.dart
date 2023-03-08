@@ -2,10 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:sadms/Login/login.dart';
-import 'package:flutter_driver/driver_extension.dart';
+//import 'package:flutter_driver/driver_extension.dart';
 
 void main() {
-  enableFlutterDriverExtension();
+  //enableFlutterDriverExtension();
   runApp(const MyApp());
 }
 

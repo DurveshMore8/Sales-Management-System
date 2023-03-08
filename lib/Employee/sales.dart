@@ -468,7 +468,7 @@ class _SalesState extends State<Sales> {
                                           AddSalesState.order[i]['Quantity']));
                             }
                             await DB.closeCon();
-                            //sendEmail();
+                            sendEmail();
                             setState(() {
                               isLoading = false;
                               for (int i = 0; i <= 4; i++) {
