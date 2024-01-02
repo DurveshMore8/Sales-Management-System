@@ -3,7 +3,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:sadms/Dashboard/report.dart';
+// import 'package:sadms/Dashboard/report.dart';
 import 'package:sadms/Database/database.dart';
 import 'package:sadms/Login/login.dart';
 
@@ -208,7 +208,7 @@ class ManagerDashboardState extends State<ManagerDashboard> {
                   ),
                   SizedBox(height: 30),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height - 173,
+                    height: MediaQuery.of(context).size.height - 179,
                     width: MediaQuery.of(context).size.width - 60,
                     child: Padding(
                       padding: EdgeInsets.all(10),
@@ -256,8 +256,8 @@ class ManagerDashboardState extends State<ManagerDashboard> {
                                                           setState(() {
                                                             isLoading = true;
                                                           });
-                                                          await Reports
-                                                              .generateReport();
+                                                          // await Reports
+                                                          //     .generateReport();
                                                           setState(() {
                                                             isLoading = false;
                                                           });
