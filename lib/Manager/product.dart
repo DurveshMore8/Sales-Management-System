@@ -3,9 +3,9 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:sadms/Database/database.dart';
-import 'package:sadms/Manager/Add/addproduct.dart';
-import 'package:sadms/Manager/Update/updateproduct.dart';
+import 'package:sales_management_system/Database/database.dart';
+import 'package:sales_management_system/Manager/Add/addproduct.dart';
+import 'package:sales_management_system/Manager/Update/updateproduct.dart';
 
 class Product extends StatefulWidget {
   Product({Key? key}) : super(key: key);

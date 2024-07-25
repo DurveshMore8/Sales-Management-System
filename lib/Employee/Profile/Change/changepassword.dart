@@ -4,8 +4,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:sadms/Database/database.dart';
-import 'package:sadms/Login/login.dart';
+import 'package:sales_management_system/Database/database.dart';
+import 'package:sales_management_system/Login/login.dart';
 
 class ChangePassword extends StatefulWidget {
   ChangePassword({Key? key}) : super(key: key);

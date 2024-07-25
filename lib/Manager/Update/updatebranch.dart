@@ -4,9 +4,9 @@ import 'dart:ui';
 import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:sadms/Database/database.dart';
-import 'package:sadms/Login/login.dart';
-import 'package:sadms/Manager/branch.dart';
+import 'package:sales_management_system/Database/database.dart';
+import 'package:sales_management_system/Login/login.dart';
+import 'package:sales_management_system/Manager/branch.dart';
 
 class UpdateBranch extends StatefulWidget {
   UpdateBranch({Key? key}) : super(key: key);

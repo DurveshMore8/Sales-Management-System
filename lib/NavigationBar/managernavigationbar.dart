@@ -2,15 +2,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:sadms/Dashboard/managerdashboard.dart';
-import 'package:sadms/Login/login.dart';
-import 'package:sadms/Manager/employee.dart';
-import 'package:sadms/Manager/manager.dart';
-import 'package:sadms/Manager/product.dart';
-import 'package:sadms/Manager/sales.dart';
-import 'package:sadms/Manager/branch.dart';
-import 'package:sadms/Manager/stock.dart';
-import 'package:sadms/Manager/Profile/editprofile.dart';
+import 'package:sales_management_system/Dashboard/managerdashboard.dart';
+import 'package:sales_management_system/Login/login.dart';
+import 'package:sales_management_system/Manager/employee.dart';
+import 'package:sales_management_system/Manager/manager.dart';
+import 'package:sales_management_system/Manager/product.dart';
+import 'package:sales_management_system/Manager/sales.dart';
+import 'package:sales_management_system/Manager/branch.dart';
+import 'package:sales_management_system/Manager/stock.dart';
+import 'package:sales_management_system/Manager/Profile/editprofile.dart';
 
 class MyNavigationBar extends StatefulWidget {
   MyNavigationBar({Key? key}) : super(key: key);

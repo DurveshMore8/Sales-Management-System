@@ -3,9 +3,9 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:sadms/Database/database.dart';
-import 'package:sadms/Login/login.dart';
-import 'package:sadms/Manager/Add/addstock.dart';
+import 'package:sales_management_system/Database/database.dart';
+import 'package:sales_management_system/Login/login.dart';
+import 'package:sales_management_system/Manager/Add/addstock.dart';
 
 class Stock extends StatefulWidget {
   Stock({Key? key}) : super(key: key);
@@ -200,37 +200,37 @@ class StockState extends State<Stock> {
                     ],
                   ),
                   SizedBox(height: 50),
-                  SizedBox(
-                    child: ListTile(
-                      title: Text('Display Stock of My Branch',
-                          style: TextStyle(
-                            color: Colors.white,
-                          )),
-                      leading: GFCheckbox(
-                        key: Key('Check'),
-                        value: check,
-                        size: 25,
-                        activeBgColor: Colors.deepPurple.shade700,
-                        onChanged: (value) {
-                          setState(() {
-                            selectedBox = -1;
-                            check = value;
-                            data.clear();
-                            if (check) {
-                              for (int i = 0; i < maindata.length; i++) {
-                                if (maindata[i]['BranchName'] ==
-                                    branch[0]['BranchName']) {
-                                  data.add(maindata[i]);
-                                }
-                              }
-                            } else {
-                              data.addAll(maindata);
-                            }
-                          });
-                        },
-                      ),
-                    ),
-                  ),
+                  // SizedBox(
+                  //   child: ListTile(
+                  //     title: Text('Display Stock of My Branch',
+                  //         style: TextStyle(
+                  //           color: Colors.white,
+                  //         )),
+                  //     leading: GFCheckbox(
+                  //       key: Key('Check'),
+                  //       value: check,
+                  //       size: 25,
+                  //       activeBgColor: Colors.deepPurple.shade700,
+                  //       onChanged: (value) {
+                  //         setState(() {
+                  //           selectedBox = -1;
+                  //           check = value;
+                  //           data.clear();
+                  //           if (check) {
+                  //             for (int i = 0; i < maindata.length; i++) {
+                  //               if (maindata[i]['BranchName'] ==
+                  //                   branch[0]['BranchName']) {
+                  //                 data.add(maindata[i]);
+                  //               }
+                  //             }
+                  //           } else {
+                  //             data.addAll(maindata);
+                  //           }
+                  //         });
+                  //       },
+                  //     ),
+                  //   ),
+                  // ),
                   Expanded(
                     child: ListView.builder(
                       itemCount: data.isEmpty ? 1 : data.length,

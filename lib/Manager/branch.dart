@@ -3,9 +3,9 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:sadms/Database/database.dart';
-import 'package:sadms/Manager/Add/addbranch.dart';
-import 'package:sadms/Manager/Update/updatebranch.dart';
+import 'package:sales_management_system/Database/database.dart';
+import 'package:sales_management_system/Manager/Add/addbranch.dart';
+import 'package:sales_management_system/Manager/Update/updatebranch.dart';
 
 class Branch extends StatefulWidget {
   Branch({Key? key}) : super(key: key);

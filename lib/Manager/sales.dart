@@ -2,7 +2,7 @@
 
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:sadms/Database/database.dart';
+import 'package:sales_management_system/Database/database.dart';
 
 class Sales extends StatefulWidget {
   Sales({Key? key}) : super(key: key);

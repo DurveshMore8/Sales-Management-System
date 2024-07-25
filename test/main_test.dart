@@ -4,7 +4,7 @@
 
 import 'package:flutter_driver/flutter_driver.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sadms/Database/database.dart';
+import 'package:sales_management_system/Database/database.dart';
 
 void main() {
   String url = 'ws://127.0.0.1:63703/KEEsIw9UBPk=/ws';

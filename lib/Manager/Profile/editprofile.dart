@@ -3,10 +3,10 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:sadms/Database/database.dart';
-import 'package:sadms/Login/login.dart';
-import 'package:sadms/Manager/Profile/Change/changeemailid.dart';
-import 'package:sadms/Manager/Profile/Change/changepassword.dart';
+import 'package:sales_management_system/Database/database.dart';
+import 'package:sales_management_system/Login/login.dart';
+import 'package:sales_management_system/Manager/Profile/Change/changeemailid.dart';
+import 'package:sales_management_system/Manager/Profile/Change/changepassword.dart';
 
 class EditProfile extends StatefulWidget {
   EditProfile({Key? key}) : super(key: key);

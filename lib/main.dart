@@ -1,7 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages, annotate_overrides
 
 import 'package:flutter/material.dart';
-import 'package:sadms/Login/login.dart';
+import 'package:sales_management_system/Login/login.dart';
 //import 'package:flutter_driver/driver_extension.dart';
 
 void main() {

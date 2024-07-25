@@ -6,9 +6,9 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:sadms/Database/database.dart';
-import 'package:sadms/Login/login.dart';
-import 'package:sadms/Manager/employee.dart';
+import 'package:sales_management_system/Database/database.dart';
+import 'package:sales_management_system/Login/login.dart';
+import 'package:sales_management_system/Manager/employee.dart';
 
 class UpdateEmployee extends StatefulWidget {
   UpdateEmployee({Key? key}) : super(key: key);

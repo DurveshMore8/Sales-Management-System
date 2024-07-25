@@ -2,11 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:sadms/Dashboard/employeedashboard.dart';
-import 'package:sadms/Employee/Profile/editprofile.dart';
-import 'package:sadms/Employee/sales.dart';
-import 'package:sadms/Employee/stock.dart';
-import 'package:sadms/Login/login.dart';
+import 'package:sales_management_system/Dashboard/employeedashboard.dart';
+import 'package:sales_management_system/Employee/Profile/editprofile.dart';
+import 'package:sales_management_system/Employee/sales.dart';
+import 'package:sales_management_system/Employee/stock.dart';
+import 'package:sales_management_system/Login/login.dart';
 
 class EmployeeNavigationBar extends StatefulWidget {
   EmployeeNavigationBar({Key? key}) : super(key: key);

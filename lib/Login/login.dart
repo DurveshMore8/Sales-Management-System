@@ -4,9 +4,9 @@ import 'dart:ui';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:sadms/Database/database.dart';
-import 'package:sadms/NavigationBar/employeenavigationbar.dart';
-import 'package:sadms/NavigationBar/managernavigationbar.dart';
+import 'package:sales_management_system/Database/database.dart';
+import 'package:sales_management_system/NavigationBar/employeenavigationbar.dart';
+import 'package:sales_management_system/NavigationBar/managernavigationbar.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);

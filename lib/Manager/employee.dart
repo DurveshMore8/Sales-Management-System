@@ -3,9 +3,9 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:sadms/Database/database.dart';
-import 'package:sadms/Manager/Add/addemployee.dart';
-import 'package:sadms/Manager/Update/updateemployee.dart';
+import 'package:sales_management_system/Database/database.dart';
+import 'package:sales_management_system/Manager/Add/addemployee.dart';
+import 'package:sales_management_system/Manager/Update/updateemployee.dart';
 
 class Employee extends StatefulWidget {
   Employee({Key? key}) : super(key: key);

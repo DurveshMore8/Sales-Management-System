@@ -7,9 +7,9 @@ import 'package:flutter/services.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:sadms/Database/database.dart';
-import 'package:sadms/Employee/Add/addsales.dart';
-import 'package:sadms/Login/login.dart';
+import 'package:sales_management_system/Database/database.dart';
+import 'package:sales_management_system/Employee/Add/addsales.dart';
+import 'package:sales_management_system/Login/login.dart';
 
 class Sales extends StatefulWidget {
   Sales({Key? key}) : super(key: key);

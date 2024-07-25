@@ -3,7 +3,7 @@
 // import 'package:pdf/pdf.dart';
 // import 'package:pdf/widgets.dart' as pw;
 // import 'package:printing/printing.dart';
-// import 'package:sadms/Database/database.dart';
+// import 'package:sales_management_system/Database/database.dart';
 
 // class Reports {
 //   static Future generateReport() async {
