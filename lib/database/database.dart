@@ -5,7 +5,7 @@ import 'package:mongo_dart/mongo_dart.dart';
 class DB {
   //variable declaration
   static const url =
-      "mongodb+srv://DurveshMore:durvesh8@durveshmore.l1ois12.mongodb.net/sadms?retryWrites=true&w=majority";
+      "<<ADD YOUR OWN MONGO URL>>";
   static var database, collection;
 
   //Function to Open Connection
